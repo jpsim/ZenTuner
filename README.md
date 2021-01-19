@@ -1,5 +1,7 @@
 # Zen Tuner
 
+![CI](https://github.com/jpsim/ZenTuner/workflows/CI/badge.svg)
+
 A minimal chromatic tuner.
 
 | Dark | Light |

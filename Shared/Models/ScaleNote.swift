@@ -14,9 +14,7 @@ enum ScaleNote: CaseIterable {
         let distance: Distance
 
         /// The frequency of the matched note, adjusted by octave.
-        var frequency: Frequency {
-            Frequency(floatLiteral: note.frequency.measurement.value * Double(powf(2, Float(octave))))
-        }
+        var frequency: Frequency { note.frequency.shifted(byOctaves: octave) }
     }
 
     /// The distance between notes in cents: https://en.wikipedia.org/wiki/Cent_%28music%29
@@ -56,11 +54,11 @@ enum ScaleNote: CaseIterable {
         var octaveShiftedFrequency = frequency
 
         while octaveShiftedFrequency > allCases.last!.frequency {
-            octaveShiftedFrequency.shifted(byOctaves: -1)
+            octaveShiftedFrequency.shift(byOctaves: -1)
         }
 
         while octaveShiftedFrequency < allCases.first!.frequency {
-            octaveShiftedFrequency.shifted(byOctaves: 1)
+            octaveShiftedFrequency.shift(byOctaves: 1)
         }
 
         // Find closest note

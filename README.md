@@ -10,7 +10,7 @@ A minimal chromatic tuner.
 
 ## Credits
 
-* [AudioKit][audiokit] poers the audio analysis for this tuner
+* [AudioKit][audiokit] powers the audio analysis for this tuner
 * Design inspired by the [Stuner App][stuner] mock ups by [Célio Silva][celio]
 
 ## License

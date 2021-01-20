@@ -3,7 +3,38 @@ import Foundation
 // MARK: - Type Definition
 
 struct Frequency: Equatable {
-    private(set) var measurement: Measurement<UnitFrequency>
+    private var measurement: Measurement<UnitFrequency>
+
+    /// The distance between frequencies in cents: https://en.wikipedia.org/wiki/Cent_%28music%29
+    struct MusicalDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
+        /// Underlying float value. Between -50 and +50.
+        let cents: Float
+
+        /// Humans can distinguish a difference in pitch of about 5–6 cents:
+        /// https://en.wikipedia.org/wiki/Cent_%28music%29#Human_perception
+        var isPerceptible: Bool { fabsf(cents) > 5 }
+
+        init(cents: Float) {
+            self.cents = cents
+        }
+
+        init(floatLiteral value: Float) {
+            cents = value
+        }
+
+        init(integerLiteral value: Int) {
+            cents = Float(value)
+        }
+    }
+
+    /// Calculate distance to given frequency in musical cents.
+    ///
+    /// - parameter frequency: Frequency to compare against.
+    ///
+    /// - returns: The distance in cents.
+    func distance(to frequency: Frequency) -> MusicalDistance {
+        return MusicalDistance(cents: 1200 * log2f(Float(frequency.measurement.value / measurement.value)))
+    }
 }
 
 // MARK: - Expressible By Literal Protocols

@@ -11,37 +11,10 @@ enum ScaleNote: CaseIterable {
         /// The octave of the matched note.
         let octave: Int
         /// The distance between the input frequency and the matched note's defined frequency.
-        let distance: Distance
+        let distance: Frequency.MusicalDistance
 
         /// The frequency of the matched note, adjusted by octave.
         var frequency: Frequency { note.frequency.shifted(byOctaves: octave) }
-    }
-
-    /// The distance between notes in cents: https://en.wikipedia.org/wiki/Cent_%28music%29
-    struct Distance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
-        /// Underlying float value. Between -50 and +50.
-        let cents: Float
-
-        /// Humans can distinguish a difference in pitch of about 5–6 cents:
-        /// https://en.wikipedia.org/wiki/Cent_%28music%29#Human_perception
-        var isWithinTolerance: Bool { fabsf(cents) < 5 }
-
-        init(cents: Float) {
-            self.cents = cents
-        }
-
-        init(floatLiteral value: Float) {
-            cents = value
-        }
-
-        init(integerLiteral value: Int) {
-            cents = Float(value)
-        }
-    }
-
-    /// Calculate distance to closest note.
-    private func distance(to frequency: Frequency) -> Distance {
-        return Distance(cents: 1200 * log2f(Float(frequency.measurement.value / self.frequency.measurement.value)))
     }
 
     /// Find the closest note to the specified frequency.
@@ -63,14 +36,14 @@ enum ScaleNote: CaseIterable {
 
         // Find closest note
         let closestNote = allCases.min(by: { note1, note2 in
-            fabsf(note1.distance(to: octaveShiftedFrequency).cents) <
-                fabsf(note2.distance(to: octaveShiftedFrequency).cents)
+            fabsf(note1.frequency.distance(to: octaveShiftedFrequency).cents) <
+                fabsf(note2.frequency.distance(to: octaveShiftedFrequency).cents)
         })!
 
         return Match(
             note: closestNote,
             octave: max(octaveShiftedFrequency.distanceInOctaves(to: frequency), 0),
-            distance: closestNote.distance(to: octaveShiftedFrequency)
+            distance: closestNote.frequency.distance(to: octaveShiftedFrequency)
         )
     }
 

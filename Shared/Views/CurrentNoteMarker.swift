@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CurrentNoteMarker: View {
     let frequency: Frequency
-    let distanceInCents: Float
+    let distance: Frequency.MusicalDistance
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
@@ -16,7 +16,7 @@ struct CurrentNoteMarker: View {
             }
             .frame(width: geometry.size.width)
             .offset(
-                x: (geometry.size.width / 2) * CGFloat(distanceInCents / 50)
+                x: (geometry.size.width / 2) * CGFloat(distance.cents / 50)
             )
             .animation(.easeInOut)
         }
@@ -25,7 +25,7 @@ struct CurrentNoteMarker: View {
 
 struct CurrentNoteMarker_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentNoteMarker(frequency: 440.0, distanceInCents: 0)
+        CurrentNoteMarker(frequency: 440.0, distance: 0)
             .previewLayout(.fixed(width: 300, height: 200))
     }
 }

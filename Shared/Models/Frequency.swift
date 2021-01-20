@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Type Definition
 
 struct Frequency: Equatable {
-    var measurement: Measurement<UnitFrequency>
+    private(set) var measurement: Measurement<UnitFrequency>
 }
 
 // MARK: - Expressible By Literal Protocols
@@ -46,7 +46,21 @@ extension Frequency: Comparable {
 // MARK: - Octave Operations
 
 extension Frequency {
-    mutating func shifted(byOctaves octaves: Int) {
+    /// Returns the current frequency shifted by increasing or decreasing in discrete octave increments.
+    ///
+    /// - parameter octaves: The number of octaves to transpose this frequency. Can be positive or negative.
+    ///
+    /// - returns: Octave shifted frequency.
+    func shifted(byOctaves octaves: Int) -> Frequency {
+        var copy = self
+        copy.shift(byOctaves: octaves)
+        return copy
+    }
+
+    /// Shifts the frequency by increasing or decreasing in discrete octave increments.
+    ///
+    /// - parameter octaves: The number of octaves to transpose this frequency. Can be positive or negative.
+    mutating func shift(byOctaves octaves: Int) {
         if octaves == 0 {
             return
         } else if octaves > 0 {
@@ -60,6 +74,12 @@ extension Frequency {
         }
     }
 
+    /// Computes the distance in octaves between the current frequency and the specified frequency. Truncates if
+    /// distance is not exact octaves.
+    ///
+    /// - parameter frequency: Frequency to compare.
+    ///
+    /// - returns: Distance in octaves to specified frequency.
     func distanceInOctaves(to frequency: Frequency) -> Int {
         return Int(log2f(Float(frequency.measurement.value / measurement.value)))
     }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
+		8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8FB571BD25B72147007C28BC /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8FB571BE25B72147007C28BC /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8FB571C125B72147007C28BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FB571AC25B72147007C28BC /* Assets.xcassets */; };
@@ -40,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionMenu.swift; sourceTree = "<group>"; };
 		8FB571AA25B72146007C28BC /* ZenTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZenTunerApp.swift; sourceTree = "<group>"; };
 		8FB571AC25B72147007C28BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8FB571B125B72147007C28BC /* ZenTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZenTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +142,7 @@
 				8FB571F125B73ECE007C28BC /* MatchedNoteView.swift */,
 				8FB571F325B73ECF007C28BC /* NoteDistanceMarkers.swift */,
 				8FB571F425B73ECF007C28BC /* TunerView.swift */,
+				8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -288,6 +292,7 @@
 				8FB571DF25B73E9A007C28BC /* ModifierPreference.swift in Sources */,
 				8FB571E725B73E9A007C28BC /* TunerController.swift in Sources */,
 				8FB571F725B73ECF007C28BC /* MainNoteView.swift in Sources */,
+				8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */,
 				8FB571FB25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,6 +313,7 @@
 				8FB571E025B73E9A007C28BC /* ModifierPreference.swift in Sources */,
 				8FB571E825B73E9A007C28BC /* TunerController.swift in Sources */,
 				8FB571F825B73ECF007C28BC /* MainNoteView.swift in Sources */,
+				8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */,
 				8FB571FC25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

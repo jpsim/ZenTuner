@@ -1,7 +1,7 @@
 import Darwin.C.math
 
 /// A note in a twelve-tone equal temperament scale. https://en.wikipedia.org/wiki/Equal_temperament
-enum ScaleNote: CaseIterable {
+enum ScaleNote: Int, CaseIterable {
     case C, CSharp_DFlat, D, DSharp_EFlat, E, F, FSharp_GFlat, G, GSharp_AFlat, A, ASharp_BFlat, B
 
     /// A note match given an input frequency.
@@ -15,6 +15,29 @@ enum ScaleNote: CaseIterable {
 
         /// The frequency of the matched note, adjusted by octave.
         var frequency: Frequency { note.frequency.shifted(byOctaves: octave) }
+
+        /// The current note match adjusted for transpositions.
+        ///
+        /// - parameter transposition: The transposition on which to map the current match.
+        ///
+        /// - returns: The match mapped to the specified transposition.
+        func inTransposition(_ transposition: ScaleNote) -> ScaleNote.Match {
+            let transpositionDistanceFromC = transposition.rawValue
+            guard transpositionDistanceFromC > 0 else {
+                return self
+            }
+
+            let currentNoteIndex = note.rawValue
+            let allNotes = ScaleNote.allCases
+            let transposedNoteIndex = (currentNoteIndex + transpositionDistanceFromC) % allNotes.count
+            let transposedNote = allNotes[transposedNoteIndex]
+            let octaveShift = (transposedNoteIndex < currentNoteIndex) ? -1 : 0
+            return ScaleNote.Match(
+                note: transposedNote,
+                octave: octave + octaveShift,
+                distance: distance
+            )
+        }
     }
 
     /// Find the closest note to the specified frequency.

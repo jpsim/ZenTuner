@@ -14,6 +14,9 @@ struct Frequency: Equatable {
         /// https://en.wikipedia.org/wiki/Cent_%28music%29#Human_perception
         var isPerceptible: Bool { fabsf(cents) > 5 }
 
+        /// The distance in a full octave.
+        static var octave: MusicalDistance { MusicalDistance(cents: 1200) }
+
         init(cents: Float) {
             self.cents = cents
         }
@@ -33,7 +36,9 @@ struct Frequency: Equatable {
     ///
     /// - returns: The distance in cents.
     func distance(to frequency: Frequency) -> MusicalDistance {
-        return MusicalDistance(cents: 1200 * log2f(Float(frequency.measurement.value / measurement.value)))
+        return MusicalDistance(
+            cents: MusicalDistance.octave.cents * log2f(Float(frequency.measurement.value / measurement.value))
+        )
     }
 }
 
@@ -112,6 +117,6 @@ extension Frequency {
     ///
     /// - returns: Distance in octaves to specified frequency.
     func distanceInOctaves(to frequency: Frequency) -> Int {
-        return Int(log2f(Float(frequency.measurement.value / measurement.value)))
+        return Int(distance(to: frequency).cents / MusicalDistance.octave.cents)
     }
 }

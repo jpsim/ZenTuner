@@ -1,21 +1,33 @@
 import SwiftUI
 
 struct TunerView: View {
-    @ObservedObject var tunerController = TunerController()
-    @AppStorage("modifierPreference") var modifierPreference = ModifierPreference.preferSharps
+    @ObservedObject private var tunerController = TunerController()
+    @AppStorage("modifierPreference") private var modifierPreference = ModifierPreference.preferSharps
+    @AppStorage("selectedTransposition") private var selectedTransposition = 0
 
     private var tunerData: TunerData { tunerController.data }
 
     var body: some View {
         VStack(alignment: .noteCenter) {
+            HStack {
+                TranspositionMenu(selectedTransposition: $selectedTransposition)
+                    .padding()
+
+                Spacer()
+            }
+
+            Spacer()
+
             MatchedNoteView(
-                match: tunerData.closestNote,
+                match: tunerData.closestNote.inTransposition(ScaleNote.allCases[selectedTransposition]),
                 modifierPreference: modifierPreference
             )
             .onTapGesture {
                 modifierPreference = modifierPreference.toggled
             }
+
             MatchedNoteFrequency(frequency: tunerData.closestNote.frequency)
+
             NoteDistanceMarkers()
                 .overlay(
                     CurrentNoteMarker(
@@ -23,6 +35,8 @@ struct TunerView: View {
                         distance: tunerData.closestNote.distance
                     )
                 )
+
+            Spacer()
         }
         .onAppear(perform: tunerController.start)
         .onDisappear(perform: tunerController.stop)

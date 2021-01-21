@@ -3,15 +3,21 @@ import SwiftUI
 struct MatchedNoteView: View {
     let match: ScaleNote.Match
     let modifierPreference: ModifierPreference
+
+    // TODO: Find a way to animate color changes but not layout changes
+    private var color: Color {
+        match.distance.isPerceptible ? .red : .green
+    }
+
     var body: some View {
         HStack(alignment: .lastTextBaseline) {
-            MainNoteView(note: note)
+            MainNoteView(note: note, color: color)
             VStack(alignment: .leading) {
                 if let modifier = modifier {
                     Text(modifier)
                         // TODO: Avoid hardcoding size
                         .font(.system(size: 50, design: .rounded))
-                        .foregroundColor(.red)
+                        .foregroundColor(color)
                     Spacer()
                         .frame(height: 24) // TODO: Fix this with alignment guides
                 }

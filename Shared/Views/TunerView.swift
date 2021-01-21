@@ -20,7 +20,7 @@ struct TunerView: View {
                 .overlay(
                     CurrentNoteMarker(
                         frequency: tunerData.pitch,
-                        distanceInCents: tunerData.closestNote.distance.cents
+                        distance: tunerData.closestNote.distance
                     )
                 )
         }

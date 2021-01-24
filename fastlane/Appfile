@@ -1,0 +1,8 @@
+app_identifier("com.jpsim.ZenTuner") # The bundle identifier of your app
+apple_id("jp@jpsim.com") # Your Apple email address
+
+itc_team_id("120167501") # App Store Connect Team ID
+team_id("X4ST43AL9W") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

@@ -9,7 +9,7 @@ struct CurrentNoteMarker: View {
                 Rectangle()
                     .frame(width: 4, height: NoteTickSize.large.height)
                     .cornerRadius(4)
-                    .foregroundColor(distance.isPerceptible ? .red : .green)
+                    .foregroundColor(.red)
                 Text(frequency.localizedString())
                     .font(.caption)
                     .foregroundColor(.secondary)

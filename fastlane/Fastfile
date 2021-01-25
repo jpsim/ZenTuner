@@ -26,7 +26,7 @@ platform :ios do
     commit_version_bump
     add_git_tag
     push_to_git_remote
-    build_app(scheme: "ZenTuner")
+    build_app(scheme: "ZenTuner (iOS)")
     upload_to_testflight
   end
 end

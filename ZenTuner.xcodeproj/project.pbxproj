@@ -39,7 +39,18 @@
 		8FB571FF25B73ECF007C28BC /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
 		8FB5720025B73ECF007C28BC /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
 		8FB5720B25B7412B007C28BC /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8FB5720A25B7412B007C28BC /* AudioKit */; };
+		8FE56CDD25BE05D20038664C /* ZenTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE56CDC25BE05D20038664C /* ZenTunerTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8FE56CDF25BE05D20038664C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8FB571A525B72146007C28BC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8FB571B025B72147007C28BC;
+			remoteInfo = "ZenTuner (iOS)";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionMenu.swift; sourceTree = "<group>"; };
@@ -62,6 +73,9 @@
 		8FB571F225B73ECF007C28BC /* MatchedNoteFrequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchedNoteFrequency.swift; sourceTree = "<group>"; };
 		8FB571F325B73ECF007C28BC /* NoteDistanceMarkers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDistanceMarkers.swift; sourceTree = "<group>"; };
 		8FB571F425B73ECF007C28BC /* TunerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunerView.swift; sourceTree = "<group>"; };
+		8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZenTunerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FE56CDC25BE05D20038664C /* ZenTunerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZenTunerTests.swift; sourceTree = "<group>"; };
+		8FE56CDE25BE05D20038664C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +95,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8FE56CD725BE05D20038664C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -90,6 +111,7 @@
 				8FB571A925B72146007C28BC /* Shared */,
 				8FB571B325B72147007C28BC /* iOS */,
 				8FB571BA25B72147007C28BC /* macOS */,
+				8FE56CDB25BE05D20038664C /* ZenTunerTests */,
 				8FB571B225B72147007C28BC /* Products */,
 				8FB5720925B7412B007C28BC /* Frameworks */,
 			);
@@ -112,6 +134,7 @@
 			children = (
 				8FB571B125B72147007C28BC /* ZenTuner.app */,
 				8FB571B925B72147007C28BC /* ZenTuner.app */,
+				8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,6 +197,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8FE56CDB25BE05D20038664C /* ZenTunerTests */ = {
+			isa = PBXGroup;
+			children = (
+				8FE56CDC25BE05D20038664C /* ZenTunerTests.swift */,
+				8FE56CDE25BE05D20038664C /* Info.plist */,
+			);
+			path = ZenTunerTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -217,6 +249,24 @@
 			productReference = 8FB571B925B72147007C28BC /* ZenTuner.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8FE56CD925BE05D20038664C /* ZenTunerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8FE56CE325BE05D20038664C /* Build configuration list for PBXNativeTarget "ZenTunerTests" */;
+			buildPhases = (
+				8FE56CD625BE05D20038664C /* Sources */,
+				8FE56CD725BE05D20038664C /* Frameworks */,
+				8FE56CD825BE05D20038664C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8FE56CE025BE05D20038664C /* PBXTargetDependency */,
+			);
+			name = ZenTunerTests;
+			productName = ZenTunerTests;
+			productReference = 8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -231,6 +281,10 @@
 					};
 					8FB571B825B72147007C28BC = {
 						CreatedOnToolsVersion = 12.2;
+					};
+					8FE56CD925BE05D20038664C = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = 8FB571B025B72147007C28BC;
 					};
 				};
 			};
@@ -252,6 +306,7 @@
 			targets = (
 				8FB571B025B72147007C28BC /* ZenTuner (iOS) */,
 				8FB571B825B72147007C28BC /* ZenTuner (macOS) */,
+				8FE56CD925BE05D20038664C /* ZenTunerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -270,6 +325,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FB571C225B72147007C28BC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FE56CD825BE05D20038664C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,7 +380,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8FE56CD625BE05D20038664C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FE56CDD25BE05D20038664C /* ZenTunerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8FE56CE025BE05D20038664C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8FB571B025B72147007C28BC /* ZenTuner (iOS) */;
+			targetProxy = 8FE56CDF25BE05D20038664C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8FB571C325B72147007C28BC /* Debug */ = {
@@ -525,6 +603,51 @@
 			};
 			name = Release;
 		};
+		8FE56CE125BE05D20038664C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 865LEQR26C;
+				INFOPLIST_FILE = ZenTunerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.ZenTunerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZenTuner.app/ZenTuner";
+			};
+			name = Debug;
+		};
+		8FE56CE225BE05D20038664C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 865LEQR26C;
+				INFOPLIST_FILE = ZenTunerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.ZenTunerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZenTuner.app/ZenTuner";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -551,6 +674,15 @@
 			buildConfigurations = (
 				8FB571C925B72147007C28BC /* Debug */,
 				8FB571CA25B72147007C28BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8FE56CE325BE05D20038664C /* Build configuration list for PBXNativeTarget "ZenTunerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8FE56CE125BE05D20038664C /* Debug */,
+				8FE56CE225BE05D20038664C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

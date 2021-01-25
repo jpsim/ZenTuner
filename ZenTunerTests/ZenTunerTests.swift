@@ -1,8 +1,8 @@
-@testable import ZenTuner
 import XCTest
+@testable import ZenTuner
 
 class ZenTunerTests: XCTestCase {
-    func testBFlatTranspositions() throws {
+    func testBFlatTranspositions() {
         struct NoteAndOctave: Hashable {
             let note: ScaleNote
             let octave: Int
@@ -37,7 +37,7 @@ class ZenTunerTests: XCTestCase {
             .init(.ASharp_BFlat, 4):
                 .init(.C, 5),
             .init(.B, 4):
-                .init(.CSharp_DFlat, 5),
+                .init(.CSharp_DFlat, 5)
         ]
 
         for (input, transposition) in bFlatTranspositions {

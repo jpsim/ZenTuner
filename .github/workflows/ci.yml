@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Test
-        run: xcodebuild test -scheme "ZenTuner (iOS)" -destination platform="iOS Simulator,name=iPhone 12 Pro Max,OS=14.3"
+        run: xcodebuild test -scheme "ZenTuner_iOS" -destination platform="iOS Simulator,name=iPhone 12 Pro Max,OS=14.3"
   lint:
     runs-on: macos-latest
     env:

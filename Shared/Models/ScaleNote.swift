@@ -5,7 +5,7 @@ enum ScaleNote: Int, CaseIterable {
     case C, CSharp_DFlat, D, DSharp_EFlat, E, F, FSharp_GFlat, G, GSharp_AFlat, A, ASharp_BFlat, B
 
     /// A note match given an input frequency.
-    struct Match {
+    struct Match: Hashable {
         /// The matched note.
         let note: ScaleNote
         /// The octave of the matched note.
@@ -29,9 +29,10 @@ enum ScaleNote: Int, CaseIterable {
 
             let currentNoteIndex = note.rawValue
             let allNotes = ScaleNote.allCases
-            let transposedNoteIndex = (currentNoteIndex + transpositionDistanceFromC) % allNotes.count
+            let noteOffset = (allNotes.count - transpositionDistanceFromC) + currentNoteIndex
+            let transposedNoteIndex = noteOffset % allNotes.count
             let transposedNote = allNotes[transposedNoteIndex]
-            let octaveShift = (transposedNoteIndex < currentNoteIndex) ? -1 : 0
+            let octaveShift = (noteOffset > allNotes.count - 1) ? 1 : 0
             return ScaleNote.Match(
                 note: transposedNote,
                 octave: octave + octaveShift,

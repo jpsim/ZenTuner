@@ -6,7 +6,7 @@ struct Frequency: Equatable {
     private var measurement: Measurement<UnitFrequency>
 
     /// The distance between frequencies in cents: https://en.wikipedia.org/wiki/Cent_%28music%29
-    struct MusicalDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
+    struct MusicalDistance: Hashable, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
         /// Underlying float value. Between -50 and +50.
         let cents: Float
 

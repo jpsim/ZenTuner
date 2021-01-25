@@ -529,7 +529,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.ZenTuner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -553,7 +553,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.ZenTuner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -581,7 +581,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.ZenTuner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -607,7 +607,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.ZenTuner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -629,7 +629,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.ZenTunerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tunerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -653,7 +653,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.ZenTunerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tunerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;

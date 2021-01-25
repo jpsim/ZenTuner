@@ -1,4 +1,4 @@
-app_identifier("com.jpsim.ZenTuner") # The bundle identifier of your app
+app_identifier("com.jpsim.zen.tuner") # The bundle identifier of your app
 apple_id("jp@jpsim.com") # Your Apple email address
 
 itc_team_id("120167501") # App Store Connect Team ID

@@ -15,7 +15,7 @@ struct MatchedNoteView: View {
                     Spacer()
                         .frame(height: 24) // TODO: Fix this with alignment guides
                 }
-                Text("\(match.octave)")
+                Text(String(describing: match.octave))
                     // TODO: Avoid hardcoding size
                     .font(.system(size: 40, design: .rounded))
                     .foregroundColor(.secondary)

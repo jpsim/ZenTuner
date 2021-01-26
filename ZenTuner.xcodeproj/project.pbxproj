@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
+		8F8F67C525C093640024B4CB /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 8F8F67C425C093640024B4CB /* SnapshotTesting */; };
+		8F8F67CD25C0938F0024B4CB /* TunerViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */; };
 		8FB571BD25B72147007C28BC /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8FB571BE25B72147007C28BC /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8FB571C125B72147007C28BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FB571AC25B72147007C28BC /* Assets.xcassets */; };
@@ -39,7 +41,7 @@
 		8FB571FF25B73ECF007C28BC /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
 		8FB5720025B73ECF007C28BC /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
 		8FB5720B25B7412B007C28BC /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8FB5720A25B7412B007C28BC /* AudioKit */; };
-		8FE56CDD25BE05D20038664C /* ZenTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE56CDC25BE05D20038664C /* ZenTunerTests.swift */; };
+		8FE56CDD25BE05D20038664C /* TranspositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE56CDC25BE05D20038664C /* TranspositionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,7 @@
 
 /* Begin PBXFileReference section */
 		8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionMenu.swift; sourceTree = "<group>"; };
+		8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunerViewSnapshotTests.swift; sourceTree = "<group>"; };
 		8FB571AA25B72146007C28BC /* ZenTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZenTunerApp.swift; sourceTree = "<group>"; };
 		8FB571AC25B72147007C28BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8FB571B125B72147007C28BC /* ZenTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZenTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,7 +77,7 @@
 		8FB571F325B73ECF007C28BC /* NoteDistanceMarkers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDistanceMarkers.swift; sourceTree = "<group>"; };
 		8FB571F425B73ECF007C28BC /* TunerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunerView.swift; sourceTree = "<group>"; };
 		8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZenTunerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8FE56CDC25BE05D20038664C /* ZenTunerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZenTunerTests.swift; sourceTree = "<group>"; };
+		8FE56CDC25BE05D20038664C /* TranspositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionTests.swift; sourceTree = "<group>"; };
 		8FE56CDE25BE05D20038664C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F8F67C525C093640024B4CB /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +204,8 @@
 		8FE56CDB25BE05D20038664C /* ZenTunerTests */ = {
 			isa = PBXGroup;
 			children = (
-				8FE56CDC25BE05D20038664C /* ZenTunerTests.swift */,
+				8FE56CDC25BE05D20038664C /* TranspositionTests.swift */,
+				8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */,
 				8FE56CDE25BE05D20038664C /* Info.plist */,
 			);
 			path = ZenTunerTests;
@@ -263,6 +268,9 @@
 				8FE56CE025BE05D20038664C /* PBXTargetDependency */,
 			);
 			name = ZenTunerTests;
+			packageProductDependencies = (
+				8F8F67C425C093640024B4CB /* SnapshotTesting */,
+			);
 			productName = ZenTunerTests;
 			productReference = 8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -299,6 +307,7 @@
 			mainGroup = 8FB571A425B72146007C28BC;
 			packageReferences = (
 				8FB571CD25B7221D007C28BC /* XCRemoteSwiftPackageReference "AudioKit" */,
+				8F8F67C325C093640024B4CB /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			productRefGroup = 8FB571B225B72147007C28BC /* Products */;
 			projectDirPath = "";
@@ -384,7 +393,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8FE56CDD25BE05D20038664C /* ZenTunerTests.swift in Sources */,
+				8FE56CDD25BE05D20038664C /* TranspositionTests.swift in Sources */,
+				8F8F67CD25C0938F0024B4CB /* TunerViewSnapshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,6 +716,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8F8F67C325C093640024B4CB /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.2;
+			};
+		};
 		8FB571CD25B7221D007C28BC /* XCRemoteSwiftPackageReference "AudioKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/AudioKit";
@@ -717,6 +735,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8F8F67C425C093640024B4CB /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8F8F67C325C093640024B4CB /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
 		8FB571CE25B7221D007C28BC /* AudioKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8FB571CD25B7221D007C28BC /* XCRemoteSwiftPackageReference "AudioKit" */;

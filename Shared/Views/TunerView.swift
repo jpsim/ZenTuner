@@ -46,8 +46,7 @@ struct TunerView: View {
                 message: Text(
                     """
                     Please grant microphone access in the Settings app in the "Privacy ⇾ Microphone" section.
-                    """),
-                dismissButton: .default(Text("OK"))
+                    """)
             )
         }
     }

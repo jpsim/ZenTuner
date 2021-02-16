@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 // MARK: - Type Definition
 
@@ -13,6 +14,9 @@ struct Frequency: Equatable {
         /// Humans can distinguish a difference in pitch of about 5–6 cents:
         /// https://en.wikipedia.org/wiki/Cent_%28music%29#Human_perception
         var isPerceptible: Bool { fabsf(cents) > 5 }
+
+        /// Color used to represent this distance.
+        var color: Color { isPerceptible ? .red : .green }
 
         /// The distance in a full octave.
         static var octave: MusicalDistance { MusicalDistance(cents: 1200) }

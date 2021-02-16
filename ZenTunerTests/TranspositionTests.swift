@@ -1,7 +1,7 @@
 import XCTest
 @testable import ZenTuner
 
-class ZenTunerTests: XCTestCase {
+class TranspositionTests: XCTestCase {
     func testBFlatTranspositions() {
         struct NoteAndOctave: Hashable {
             let note: ScaleNote

@@ -50,7 +50,7 @@ private struct SnapshotDevice {
             SnapshotDevice(config: .iPadMini, fastlaneName: "ipad"),
             SnapshotDevice(config: .iPadPro10_5, fastlaneName: "ipad105"),
             SnapshotDevice(config: .iPadPro11, fastlaneName: "ipadPro11"),
-            SnapshotDevice(config: .iPadPro12_9, fastlaneName: "ipadPro129"),
+            SnapshotDevice(config: .iPadPro12_9, fastlaneName: "ipadPro129")
         ]
     }
 }

@@ -20,6 +20,9 @@ struct TranspositionMenu: View {
             },
             label: {
                 Text(transpositions[selectedTransposition])
+                    // Increase tap area, some of the transpositions are just a single
+                    // letter so the tap area can otherwise be quite small.
+                    .frame(minWidth: 100, alignment: .leading)
             }
         )
         .transaction { transaction in

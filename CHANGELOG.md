@@ -1,4 +1,4 @@
-## Main
+## 0.1.9
 
 * The current note and pitch marker now change to green when the note is
   in tune.

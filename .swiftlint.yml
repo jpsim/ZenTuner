@@ -70,7 +70,7 @@ opt_in_rules:
 
 identifier_name:
   excluded:
-    - id
+    # Notes
     - C
     - CSharp_DFlat
     - D
@@ -83,6 +83,9 @@ identifier_name:
     - A
     - ASharp_BFlat
     - B
+    # Other
+    - id
+    - to
 
 file_name:
   excluded:

@@ -7,13 +7,14 @@ struct MatchedNoteView: View {
     var body: some View {
         HStack(alignment: .lastTextBaseline) {
             MainNoteView(note: note)
-                .animatingColor(match.distance.color, animation: .easeInOut)
+                .animation(nil) // Don't animate text frame
+                .animatingPerceptibleForegroundColor(isPerceptible: match.distance.isPerceptible)
             VStack(alignment: .leading) {
                 if let modifier = modifier {
                     Text(modifier)
                         // TODO: Avoid hardcoding size
                         .font(.system(size: 50, design: .rounded))
-                        .animatingColor(match.distance.color, animation: .easeInOut)
+                        .animatingPerceptibleForegroundColor(isPerceptible: match.distance.isPerceptible)
                     Spacer()
                         .frame(height: 24) // TODO: Fix this with alignment guides
                 }
@@ -23,6 +24,7 @@ struct MatchedNoteView: View {
                     .foregroundColor(.secondary)
             }
         }
+        .animation(.easeInOut, value: match.distance.isPerceptible)
     }
 
     private var preferredName: String {
@@ -42,6 +44,13 @@ struct MatchedNoteView: View {
         return preferredName.count > 1 ?
             String(preferredName.suffix(1)) :
             nil
+    }
+}
+
+private extension View {
+    func animatingPerceptibleForegroundColor(isPerceptible: Bool) -> some View {
+        return self
+            .animatingForegroundColor(from: .green, to: .red, percentToColor: isPerceptible ? 1 : 0)
     }
 }
 

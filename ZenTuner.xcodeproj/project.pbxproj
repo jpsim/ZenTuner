@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F13E1B625ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
+		8F13E1B725ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F8F67C525C093640024B4CB /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 8F8F67C425C093640024B4CB /* SnapshotTesting */; };
@@ -42,8 +44,6 @@
 		8FB5720025B73ECF007C28BC /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
 		8FB5720B25B7412B007C28BC /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8FB5720A25B7412B007C28BC /* AudioKit */; };
 		8FE56CDD25BE05D20038664C /* TranspositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE56CDC25BE05D20038664C /* TranspositionTests.swift */; };
-		8FE8EE2B25DC53B300726823 /* AnimatableColorMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE8EE2A25DC53B300726823 /* AnimatableColorMask.swift */; };
-		8FE8EE2C25DC53B300726823 /* AnimatableColorMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE8EE2A25DC53B300726823 /* AnimatableColorMask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8F13E1B525ED345700C3F23D /* ColorAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimation.swift; sourceTree = "<group>"; };
 		8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionMenu.swift; sourceTree = "<group>"; };
 		8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunerViewSnapshotTests.swift; sourceTree = "<group>"; };
 		8FB571AA25B72146007C28BC /* ZenTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZenTunerApp.swift; sourceTree = "<group>"; };
@@ -81,7 +82,6 @@
 		8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZenTunerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FE56CDC25BE05D20038664C /* TranspositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionTests.swift; sourceTree = "<group>"; };
 		8FE56CDE25BE05D20038664C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8FE8EE2A25DC53B300726823 /* AnimatableColorMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableColorMask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,8 +192,8 @@
 			isa = PBXGroup;
 			children = (
 				8FB571DE25B73E9A007C28BC /* Alignment.swift */,
-				8FE8EE2A25DC53B300726823 /* AnimatableColorMask.swift */,
 				8FB571DD25B73E9A007C28BC /* TunerController.swift */,
+				8F13E1B525ED345700C3F23D /* ColorAnimation.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -356,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FB571E525B73E9A007C28BC /* TunerData.swift in Sources */,
+				8F13E1B625ED345700C3F23D /* ColorAnimation.swift in Sources */,
 				8FB571F525B73ECF007C28BC /* CurrentNoteMarker.swift in Sources */,
 				8FB571F925B73ECF007C28BC /* MatchedNoteView.swift in Sources */,
 				8FB571E925B73E9A007C28BC /* Alignment.swift in Sources */,
@@ -367,7 +368,6 @@
 				8FB571DF25B73E9A007C28BC /* ModifierPreference.swift in Sources */,
 				8FB571E725B73E9A007C28BC /* TunerController.swift in Sources */,
 				8FB571F725B73ECF007C28BC /* MainNoteView.swift in Sources */,
-				8FE8EE2B25DC53B300726823 /* AnimatableColorMask.swift in Sources */,
 				8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */,
 				8FB571FB25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */,
 			);
@@ -378,6 +378,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FB571E625B73E9A007C28BC /* TunerData.swift in Sources */,
+				8F13E1B725ED345700C3F23D /* ColorAnimation.swift in Sources */,
 				8FB571F625B73ECF007C28BC /* CurrentNoteMarker.swift in Sources */,
 				8FB571FA25B73ECF007C28BC /* MatchedNoteView.swift in Sources */,
 				8FB571EA25B73E9A007C28BC /* Alignment.swift in Sources */,
@@ -389,7 +390,6 @@
 				8FB571E025B73E9A007C28BC /* ModifierPreference.swift in Sources */,
 				8FB571E825B73E9A007C28BC /* TunerController.swift in Sources */,
 				8FB571F825B73ECF007C28BC /* MainNoteView.swift in Sources */,
-				8FE8EE2C25DC53B300726823 /* AnimatableColorMask.swift in Sources */,
 				8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */,
 				8FB571FC25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */,
 			);

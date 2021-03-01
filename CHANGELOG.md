@@ -1,5 +1,7 @@
 ## Next
 
+* Fix bug in tuning algorithm that would fail to accurately recognize a
+  sharp B or a flat C.
 * Fixed visual glitches when changing notes.
 
 ## 0.1.9

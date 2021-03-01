@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8F13E1B625ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F13E1B725ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
+		8F13E1C225ED533800C3F23D /* ClosestNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */; };
 		8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F8F67C525C093640024B4CB /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 8F8F67C425C093640024B4CB /* SnapshotTesting */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		8F13E1B525ED345700C3F23D /* ColorAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimation.swift; sourceTree = "<group>"; };
+		8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestNoteTests.swift; sourceTree = "<group>"; };
 		8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionMenu.swift; sourceTree = "<group>"; };
 		8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunerViewSnapshotTests.swift; sourceTree = "<group>"; };
 		8FB571AA25B72146007C28BC /* ZenTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZenTunerApp.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				8FE56CDC25BE05D20038664C /* TranspositionTests.swift */,
+				8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */,
 				8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */,
 				8FE56CDE25BE05D20038664C /* Info.plist */,
 			);
@@ -401,6 +404,7 @@
 			files = (
 				8FE56CDD25BE05D20038664C /* TranspositionTests.swift in Sources */,
 				8F8F67CD25C0938F0024B4CB /* TunerViewSnapshotTests.swift in Sources */,
+				8F13E1C225ED533800C3F23D /* ClosestNoteTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -64,11 +64,39 @@ enum ScaleNote: Int, CaseIterable {
                 fabsf(note2.frequency.distance(to: octaveShiftedFrequency).cents)
         })!
 
-        return Match(
+        let octave = max(octaveShiftedFrequency.distanceInOctaves(to: frequency), 0)
+
+        let fastResult = Match(
             note: closestNote,
-            octave: max(octaveShiftedFrequency.distanceInOctaves(to: frequency), 0),
+            octave: octave,
             distance: closestNote.frequency.distance(to: octaveShiftedFrequency)
         )
+
+        // Fast result can be incorrect at the scale boundary
+        guard fastResult.note == .C && fastResult.distance.isFlat ||
+                fastResult.note == .B && fastResult.distance.isSharp else
+        {
+            return fastResult
+        }
+
+        var match: Match?
+        for octave in [octave, octave + 1] {
+            for note in [ScaleNote.C, .B] {
+                let distance = note.frequency.shifted(byOctaves: octave).distance(to: frequency)
+                if let match = match, abs(distance.cents) > abs(match.distance.cents) {
+                    return match
+                } else {
+                    match = Match(
+                        note: note,
+                        octave: octave,
+                        distance: distance
+                    )
+                }
+            }
+        }
+
+        assertionFailure("Closest note could not be found")
+        return fastResult
     }
 
     /// The names for this note.
@@ -105,29 +133,29 @@ enum ScaleNote: Int, CaseIterable {
     var frequency: Frequency {
         switch self {
         case .C:
-            return 16.352
+            return 16.35160
         case .CSharp_DFlat:
-            return 17.324
+            return 17.32391
         case .D:
-            return 18.354
+            return 18.35405
         case .DSharp_EFlat:
-            return 19.445
+            return 19.44544
         case .E:
-            return 20.602
+            return 20.60172
         case .F:
-            return 21.827
+            return 21.82676
         case .FSharp_GFlat:
-            return 23.125
+            return 23.12465
         case .G:
-            return 24.5
+            return 24.49971
         case .GSharp_AFlat:
-            return 25.957
+            return 25.95654
         case .A:
             return 27.5
         case .ASharp_BFlat:
-            return 29.135
+            return 29.13524
         case .B:
-            return 30.868
+            return 30.86771
         }
     }
 }

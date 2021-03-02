@@ -16,13 +16,13 @@ class ClosestNoteTests: XCTestCase {
                 let slightlyFlat = ScaleNote.closestNote(to: justFrequency.adding(-12))
                 XCTAssertEqual(slightlyFlat.note, note)
                 XCTAssertEqual(slightlyFlat.octave, octave)
-                XCTAssertTrue(slightlyFlat.distance.cents < 0)
+                XCTAssertTrue(slightlyFlat.distance.isFlat)
                 XCTAssertTrue(slightlyFlat.distance.isPerceptible)
 
                 let slightlySharp = ScaleNote.closestNote(to: justFrequency.adding(12))
                 XCTAssertEqual(slightlySharp.note, note)
                 XCTAssertEqual(slightlySharp.octave, octave)
-                XCTAssertTrue(slightlySharp.distance.cents > 0)
+                XCTAssertTrue(slightlySharp.distance.isSharp)
                 XCTAssertTrue(slightlySharp.distance.isPerceptible)
             }
         }

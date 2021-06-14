@@ -1,11 +1,12 @@
+import MicrophonePitchDetector
 import SwiftUI
 
 struct TunerView: View {
-    @ObservedObject private var tunerController = TunerController()
+    @ObservedObject private var pitchDetector = MicrophonePitchDetector()
     @AppStorage("modifierPreference") private var modifierPreference = ModifierPreference.preferSharps
     @AppStorage("selectedTransposition") private var selectedTransposition = 0
 
-    private var tunerData: TunerData { tunerController.data }
+    private var tunerData: TunerData { TunerData(pitch: pitchDetector.pitch) }
 
     var body: some View {
         VStack(alignment: .noteCenter) {
@@ -38,9 +39,9 @@ struct TunerView: View {
 
             Spacer()
         }
-        .onAppear(perform: tunerController.start)
-        .onDisappear(perform: tunerController.stop)
-        .alert(isPresented: $tunerController.showMicrophoneAccessAlert) {
+        .onAppear(perform: pitchDetector.start)
+        .onDisappear(perform: pitchDetector.stop)
+        .alert(isPresented: $pitchDetector.showMicrophoneAccessAlert) {
             Alert(
                 title: Text("No microphone access"),
                 message: Text(

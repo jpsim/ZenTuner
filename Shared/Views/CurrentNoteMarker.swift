@@ -18,7 +18,7 @@ struct CurrentNoteMarker: View {
             .offset(
                 x: (geometry.size.width / 2) * CGFloat(distance.cents / 50)
             )
-            .animation(.easeInOut)
+            .animation(.easeInOut, value: distance.cents)
         }
     }
 }

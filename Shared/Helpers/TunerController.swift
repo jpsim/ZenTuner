@@ -1,5 +1,7 @@
 import AudioKit
+import AudioKitEX
 import AVFoundation
+import SoundpipeAudioKit
 import SwiftUI
 
 final class TunerController: ObservableObject {
@@ -16,7 +18,6 @@ final class TunerController: ObservableObject {
 
     func start() {
         guard hasMicrophoneAccess else { return }
-        Settings.audioInputEnabled = true
         do {
             try engine.start()
             tracker.start()
@@ -28,7 +29,6 @@ final class TunerController: ObservableObject {
     func stop() {
         guard hasMicrophoneAccess else { return }
         engine.stop()
-        Settings.audioInputEnabled = false
     }
 
     // MARK: - Private

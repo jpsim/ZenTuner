@@ -45,6 +45,8 @@
 		8FB5720025B73ECF007C28BC /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
 		8FB5720B25B7412B007C28BC /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8FB5720A25B7412B007C28BC /* AudioKit */; };
 		8FE56CDD25BE05D20038664C /* TranspositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE56CDC25BE05D20038664C /* TranspositionTests.swift */; };
+		8FFDA58926779221008EB787 /* SoundpipeAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8FFDA58826779221008EB787 /* SoundpipeAudioKit */; };
+		8FFDA58B267799C9008EB787 /* SoundpipeAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8FFDA58A267799C9008EB787 /* SoundpipeAudioKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FFDA58926779221008EB787 /* SoundpipeAudioKit in Frameworks */,
 				8FB571CF25B7221D007C28BC /* AudioKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FFDA58B267799C9008EB787 /* SoundpipeAudioKit in Frameworks */,
 				8FB5720B25B7412B007C28BC /* AudioKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,6 +240,7 @@
 			name = "ZenTuner (iOS)";
 			packageProductDependencies = (
 				8FB571CE25B7221D007C28BC /* AudioKit */,
+				8FFDA58826779221008EB787 /* SoundpipeAudioKit */,
 			);
 			productName = "ZenTuner (iOS)";
 			productReference = 8FB571B125B72147007C28BC /* ZenTuner.app */;
@@ -256,6 +261,7 @@
 			name = "ZenTuner (macOS)";
 			packageProductDependencies = (
 				8FB5720A25B7412B007C28BC /* AudioKit */,
+				8FFDA58A267799C9008EB787 /* SoundpipeAudioKit */,
 			);
 			productName = "ZenTuner (macOS)";
 			productReference = 8FB571B925B72147007C28BC /* ZenTuner.app */;
@@ -315,6 +321,7 @@
 			packageReferences = (
 				8FB571CD25B7221D007C28BC /* XCRemoteSwiftPackageReference "AudioKit" */,
 				8F8F67C325C093640024B4CB /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				8FFDA58726779221008EB787 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */,
 			);
 			productRefGroup = 8FB571B225B72147007C28BC /* Products */;
 			projectDirPath = "";
@@ -738,8 +745,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/AudioKit";
 			requirement = {
-				branch = "v5-main";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
+		8FFDA58726779221008EB787 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/SoundpipeAudioKit";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -759,6 +774,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8FB571CD25B7221D007C28BC /* XCRemoteSwiftPackageReference "AudioKit" */;
 			productName = AudioKit;
+		};
+		8FFDA58826779221008EB787 /* SoundpipeAudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FFDA58726779221008EB787 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */;
+			productName = SoundpipeAudioKit;
+		};
+		8FFDA58A267799C9008EB787 /* SoundpipeAudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FFDA58726779221008EB787 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */;
+			productName = SoundpipeAudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

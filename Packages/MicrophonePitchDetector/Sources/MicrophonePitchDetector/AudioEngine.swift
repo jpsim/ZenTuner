@@ -9,7 +9,9 @@ extension AVAudioNode {
 
         var newConnections: [AVAudioNode: [AVAudioConnectionPoint]] = [:]
         for bus in 0 ..< numberOfInputs {
-            if let cp = engine.inputConnectionPoint(for: self, inputBus: bus), cp.node === input {
+            if let connectionPoint = engine.inputConnectionPoint(for: self, inputBus: bus),
+               connectionPoint.node === input
+            {
                 let points = engine.outputConnectionPoints(for: input, outputBus: 0)
                 newConnections[input] = points.filter { $0.node != self }
             }
@@ -80,7 +82,8 @@ final class AudioEngine {
     var input: InputNode? {
         if #available(macOS 10.14, *) {
             guard Bundle.main.object(forInfoDictionaryKey: "NSMicrophoneUsageDescription") != nil else {
-                Log("To use the microphone, you must include the NSMicrophoneUsageDescription in your Info.plist", type: .error)
+                Log("To use the microphone, you must include the NSMicrophoneUsageDescription in your Info.plist",
+                    type: .error)
                 return nil
             }
         }

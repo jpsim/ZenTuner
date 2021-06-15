@@ -7,11 +7,11 @@ let package = Package(
     name: "MicrophonePitchDetector",
     platforms: [.macOS(.v11), .iOS(.v14)],
     products: [
-        .library(name: "MicrophonePitchDetector", targets: ["MicrophonePitchDetector"]),
+        .library(name: "MicrophonePitchDetector", targets: ["MicrophonePitchDetector"])
     ],
     targets: [
         .target(name: "MicrophonePitchDetector", dependencies: ["CMicrophonePitchDetector"]),
-        .target(name: "CMicrophonePitchDetector"),
+        .target(name: "CMicrophonePitchDetector")
     ],
     cxxLanguageStandard: .cxx14
 )

@@ -10,7 +10,7 @@ final class PitchTap {
     private(set) var bufferSize: UInt32
 
     /// Tells whether the node is processing (ie. started, playing, or active)
-    private(set) var isStarted: Bool = false
+    private(set) var isStarted = false
 
     /// The bus to install the tap onto
     var bus: Int = 0 {
@@ -111,6 +111,7 @@ final class PitchTap {
     }
 
     private var unfairLock = os_unfair_lock_s()
+
     func lock() {
         os_unfair_lock_lock(&unfairLock)
     }
@@ -152,8 +153,8 @@ final class PitchTap {
         removeTap()
         isStarted = false
         unlock()
-        for i in 0 ..< pitch.count {
-            pitch[i] = 0.0
+        for idx in 0 ..< pitch.count {
+            pitch[idx] = 0.0
         }
     }
 
@@ -170,17 +171,16 @@ final class PitchTap {
             self.pitch.append(0)
         }
 
-        // n is the channel
-        for n in 0 ..< channelCount {
-            let data = floatData[n]
+        for channel in 0 ..< channelCount {
+            let data = floatData[channel]
 
-            ztPitchTrackerAnalyze(self.trackers[n], data, UInt32(length))
+            ztPitchTrackerAnalyze(self.trackers[channel], data, UInt32(length))
 
-            var a: Float = 0
-            var f: Float = 0
-            ztPitchTrackerGetResults(self.trackers[n], &a, &f)
-            self.amp[n] = a
-            self.pitch[n] = f
+            var amp: Float = 0
+            var pitch: Float = 0
+            ztPitchTrackerGetResults(self.trackers[channel], &amp, &pitch)
+            self.amp[channel] = amp
+            self.pitch[channel] = pitch
         }
         self.handler(self.pitch, self.amp)
     }

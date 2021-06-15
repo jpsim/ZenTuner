@@ -8,7 +8,7 @@ class Mixer: Node {
     fileprivate let mixerAU = AVAudioMixerNode()
 
     var inputs: [Node] = []
-    
+
     /// Connected nodes
     var connections: [Node] { inputs }
 

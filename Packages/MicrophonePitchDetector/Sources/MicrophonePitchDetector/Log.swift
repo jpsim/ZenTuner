@@ -19,7 +19,7 @@ private extension OSLog {
 ///     - line: Line number of the log method, should  not be set explicitly
 ///
 @inline(__always)
-func Log(_ items: Any?...,
+func Log(_ items: Any?..., // swiftlint:disable:this identifier_name
          type: OSLogType = .info,
          file: String = #file,
          function: String = #function,

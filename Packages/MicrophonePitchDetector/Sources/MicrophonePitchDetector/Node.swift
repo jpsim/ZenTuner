@@ -24,7 +24,7 @@ extension Node {
     func disconnectAV() {
         if let engine = avAudioNode.engine {
             engine.disconnectNodeInput(avAudioNode)
-            for (_, connection) in connections.enumerated() {
+            for connection in connections {
                 connection.disconnectAV()
             }
         }
@@ -73,7 +73,7 @@ extension Node {
         get { avAudioNode.auAudioUnit.shouldBypassEffect }
         set { avAudioNode.auAudioUnit.shouldBypassEffect = newValue }
     }
-    
+
     /// Start the node
     func start() { bypassed = false }
     /// Stop the node

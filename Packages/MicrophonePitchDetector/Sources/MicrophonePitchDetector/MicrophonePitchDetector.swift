@@ -1,22 +1,19 @@
-import AudioKit
-import AudioKitEX
 import AVFoundation
-import SoundpipeAudioKit
 import SwiftUI
 
-final class TunerController: ObservableObject {
+public final class MicrophonePitchDetector: ObservableObject {
     private let engine = AudioEngine()
     private var hasMicrophoneAccess = false
     private var tracker: PitchTap!
 
-    @Published var data = TunerData()
-    @Published var showMicrophoneAccessAlert = false
+    @Published public var pitch: Float = 440
+    @Published public var showMicrophoneAccessAlert = false
 
-    init() {
+    public init() {
         self.checkMicrophoneAuthorizationStatus()
     }
 
-    func start() {
+    public func start() {
         guard hasMicrophoneAccess else { return }
         do {
             try engine.start()
@@ -26,7 +23,7 @@ final class TunerController: ObservableObject {
         }
     }
 
-    func stop() {
+    public func stop() {
         guard hasMicrophoneAccess else { return }
         engine.stop()
     }
@@ -61,12 +58,9 @@ final class TunerController: ObservableObject {
     }
 
     private func setUpAudioSession() {
-        Settings.bufferLength = .short
-
 #if os(iOS)
         do {
             let session = AVAudioSession.sharedInstance()
-            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
             try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers])
             try session.setActive(true)
         } catch {
@@ -74,12 +68,12 @@ final class TunerController: ObservableObject {
         }
 #endif
 
-        let input = engine.input!
-        engine.output = Fader(Mixer(input), gain: 0)
-        tracker = PitchTap(input) { pitch, amplitude in
+        engine.output = Mixer()
+        // TODO: Bang
+        tracker = PitchTap(engine.input!) { pitch, amplitude in
             if amplitude[0] > 0.1 {
                 DispatchQueue.main.async {
-                    self.data = TunerData(pitch: pitch[0], amplitude: amplitude[0])
+                    self.pitch = pitch[0]
                 }
             }
         }

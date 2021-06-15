@@ -2,34 +2,7 @@
   "object": {
     "pins": [
       {
-        "package": "AudioKit",
-        "repositoryURL": "https://github.com/AudioKit/AudioKit",
-        "state": {
-          "branch": null,
-          "revision": "4c3f5ef1b7d758609c7cfbc2d1f631fc45da04d1",
-          "version": "5.2.0"
-        }
-      },
-      {
-        "package": "KissFFT",
-        "repositoryURL": "https://github.com/AudioKit/KissFFT",
-        "state": {
-          "branch": null,
-          "revision": "dd0636e151724b8ba2e0908eba4d99a6ff24d00c",
-          "version": "1.0.0"
-        }
-      },
-      {
-        "package": "SoundpipeAudioKit",
-        "repositoryURL": "https://github.com/AudioKit/SoundpipeAudioKit",
-        "state": {
-          "branch": null,
-          "revision": "8ab8858f2b3e8127c27ce1db978e026c9ee99c25",
-          "version": "5.2.0"
-        }
-      },
-      {
-        "package": "swift-snapshot-testing",
+        "package": "SnapshotTesting",
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing",
         "state": {
           "branch": null,

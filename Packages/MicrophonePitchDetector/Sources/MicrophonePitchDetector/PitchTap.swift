@@ -6,14 +6,16 @@ import CMicrophonePitchDetector
 /// Tap to do pitch tracking on any node.
 /// start() will add the tap, and stop() will remove it.
 final class PitchTap {
+    // MARK: - Properties
+
     /// Size of buffer to analyze
-    private(set) var bufferSize: UInt32
+    private var bufferSize: UInt32 { 4_096 }
 
     /// Tells whether the node is processing (ie. started, playing, or active)
-    private(set) var isStarted = false
+    private var isStarted = false
 
     /// The bus to install the tap onto
-    var bus: Int = 0 {
+    private var bus: Int = 0 {
         didSet {
             if isStarted {
                 stop()
@@ -22,30 +24,19 @@ final class PitchTap {
         }
     }
 
-    private var _input: Node
-
     /// Input node to analyze
-    var input: Node {
-        get {
-            return _input
-        }
-        set {
-            guard newValue !== _input else { return }
-            let wasStarted = isStarted
+    private let input: Node
 
-            // if the input changes while it's on, stop and start the tap
-            if wasStarted {
-                stop()
-            }
+    private var pitch: [Float] = [0, 0]
+    private var amp: [Float] = [0, 0]
+    private var trackers: [PitchTrackerRef] = []
+    private var unfairLock = os_unfair_lock_s()
 
-            _input = newValue
+    /// Callback type
+    typealias Handler = ([Float], [Float]) -> Void
+    private var handler: Handler = { _, _ in }
 
-            // if the input changes while it's on, stop and start the tap
-            if wasStarted {
-                start()
-            }
-        }
-    }
+    // MARK: - Starting & Stopping
 
     /// Enable the tap on input
     func start() {
@@ -62,89 +53,10 @@ final class PitchTap {
         // was installed on the same bus as our bus var.
         removeTap()
 
-        // just double check this here
-        guard input.avAudioNode.engine != nil else {
-            Log("The tapped node isn't attached to the engine")
-            return
-        }
-
-        input.avAudioNode.installTap(onBus: bus,
-                                     bufferSize: bufferSize,
-                                     format: nil,
-                                     block: handleTapBlock(buffer:at:))
-    }
-
-    /// Overide this method to handle Tap in derived class
-    /// - Parameters:
-    ///   - buffer: Buffer to analyze
-    ///   - time: Unused in this case
-    private func handleTapBlock(buffer: AVAudioPCMBuffer, at time: AVAudioTime) {
-        // Call on the main thread so the client doesn't have to worry
-        // about thread safety.
-        buffer.frameLength = bufferSize
-        DispatchQueue.main.async {
-            // Create trackers as needed.
-            self.lock()
-            guard self.isStarted == true else {
-                self.unlock()
-                return
+        input.avAudioNode
+            .installTap(onBus: bus, bufferSize: bufferSize, format: nil) { [weak self] buffer, _ in
+                self?.handleTapBlock(buffer: buffer)
             }
-            self.doHandleTapBlock(buffer: buffer, at: time)
-            self.unlock()
-        }
-    }
-
-    private func removeTap() {
-        guard input.avAudioNode.engine != nil else {
-            Log("The tapped node isn't attached to the engine")
-            return
-        }
-        input.avAudioNode.removeTap(onBus: bus)
-    }
-
-    /// remove the tap and nil out the input reference
-    /// this is important in regard to retain cycles on your input node
-    func dispose() {
-        if isStarted {
-            stop()
-        }
-    }
-
-    private var unfairLock = os_unfair_lock_s()
-
-    func lock() {
-        os_unfair_lock_lock(&unfairLock)
-    }
-
-    func unlock() {
-        os_unfair_lock_unlock(&unfairLock)
-    }
-
-    private var pitch: [Float] = [0, 0]
-    private var amp: [Float] = [0, 0]
-    private var trackers: [PitchTrackerRef] = []
-
-    /// Callback type
-    typealias Handler = ([Float], [Float]) -> Void
-
-    private var handler: Handler = { _, _ in }
-
-    /// Initialize the pitch tap
-    ///
-    /// - Parameters:
-    ///   - input: Node to analyze
-    ///   - bufferSize: Size of buffer to analyze
-    ///   - handler: Callback to call on each analysis pass
-    init(_ input: Node, bufferSize: UInt32 = 4_096, handler: @escaping Handler) {
-        self.handler = handler
-        self.bufferSize = bufferSize
-        self._input = input
-    }
-
-    deinit {
-        for tracker in trackers {
-            ztPitchTrackerDestroy(tracker)
-        }
     }
 
     /// Stop detecting pitch
@@ -158,7 +70,59 @@ final class PitchTap {
         }
     }
 
-    func doHandleTapBlock(buffer: AVAudioPCMBuffer, at time: AVAudioTime) {
+    // MARK: - Lifecycle
+
+    /// Initialize the pitch tap
+    ///
+    /// - Parameters:
+    ///   - input: Node to analyze
+    ///   - handler: Callback to call on each analysis pass
+    init(_ input: Node, handler: @escaping Handler) {
+        self.input = input
+        self.handler = handler
+    }
+
+    deinit {
+        for tracker in trackers {
+            ztPitchTrackerDestroy(tracker)
+        }
+    }
+
+    // MARK: - Private
+
+    /// Handle new buffer data
+    /// - Parameters:
+    ///   - buffer: Buffer to analyze
+    ///   - time: Unused in this case
+    private func handleTapBlock(buffer: AVAudioPCMBuffer) {
+        // Call on the main thread so the client doesn't have to worry
+        // about thread safety.
+        buffer.frameLength = bufferSize
+        DispatchQueue.main.async {
+            // Create trackers as needed.
+            self.lock()
+            guard self.isStarted == true else {
+                self.unlock()
+                return
+            }
+            self.analyzePitch(buffer: buffer)
+            self.unlock()
+        }
+    }
+
+    private func removeTap() {
+        input.avAudioNode.removeTap(onBus: bus)
+    }
+
+    private func lock() {
+        os_unfair_lock_lock(&unfairLock)
+    }
+
+    private func unlock() {
+        os_unfair_lock_unlock(&unfairLock)
+    }
+
+    private func analyzePitch(buffer: AVAudioPCMBuffer) {
         guard let floatData = buffer.floatChannelData else { return }
         let channelCount = Int(buffer.format.channelCount)
         let length = UInt(buffer.frameLength)

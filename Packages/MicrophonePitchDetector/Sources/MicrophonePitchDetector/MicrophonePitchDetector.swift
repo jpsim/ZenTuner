@@ -19,7 +19,7 @@ public final class MicrophonePitchDetector: ObservableObject {
             try engine.start()
             tracker.start()
         } catch {
-            Log(error)
+            // TODO: Handle error
         }
     }
 
@@ -61,16 +61,13 @@ public final class MicrophonePitchDetector: ObservableObject {
 #if os(iOS)
         do {
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers])
             try session.setActive(true)
         } catch {
-            Log(error)
+            // TODO: Handle error
         }
 #endif
 
-        engine.output = Mixer()
-        // TODO: Bang
-        tracker = PitchTap(engine.input!) { pitch, amplitude in
+        tracker = PitchTap(engine.input) { pitch, amplitude in
             if amplitude[0] > 0.1 {
                 DispatchQueue.main.async {
                     self.pitch = pitch[0]

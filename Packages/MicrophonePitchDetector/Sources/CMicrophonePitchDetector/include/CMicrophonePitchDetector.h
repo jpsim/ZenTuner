@@ -9,6 +9,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdio.h>
+#include "PitchTracker.h"
 
 #ifndef ZTFLOAT
 #define ZTFLOAT float

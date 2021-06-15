@@ -89,7 +89,6 @@ identifier_name:
 file_name:
   excluded:
     - Alignment.swift
-    - Log.swift
 
 large_tuple:
   warning: 3

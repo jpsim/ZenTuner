@@ -1,6 +1,6 @@
-## Next
+## 0.2.0
 
-* None.
+* Released on the Mac App Store.
 
 ## 0.1.10
 

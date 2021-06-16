@@ -110,14 +110,8 @@ extension Frequency {
     mutating func shift(byOctaves octaves: Int) {
         if octaves == 0 {
             return
-        } else if octaves > 0 {
-            for _ in 0..<octaves {
-                measurement.value *= 2
-            }
         } else {
-            for _ in 0..<(-octaves) {
-                measurement.value /= 2
-            }
+            measurement.value *= pow(2.0, Double(octaves))
         }
     }
 

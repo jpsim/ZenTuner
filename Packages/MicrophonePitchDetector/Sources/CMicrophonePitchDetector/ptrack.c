@@ -28,7 +28,6 @@
 #define DBOFFSET -92.3
 #define MINBIN 3
 #define MINAMPS 40
-#define MAXAMPS 50
 
 #define THRSH 10.
 
@@ -160,10 +159,8 @@ int zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks)
     p->sr = sp->sr;
     for (i = 0; i < NPREV; i++) p->dbs[i] = -144.0;
     p->amplo = MINAMPS;
-    p->amphi = MAXAMPS;
     p->npartial = 7;
     p->dbfs = 32768.0;
-    p->prevf = p->cps = 100.0;
 
     return ZT_OK;
 }

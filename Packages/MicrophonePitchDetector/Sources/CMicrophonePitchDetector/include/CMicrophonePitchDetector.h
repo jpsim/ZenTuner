@@ -17,19 +17,16 @@ extern "C" {
 #define ZT_OK 1
 #define ZT_NOT_OK 0
 
-typedef struct zt_auxdata {
+typedef struct {
     size_t size;
     void *ptr;
 } zt_auxdata;
 
-typedef struct zt_data {
+typedef struct {
     ZTFLOAT *out;
     int sr;
-    int nchan;
     unsigned long len;
     unsigned long pos;
-    char filename[200];
-    uint32_t rand;
 } zt_data;
 
 int zt_auxdata_alloc(zt_auxdata *aux, size_t size);
@@ -51,7 +48,7 @@ void zt_fft_destroy(zt_fft *fft);
 
 typedef struct {
     ZTFLOAT freq, amp;
-    ZTFLOAT asig,size,peak;
+    ZTFLOAT size;
     zt_auxdata signal, prev, sin, spec1, spec2, peakarray;
     int numpks;
     int cnt;
@@ -61,10 +58,8 @@ typedef struct {
     ZTFLOAT cps;
     ZTFLOAT dbs[20];
     ZTFLOAT amplo;
-    ZTFLOAT amphi;
     ZTFLOAT npartial;
     ZTFLOAT dbfs;
-    ZTFLOAT prevf;
     zt_fft fft;
 } zt_ptrack;
 

@@ -10,7 +10,6 @@ struct PitchTracker {
     PitchTracker(size_t sampleRate, int hopSize, int peakCount) {
         zt_create(&sp);
         sp->sr = (int)sampleRate;
-        sp->nchan = 1;
 
         zt_ptrack_create(&ptrack);
         zt_ptrack_init(sp, ptrack, hopSize, peakCount);

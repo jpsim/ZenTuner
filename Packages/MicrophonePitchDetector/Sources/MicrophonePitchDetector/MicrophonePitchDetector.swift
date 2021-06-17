@@ -35,11 +35,11 @@ public final class MicrophonePitchDetector: ObservableObject {
 
         switch AVCaptureDevice.authorizationStatus(for: .audio) {
         case .authorized: // The user has previously granted access to the microphone.
-            self.setUpAudioSession()
+            self.setUpPitchTracking()
         case .notDetermined: // The user has not yet been asked for microphone access.
             AVCaptureDevice.requestAccess(for: .audio) { granted in
                 if granted {
-                    self.setUpAudioSession()
+                    self.setUpPitchTracking()
                 } else {
                     self.showMicrophoneAccessAlert = true
                     return
@@ -57,21 +57,10 @@ public final class MicrophonePitchDetector: ObservableObject {
         }
     }
 
-    private func setUpAudioSession() {
-#if os(iOS)
-        do {
-            let session = AVAudioSession.sharedInstance()
-            try session.setActive(true)
-        } catch {
-            // TODO: Handle error
-        }
-#endif
-
-        tracker = PitchTap(engine.input) { pitch, amplitude in
-            if amplitude[0] > 0.1 {
-                DispatchQueue.main.async {
-                    self.pitch = pitch[0]
-                }
+    private func setUpPitchTracking() {
+        tracker = PitchTap(engine.input) { pitch in
+            DispatchQueue.main.async {
+                self.pitch = pitch
             }
         }
 

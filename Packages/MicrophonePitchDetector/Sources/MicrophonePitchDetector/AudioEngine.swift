@@ -120,14 +120,6 @@ final class AudioEngine {
         mainMixerNode = mixer
         mixer.silenceOutput()
     }
-
-    private func removeEngineMixer() {
-        guard let mixer = mainMixerNode else { return }
-        avEngine.outputNode.disconnect(input: mixer.avAudioNode)
-        mixer.removeAllInputs()
-        mixer.detach()
-        mainMixerNode = nil
-    }
 }
 
 private extension AVAudioFormat {

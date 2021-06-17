@@ -9,15 +9,12 @@ int zt_create(zt_data **spp)
 {
     *spp = (zt_data *) malloc(sizeof(zt_data));
     zt_data *sp = *spp;
-    sprintf(sp->filename, "");
-    sp->nchan = 1;
-    ZTFLOAT *out = malloc(sizeof(ZTFLOAT) * sp->nchan);
+    ZTFLOAT *out = malloc(sizeof(ZTFLOAT));
     *out = 0;
     sp->out = out;
     sp->sr = 44100;
     sp->len = 5 * sp->sr;
     sp->pos = 0;
-    sp->rand = 0;
     return 0;
 }
 

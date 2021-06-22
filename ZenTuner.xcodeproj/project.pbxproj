@@ -10,10 +10,26 @@
 		8F13E1B625ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F13E1B725ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F13E1C225ED533800C3F23D /* ClosestNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */; };
+		8F3ECD042682821E00415B9F /* Zen Tuner WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8F3ECD1F2682834700415B9F /* ModifierPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D825B73E9A007C28BC /* ModifierPreference.swift */; };
+		8F3ECD202682834700415B9F /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DB25B73E9A007C28BC /* TunerData.swift */; };
+		8F3ECD212682834700415B9F /* Frequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D925B73E9A007C28BC /* Frequency.swift */; };
+		8F3ECD222682834700415B9F /* ScaleNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DA25B73E9A007C28BC /* ScaleNote.swift */; };
+		8F3ECD232682837800415B9F /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DE25B73E9A007C28BC /* Alignment.swift */; };
+		8F3ECD252682838D00415B9F /* NoteDistanceMarkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F325B73ECF007C28BC /* NoteDistanceMarkers.swift */; };
+		8F3ECD262682838D00415B9F /* MatchedNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F125B73ECE007C28BC /* MatchedNoteView.swift */; };
+		8F3ECD272682838D00415B9F /* CurrentNoteMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571EF25B73ECE007C28BC /* CurrentNoteMarker.swift */; };
+		8F3ECD282682838D00415B9F /* MainNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F025B73ECE007C28BC /* MainNoteView.swift */; };
+		8F3ECD292682838D00415B9F /* MatchedNoteFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F225B73ECF007C28BC /* MatchedNoteFrequency.swift */; };
+		8F3ECD2A2682838D00415B9F /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
+		8F3ECD2B2682843400415B9F /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
+		8F3ECD2C268284AC00415B9F /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
+		8F3ECD2E268287AA00415B9F /* MicrophonePitchDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 8F3ECD2D268287AA00415B9F /* MicrophonePitchDetector */; };
 		8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F8F67C525C093640024B4CB /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 8F8F67C425C093640024B4CB /* SnapshotTesting */; };
 		8F8F67CD25C0938F0024B4CB /* TunerViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */; };
+		8FABB9102683AAD000A7D824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FB571AC25B72147007C28BC /* Assets.xcassets */; };
 		8FB571BD25B72147007C28BC /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8FB571BE25B72147007C28BC /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8FB571C125B72147007C28BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FB571AC25B72147007C28BC /* Assets.xcassets */; };
@@ -46,6 +62,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8F3ECD052682821E00415B9F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8FB571A525B72146007C28BC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8F3ECD022682821E00415B9F;
+			remoteInfo = "Zen Tuner WatchKit Extension";
+		};
 		8FE56CDF25BE05D20038664C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8FB571A525B72146007C28BC /* Project object */;
@@ -55,9 +78,27 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		8F3ECD192682822100415B9F /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8F3ECD042682821E00415B9F /* Zen Tuner WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		8F13E1B525ED345700C3F23D /* ColorAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimation.swift; sourceTree = "<group>"; };
 		8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestNoteTests.swift; sourceTree = "<group>"; };
+		8F3ECCF82682821900415B9F /* Zen Tuner WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zen Tuner WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Zen Tuner WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F3ECD132682822100415B9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8F3ECD2F26828B3400415B9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionMenu.swift; sourceTree = "<group>"; };
 		8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunerViewSnapshotTests.swift; sourceTree = "<group>"; };
 		8FB571AA25B72146007C28BC /* ZenTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZenTunerApp.swift; sourceTree = "<group>"; };
@@ -85,6 +126,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8F3ECD002682821E00415B9F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F3ECD2E268287AA00415B9F /* MicrophonePitchDetector in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FB571AE25B72147007C28BC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -112,6 +161,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8F3ECCFC2682821900415B9F /* Zen Tuner WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				8F3ECD2F26828B3400415B9F /* Info.plist */,
+			);
+			path = "Zen Tuner WatchKit App";
+			sourceTree = "<group>";
+		};
+		8F3ECD072682821E00415B9F /* Zen Tuner WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				8F3ECD132682822100415B9F /* Info.plist */,
+			);
+			path = "Zen Tuner WatchKit Extension";
+			sourceTree = "<group>";
+		};
 		8F8B37602678069400BC3568 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +193,8 @@
 				8FB571B325B72147007C28BC /* iOS */,
 				8FB571BA25B72147007C28BC /* macOS */,
 				8FE56CDB25BE05D20038664C /* ZenTunerTests */,
+				8F3ECCFC2682821900415B9F /* Zen Tuner WatchKit App */,
+				8F3ECD072682821E00415B9F /* Zen Tuner WatchKit Extension */,
 				8FB571B225B72147007C28BC /* Products */,
 				8FB5720925B7412B007C28BC /* Frameworks */,
 			);
@@ -151,6 +218,8 @@
 				8FB571B125B72147007C28BC /* ZenTuner.app */,
 				8FB571B925B72147007C28BC /* ZenTuner.app */,
 				8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */,
+				8F3ECCF82682821900415B9F /* Zen Tuner WatchKit App.app */,
+				8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -227,6 +296,43 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8F3ECCF72682821900415B9F /* Zen Tuner WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F3ECD1D2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner WatchKit App" */;
+			buildPhases = (
+				8F3ECCF62682821900415B9F /* Resources */,
+				8F3ECD192682822100415B9F /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8F3ECD062682821E00415B9F /* PBXTargetDependency */,
+			);
+			name = "Zen Tuner WatchKit App";
+			productName = "Zen Tuner WatchKit App";
+			productReference = 8F3ECCF82682821900415B9F /* Zen Tuner WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		8F3ECD022682821E00415B9F /* Zen Tuner WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F3ECD1C2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner WatchKit Extension" */;
+			buildPhases = (
+				8F3ECCFF2682821E00415B9F /* Sources */,
+				8F3ECD002682821E00415B9F /* Frameworks */,
+				8F3ECD012682821E00415B9F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Zen Tuner WatchKit Extension";
+			packageProductDependencies = (
+				8F3ECD2D268287AA00415B9F /* MicrophonePitchDetector */,
+			);
+			productName = "Zen Tuner WatchKit Extension";
+			productReference = 8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		8FB571B025B72147007C28BC /* ZenTuner (iOS) */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "ZenTuner (iOS)" */;
@@ -294,9 +400,15 @@
 		8FB571A525B72146007C28BC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
+					8F3ECCF72682821900415B9F = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					8F3ECD022682821E00415B9F = {
+						CreatedOnToolsVersion = 13.0;
+					};
 					8FB571B025B72147007C28BC = {
 						CreatedOnToolsVersion = 12.2;
 					};
@@ -328,11 +440,28 @@
 				8FB571B025B72147007C28BC /* ZenTuner (iOS) */,
 				8FB571B825B72147007C28BC /* ZenTuner (macOS) */,
 				8FE56CD925BE05D20038664C /* ZenTunerTests */,
+				8F3ECCF72682821900415B9F /* Zen Tuner WatchKit App */,
+				8F3ECD022682821E00415B9F /* Zen Tuner WatchKit Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8F3ECCF62682821900415B9F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FABB9102683AAD000A7D824 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8F3ECD012682821E00415B9F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FB571AF25B72147007C28BC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -359,6 +488,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8F3ECCFF2682821E00415B9F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F3ECD222682834700415B9F /* ScaleNote.swift in Sources */,
+				8F3ECD252682838D00415B9F /* NoteDistanceMarkers.swift in Sources */,
+				8F3ECD292682838D00415B9F /* MatchedNoteFrequency.swift in Sources */,
+				8F3ECD272682838D00415B9F /* CurrentNoteMarker.swift in Sources */,
+				8F3ECD2C268284AC00415B9F /* ZenTunerApp.swift in Sources */,
+				8F3ECD212682834700415B9F /* Frequency.swift in Sources */,
+				8F3ECD232682837800415B9F /* Alignment.swift in Sources */,
+				8F3ECD2A2682838D00415B9F /* TunerView.swift in Sources */,
+				8F3ECD262682838D00415B9F /* MatchedNoteView.swift in Sources */,
+				8F3ECD282682838D00415B9F /* MainNoteView.swift in Sources */,
+				8F3ECD202682834700415B9F /* TunerData.swift in Sources */,
+				8F3ECD2B2682843400415B9F /* ColorAnimation.swift in Sources */,
+				8F3ECD1F2682834700415B9F /* ModifierPreference.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FB571AD25B72147007C28BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,6 +563,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8F3ECD062682821E00415B9F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8F3ECD022682821E00415B9F /* Zen Tuner WatchKit Extension */;
+			targetProxy = 8F3ECD052682821E00415B9F /* PBXContainerItemProxy */;
+		};
 		8FE56CE025BE05D20038664C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8FB571B025B72147007C28BC /* ZenTuner (iOS) */;
@@ -422,6 +576,134 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		8F3ECD172682822100415B9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X4ST43AL9W;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
+				INFOPLIST_FILE = "Zen Tuner WatchKit App/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleVersion = 12;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Debug;
+		};
+		8F3ECD182682822100415B9F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X4ST43AL9W;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
+				INFOPLIST_FILE = "Zen Tuner WatchKit App/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleVersion = 12;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Release;
+		};
+		8F3ECD1A2682822100415B9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = X4ST43AL9W;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Zen Tuner WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit Extension";
+				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit Extension";
+				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit Extension";
+				INFOPLIST_KEY_CFBundleVersion = 12;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Debug;
+		};
+		8F3ECD1B2682822100415B9F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = X4ST43AL9W;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Zen Tuner WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit Extension";
+				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit Extension";
+				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit Extension";
+				INFOPLIST_KEY_CFBundleVersion = 12;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Release;
+		};
 		8FB571C325B72147007C28BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -694,6 +976,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8F3ECD1C2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F3ECD1A2682822100415B9F /* Debug */,
+				8F3ECD1B2682822100415B9F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8F3ECD1D2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F3ECD172682822100415B9F /* Debug */,
+				8F3ECD182682822100415B9F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8FB571A825B72146007C28BC /* Build configuration list for PBXProject "ZenTuner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -744,6 +1044,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8F3ECD2D268287AA00415B9F /* MicrophonePitchDetector */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MicrophonePitchDetector;
+		};
 		8F8F67C425C093640024B4CB /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8F8F67C325C093640024B4CB /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;

@@ -3,6 +3,7 @@ import SwiftUI
 struct CurrentNoteMarker: View {
     let frequency: Frequency
     let distance: Frequency.MusicalDistance
+    let showFrequencyText: Bool
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
@@ -10,9 +11,11 @@ struct CurrentNoteMarker: View {
                     .frame(width: 4, height: NoteTickSize.large.height)
                     .cornerRadius(4)
                     .foregroundColor(distance.color)
-                Text(frequency.localizedString())
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                if showFrequencyText {
+                    Text(frequency.localizedString())
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
             }
             .frame(width: geometry.size.width)
             .offset(
@@ -25,7 +28,7 @@ struct CurrentNoteMarker: View {
 
 struct CurrentNoteMarker_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentNoteMarker(frequency: 440.0, distance: 0)
+        CurrentNoteMarker(frequency: 440.0, distance: 0, showFrequencyText: true)
             .previewLayout(.fixed(width: 300, height: 200))
     }
 }

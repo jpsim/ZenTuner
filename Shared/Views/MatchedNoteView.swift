@@ -7,7 +7,7 @@ struct MatchedNoteView: View {
     var body: some View {
         HStack(alignment: .lastTextBaseline) {
             MainNoteView(note: note)
-                .animation(nil) // Don't animate text frame
+                .animation(nil, value: note) // Don't animate text frame
                 .animatingPerceptibleForegroundColor(isPerceptible: match.distance.isPerceptible)
             VStack(alignment: .leading) {
                 if let modifier = modifier {

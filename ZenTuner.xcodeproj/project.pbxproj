@@ -95,7 +95,7 @@
 /* Begin PBXFileReference section */
 		8F13E1B525ED345700C3F23D /* ColorAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimation.swift; sourceTree = "<group>"; };
 		8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestNoteTests.swift; sourceTree = "<group>"; };
-		8F3ECCF82682821900415B9F /* Zen Tuner WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zen Tuner WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F3ECCF82682821900415B9F /* Zen Tuner watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zen Tuner watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Zen Tuner WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F3ECD132682822100415B9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F3ECD2F26828B3400415B9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -161,12 +161,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8F3ECCFC2682821900415B9F /* Zen Tuner WatchKit App */ = {
+		8F3ECCFC2682821900415B9F /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
 				8F3ECD2F26828B3400415B9F /* Info.plist */,
 			);
-			path = "Zen Tuner WatchKit App";
+			path = watchOS;
 			sourceTree = "<group>";
 		};
 		8F3ECD072682821E00415B9F /* Zen Tuner WatchKit Extension */ = {
@@ -193,7 +193,7 @@
 				8FB571B325B72147007C28BC /* iOS */,
 				8FB571BA25B72147007C28BC /* macOS */,
 				8FE56CDB25BE05D20038664C /* ZenTunerTests */,
-				8F3ECCFC2682821900415B9F /* Zen Tuner WatchKit App */,
+				8F3ECCFC2682821900415B9F /* watchOS */,
 				8F3ECD072682821E00415B9F /* Zen Tuner WatchKit Extension */,
 				8FB571B225B72147007C28BC /* Products */,
 				8FB5720925B7412B007C28BC /* Frameworks */,
@@ -218,7 +218,7 @@
 				8FB571B125B72147007C28BC /* ZenTuner.app */,
 				8FB571B925B72147007C28BC /* ZenTuner.app */,
 				8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */,
-				8F3ECCF82682821900415B9F /* Zen Tuner WatchKit App.app */,
+				8F3ECCF82682821900415B9F /* Zen Tuner watchOS.app */,
 				8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */,
 			);
 			name = Products;
@@ -296,9 +296,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8F3ECCF72682821900415B9F /* Zen Tuner WatchKit App */ = {
+		8F3ECCF72682821900415B9F /* Zen Tuner watchOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8F3ECD1D2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner WatchKit App" */;
+			buildConfigurationList = 8F3ECD1D2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner watchOS" */;
 			buildPhases = (
 				8F3ECCF62682821900415B9F /* Resources */,
 				8F3ECD192682822100415B9F /* Embed App Extensions */,
@@ -308,9 +308,9 @@
 			dependencies = (
 				8F3ECD062682821E00415B9F /* PBXTargetDependency */,
 			);
-			name = "Zen Tuner WatchKit App";
-			productName = "Zen Tuner WatchKit App";
-			productReference = 8F3ECCF82682821900415B9F /* Zen Tuner WatchKit App.app */;
+			name = "Zen Tuner watchOS";
+			productName = "Zen Tuner watchOS";
+			productReference = 8F3ECCF82682821900415B9F /* Zen Tuner watchOS.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
 		8F3ECD022682821E00415B9F /* Zen Tuner WatchKit Extension */ = {
@@ -333,9 +333,9 @@
 			productReference = 8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
-		8FB571B025B72147007C28BC /* ZenTuner (iOS) */ = {
+		8FB571B025B72147007C28BC /* Zen Tuner iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "ZenTuner (iOS)" */;
+			buildConfigurationList = 8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner iOS" */;
 			buildPhases = (
 				8FB571AD25B72147007C28BC /* Sources */,
 				8FB571AE25B72147007C28BC /* Frameworks */,
@@ -345,7 +345,7 @@
 			);
 			dependencies = (
 			);
-			name = "ZenTuner (iOS)";
+			name = "Zen Tuner iOS";
 			packageProductDependencies = (
 				8FD5D593267849EF00E5577D /* MicrophonePitchDetector */,
 			);
@@ -353,9 +353,9 @@
 			productReference = 8FB571B125B72147007C28BC /* ZenTuner.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8FB571B825B72147007C28BC /* ZenTuner (macOS) */ = {
+		8FB571B825B72147007C28BC /* Zen Tuner macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8FB571C825B72147007C28BC /* Build configuration list for PBXNativeTarget "ZenTuner (macOS)" */;
+			buildConfigurationList = 8FB571C825B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner macOS" */;
 			buildPhases = (
 				8FB571B525B72147007C28BC /* Sources */,
 				8FB571B625B72147007C28BC /* Frameworks */,
@@ -365,7 +365,7 @@
 			);
 			dependencies = (
 			);
-			name = "ZenTuner (macOS)";
+			name = "Zen Tuner macOS";
 			packageProductDependencies = (
 				8FD5D595267849F500E5577D /* MicrophonePitchDetector */,
 			);
@@ -437,9 +437,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8FB571B025B72147007C28BC /* ZenTuner (iOS) */,
-				8FB571B825B72147007C28BC /* ZenTuner (macOS) */,
-				8F3ECCF72682821900415B9F /* Zen Tuner WatchKit App */,
+				8FB571B025B72147007C28BC /* Zen Tuner iOS */,
+				8FB571B825B72147007C28BC /* Zen Tuner macOS */,
+				8F3ECCF72682821900415B9F /* Zen Tuner watchOS */,
 				8F3ECD022682821E00415B9F /* Zen Tuner WatchKit Extension */,
 				8FE56CD925BE05D20038664C /* ZenTunerTests */,
 			);
@@ -570,7 +570,7 @@
 		};
 		8FE56CE025BE05D20038664C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8FB571B025B72147007C28BC /* ZenTuner (iOS) */;
+			target = 8FB571B025B72147007C28BC /* Zen Tuner iOS */;
 			targetProxy = 8FE56CDF25BE05D20038664C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -587,10 +587,10 @@
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
-				INFOPLIST_FILE = "Zen Tuner WatchKit App/Info.plist";
+				INFOPLIST_FILE = watchOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner";
-				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit App";
-				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner watchOS";
+				INFOPLIST_KEY_CFBundleName = "Zen Tuner watchOS";
 				INFOPLIST_KEY_CFBundleVersion = 12;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				MARKETING_VERSION = 0.2.0;
@@ -616,10 +616,10 @@
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
-				INFOPLIST_FILE = "Zen Tuner WatchKit App/Info.plist";
+				INFOPLIST_FILE = watchOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner";
-				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit App";
-				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner watchOS";
+				INFOPLIST_KEY_CFBundleName = "Zen Tuner watchOS";
 				INFOPLIST_KEY_CFBundleVersion = 12;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				MARKETING_VERSION = 0.2.0;
@@ -985,7 +985,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8F3ECD1D2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner WatchKit App" */ = {
+		8F3ECD1D2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8F3ECD172682822100415B9F /* Debug */,
@@ -1003,7 +1003,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "ZenTuner (iOS)" */ = {
+		8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FB571C625B72147007C28BC /* Debug */,
@@ -1012,7 +1012,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8FB571C825B72147007C28BC /* Build configuration list for PBXNativeTarget "ZenTuner (macOS)" */ = {
+		8FB571C825B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FB571C925B72147007C28BC /* Debug */,

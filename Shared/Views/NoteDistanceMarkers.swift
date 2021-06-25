@@ -12,6 +12,9 @@ struct NoteDistanceMarkers: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
+        .alignmentGuide(.noteTickCenter) { dimensions in
+            dimensions[VerticalAlignment.center]
+        }
     }
 
     private func tickSize(forIndex index: Int) -> NoteTickSize {

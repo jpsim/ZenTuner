@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1220"
+   LastUpgradeVersion = "1300"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8FB571B025B72147007C28BC"
-               BuildableName = "ZenTuner.app"
-               BlueprintName = "Zen Tuner iOS"
+               BlueprintIdentifier = "8F3ECCF72682821900415B9F"
+               BuildableName = "Zen Tuner watchOS.app"
+               BlueprintName = "Zen Tuner watchOS"
                ReferencedContainer = "container:ZenTuner.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8FE56CD925BE05D20038664C"
-               BuildableName = "ZenTunerTests.xctest"
-               BlueprintName = "ZenTunerTests"
-               ReferencedContainer = "container:ZenTuner.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -54,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8FB571B025B72147007C28BC"
-            BuildableName = "ZenTuner.app"
-            BlueprintName = "Zen Tuner iOS"
+            BlueprintIdentifier = "8F3ECCF72682821900415B9F"
+            BuildableName = "Zen Tuner watchOS.app"
+            BlueprintName = "Zen Tuner watchOS"
             ReferencedContainer = "container:ZenTuner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -71,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8FB571B025B72147007C28BC"
-            BuildableName = "ZenTuner.app"
-            BlueprintName = "Zen Tuner iOS"
+            BlueprintIdentifier = "8F3ECCF72682821900415B9F"
+            BuildableName = "Zen Tuner watchOS.app"
+            BlueprintName = "Zen Tuner watchOS"
             ReferencedContainer = "container:ZenTuner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8FB571B825B72147007C28BC"
                BuildableName = "ZenTuner.app"
-               BlueprintName = "ZenTuner (macOS)"
+               BlueprintName = "Zen Tuner macOS"
                ReferencedContainer = "container:ZenTuner.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8FB571B825B72147007C28BC"
             BuildableName = "ZenTuner.app"
-            BlueprintName = "ZenTuner (macOS)"
+            BlueprintName = "Zen Tuner macOS"
             ReferencedContainer = "container:ZenTuner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8FB571B825B72147007C28BC"
             BuildableName = "ZenTuner.app"
-            BlueprintName = "ZenTuner (macOS)"
+            BlueprintName = "Zen Tuner macOS"
             ReferencedContainer = "container:ZenTuner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

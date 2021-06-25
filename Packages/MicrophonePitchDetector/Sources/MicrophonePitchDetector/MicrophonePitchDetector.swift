@@ -1,5 +1,8 @@
 import AVFoundation
 import SwiftUI
+#if os(watchOS)
+import WatchKit
+#endif
 
 public final class MicrophonePitchDetector: ObservableObject {
     private let engine = AudioEngine()
@@ -33,6 +36,15 @@ public final class MicrophonePitchDetector: ObservableObject {
     private func checkMicrophoneAuthorizationStatus() {
         guard !hasMicrophoneAccess else { return }
 
+#if os(watchOS)
+        AVAudioSession.sharedInstance().requestRecordPermission { granted in
+            if granted {
+                self.setUpPitchTracking()
+            } else {
+                self.showMicrophoneAccessAlert = true
+            }
+        }
+#else
         switch AVCaptureDevice.authorizationStatus(for: .audio) {
         case .authorized: // The user has previously granted access to the microphone.
             self.setUpPitchTracking()
@@ -55,6 +67,7 @@ public final class MicrophonePitchDetector: ObservableObject {
             self.showMicrophoneAccessAlert = true
             return
         }
+#endif
     }
 
     private func setUpPitchTracking() {

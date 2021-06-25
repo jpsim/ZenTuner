@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "MicrophonePitchDetector",
-    platforms: [.macOS(.v11), .iOS(.v14)],
+    platforms: [.macOS(.v11), .iOS(.v14), .watchOS(.v7)],
     products: [
         .library(name: "MicrophonePitchDetector", targets: ["MicrophonePitchDetector"])
     ],

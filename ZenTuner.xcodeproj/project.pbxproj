@@ -439,9 +439,9 @@
 			targets = (
 				8FB571B025B72147007C28BC /* ZenTuner (iOS) */,
 				8FB571B825B72147007C28BC /* ZenTuner (macOS) */,
-				8FE56CD925BE05D20038664C /* ZenTunerTests */,
 				8F3ECCF72682821900415B9F /* Zen Tuner WatchKit App */,
 				8F3ECD022682821E00415B9F /* Zen Tuner WatchKit Extension */,
+				8FE56CD925BE05D20038664C /* ZenTunerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -588,7 +588,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
 				INFOPLIST_FILE = "Zen Tuner WatchKit App/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit App";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit App";
 				INFOPLIST_KEY_CFBundleVersion = 12;
@@ -617,7 +617,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
 				INFOPLIST_FILE = "Zen Tuner WatchKit App/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit App";
+				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit App";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit App";
 				INFOPLIST_KEY_CFBundleVersion = 12;

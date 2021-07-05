@@ -10,6 +10,15 @@
 		8F13E1B625ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F13E1B725ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F13E1C225ED533800C3F23D /* ClosestNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */; };
+		8F2D975126938AF900B512D0 /* TunerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D975026938AF900B512D0 /* TunerScreen.swift */; };
+		8F2D975226938AF900B512D0 /* TunerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D975026938AF900B512D0 /* TunerScreen.swift */; };
+		8F2D975326938B0500B512D0 /* TunerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D975026938AF900B512D0 /* TunerScreen.swift */; };
+		8F2D9755269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */; };
+		8F2D9756269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */; };
+		8F2D9757269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */; };
+		8F2D97592693930000B512D0 /* NoteTicks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D97582693930000B512D0 /* NoteTicks.swift */; };
+		8F2D975A2693930000B512D0 /* NoteTicks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D97582693930000B512D0 /* NoteTicks.swift */; };
+		8F2D975B2693930000B512D0 /* NoteTicks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D97582693930000B512D0 /* NoteTicks.swift */; };
 		8F3ECD042682821E00415B9F /* Zen Tuner WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8F3ECD1F2682834700415B9F /* ModifierPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D825B73E9A007C28BC /* ModifierPreference.swift */; };
 		8F3ECD202682834700415B9F /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DB25B73E9A007C28BC /* TunerData.swift */; };
@@ -25,6 +34,9 @@
 		8F3ECD2B2682843400415B9F /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F3ECD2C268284AC00415B9F /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8F3ECD2E268287AA00415B9F /* MicrophonePitchDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 8F3ECD2D268287AA00415B9F /* MicrophonePitchDetector */; };
+		8F44F7FF26939F13007DBE1E /* Color+MusicalDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */; };
+		8F44F80026939F13007DBE1E /* Color+MusicalDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */; };
+		8F44F80126939F13007DBE1E /* Color+MusicalDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */; };
 		8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F848C87269365D30037EF97 /* MatchedNoteViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F848C86269365D30037EF97 /* MatchedNoteViewSnapshotTests.swift */; };
@@ -96,10 +108,14 @@
 /* Begin PBXFileReference section */
 		8F13E1B525ED345700C3F23D /* ColorAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimation.swift; sourceTree = "<group>"; };
 		8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestNoteTests.swift; sourceTree = "<group>"; };
+		8F2D975026938AF900B512D0 /* TunerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerScreen.swift; sourceTree = "<group>"; };
+		8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneAccessAlert.swift; sourceTree = "<group>"; };
+		8F2D97582693930000B512D0 /* NoteTicks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTicks.swift; sourceTree = "<group>"; };
 		8F3ECCF82682821900415B9F /* Zen Tuner watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zen Tuner watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Zen Tuner WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F3ECD132682822100415B9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F3ECD2F26828B3400415B9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+MusicalDistance.swift"; sourceTree = "<group>"; };
 		8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionMenu.swift; sourceTree = "<group>"; };
 		8F848C86269365D30037EF97 /* MatchedNoteViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedNoteViewSnapshotTests.swift; sourceTree = "<group>"; };
 		8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunerViewSnapshotTests.swift; sourceTree = "<group>"; };
@@ -208,6 +224,7 @@
 				8FB571DC25B73E9A007C28BC /* Helpers */,
 				8FB571D725B73E9A007C28BC /* Models */,
 				8FB571AA25B72146007C28BC /* ZenTunerApp.swift */,
+				8F2D975026938AF900B512D0 /* TunerScreen.swift */,
 				8FB571D425B722F2007C28BC /* Views */,
 				8FB571AC25B72147007C28BC /* Assets.xcassets */,
 			);
@@ -247,11 +264,13 @@
 			isa = PBXGroup;
 			children = (
 				8FB571EF25B73ECE007C28BC /* CurrentNoteMarker.swift */,
+				8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */,
 				8FB571F025B73ECE007C28BC /* MainNoteView.swift */,
 				8FB571F225B73ECF007C28BC /* MatchedNoteFrequency.swift */,
 				8FB571F125B73ECE007C28BC /* MatchedNoteView.swift */,
 				8FB571F325B73ECF007C28BC /* NoteDistanceMarkers.swift */,
 				8FB571F425B73ECF007C28BC /* TunerView.swift */,
+				8F2D97582693930000B512D0 /* NoteTicks.swift */,
 				8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */,
 			);
 			path = Views;
@@ -273,6 +292,7 @@
 			children = (
 				8FB571DE25B73E9A007C28BC /* Alignment.swift */,
 				8F13E1B525ED345700C3F23D /* ColorAnimation.swift */,
+				8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -408,6 +428,7 @@
 				TargetAttributes = {
 					8F3ECCF72682821900415B9F = {
 						CreatedOnToolsVersion = 13.0;
+						LastSwiftMigration = 1300;
 					};
 					8F3ECD022682821E00415B9F = {
 						CreatedOnToolsVersion = 13.0;
@@ -499,6 +520,7 @@
 				8F3ECD252682838D00415B9F /* NoteDistanceMarkers.swift in Sources */,
 				8F3ECD292682838D00415B9F /* MatchedNoteFrequency.swift in Sources */,
 				8F3ECD272682838D00415B9F /* CurrentNoteMarker.swift in Sources */,
+				8F44F80126939F13007DBE1E /* Color+MusicalDistance.swift in Sources */,
 				8F3ECD2C268284AC00415B9F /* ZenTunerApp.swift in Sources */,
 				8F3ECD212682834700415B9F /* Frequency.swift in Sources */,
 				8F3ECD232682837800415B9F /* Alignment.swift in Sources */,
@@ -507,6 +529,9 @@
 				8F3ECD282682838D00415B9F /* MainNoteView.swift in Sources */,
 				8F3ECD202682834700415B9F /* TunerData.swift in Sources */,
 				8F3ECD2B2682843400415B9F /* ColorAnimation.swift in Sources */,
+				8F2D975326938B0500B512D0 /* TunerScreen.swift in Sources */,
+				8F2D9757269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */,
+				8F2D975B2693930000B512D0 /* NoteTicks.swift in Sources */,
 				8F3ECD1F2682834700415B9F /* ModifierPreference.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,16 +544,20 @@
 				8F13E1B625ED345700C3F23D /* ColorAnimation.swift in Sources */,
 				8FB571F525B73ECF007C28BC /* CurrentNoteMarker.swift in Sources */,
 				8FB571F925B73ECF007C28BC /* MatchedNoteView.swift in Sources */,
+				8F2D9755269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */,
 				8FB571E925B73E9A007C28BC /* Alignment.swift in Sources */,
 				8FB571E325B73E9A007C28BC /* ScaleNote.swift in Sources */,
 				8FB571E125B73E9A007C28BC /* Frequency.swift in Sources */,
 				8FB571FD25B73ECF007C28BC /* NoteDistanceMarkers.swift in Sources */,
 				8FB571FF25B73ECF007C28BC /* TunerView.swift in Sources */,
+				8F2D975126938AF900B512D0 /* TunerScreen.swift in Sources */,
 				8FB571BD25B72147007C28BC /* ZenTunerApp.swift in Sources */,
 				8FB571DF25B73E9A007C28BC /* ModifierPreference.swift in Sources */,
 				8FB571F725B73ECF007C28BC /* MainNoteView.swift in Sources */,
 				8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */,
 				8FB571FB25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */,
+				8F2D97592693930000B512D0 /* NoteTicks.swift in Sources */,
+				8F44F7FF26939F13007DBE1E /* Color+MusicalDistance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -540,16 +569,20 @@
 				8F13E1B725ED345700C3F23D /* ColorAnimation.swift in Sources */,
 				8FB571F625B73ECF007C28BC /* CurrentNoteMarker.swift in Sources */,
 				8FB571FA25B73ECF007C28BC /* MatchedNoteView.swift in Sources */,
+				8F2D9756269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */,
 				8FB571EA25B73E9A007C28BC /* Alignment.swift in Sources */,
 				8FB571E425B73E9A007C28BC /* ScaleNote.swift in Sources */,
 				8FB571E225B73E9A007C28BC /* Frequency.swift in Sources */,
 				8FB571FE25B73ECF007C28BC /* NoteDistanceMarkers.swift in Sources */,
 				8FB5720025B73ECF007C28BC /* TunerView.swift in Sources */,
+				8F2D975226938AF900B512D0 /* TunerScreen.swift in Sources */,
 				8FB571BE25B72147007C28BC /* ZenTunerApp.swift in Sources */,
 				8FB571E025B73E9A007C28BC /* ModifierPreference.swift in Sources */,
 				8FB571F825B73ECF007C28BC /* MainNoteView.swift in Sources */,
 				8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */,
 				8FB571FC25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */,
+				8F2D975A2693930000B512D0 /* NoteTicks.swift in Sources */,
+				8F44F80026939F13007DBE1E /* Color+MusicalDistance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

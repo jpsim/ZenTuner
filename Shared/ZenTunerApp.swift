@@ -4,7 +4,7 @@ import SwiftUI
 struct ZenTunerApp: App {
     var body: some Scene {
         WindowGroup {
-            TunerView()
+            TunerScreen()
         }
     }
 }

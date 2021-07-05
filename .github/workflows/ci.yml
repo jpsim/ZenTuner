@@ -10,17 +10,17 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
-      DEVELOPER_DIR: /Applications/Xcode_12.3.app
+      DEVELOPER_DIR: /Applications/Xcode_12.5.app
     steps:
       - uses: actions/checkout@v1
       - name: Test
-        run: xcodebuild test -scheme "ZenTuner_iOS" -destination platform="iOS Simulator,name=iPhone 12 Pro Max,OS=14.3"
+        run: xcodebuild test -scheme "ZenTuner_iOS" -destination platform="iOS Simulator,name=iPhone 12 Pro Max,OS=14.5"
   lint:
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
-      DEVELOPER_DIR: /Applications/Xcode_12.3.app
+      DEVELOPER_DIR: /Applications/Xcode_12.5.app
     steps:
       - uses: actions/checkout@v1
       - name: Update Homebrew

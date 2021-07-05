@@ -5,23 +5,29 @@ struct MatchedNoteView: View {
     let modifierPreference: ModifierPreference
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
-            MainNoteView(note: note)
-                .animation(nil, value: note) // Don't animate text frame
-                .animatingPerceptibleForegroundColor(isPerceptible: match.distance.isPerceptible)
-            VStack(alignment: .leading) {
-                if let modifier = modifier {
-                    Text(modifier)
-                        // TODO: Avoid hardcoding size
-                        .font(.system(size: 50, design: .rounded))
-                        .animatingPerceptibleForegroundColor(isPerceptible: match.distance.isPerceptible)
-                    Spacer()
-                        .frame(height: 24) // TODO: Fix this with alignment guides
-                }
+        ZStack(alignment: .noteModifier) {
+            HStack(alignment: .lastTextBaseline) {
+                MainNoteView(note: note)
+                    .animation(nil, value: note) // Don't animate text frame
+                    .animatingPerceptibleForegroundColor(isPerceptible: match.distance.isPerceptible)
                 Text(String(describing: match.octave))
+                    .alignmentGuide(.octaveCenter) { dimensions in
+                        dimensions[HorizontalAlignment.center]
+                    }
                     // TODO: Avoid hardcoding size
                     .font(.system(size: 40, design: .rounded))
                     .foregroundColor(.secondary)
+            }
+
+            if let modifier = modifier {
+                Text(modifier)
+                    // TODO: Avoid hardcoding size
+                    .font(.system(size: 50, design: .rounded))
+                    .baselineOffset(-30) // TODO: Find a better way to align top of text - FB9267771
+                    .animatingPerceptibleForegroundColor(isPerceptible: match.distance.isPerceptible)
+                    .alignmentGuide(.octaveCenter) { dimensions in
+                        dimensions[HorizontalAlignment.center]
+                    }
             }
         }
         .animation(.easeInOut, value: match.distance.isPerceptible)

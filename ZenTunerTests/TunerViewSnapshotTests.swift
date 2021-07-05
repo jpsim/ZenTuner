@@ -4,7 +4,7 @@ import UIKit
 import XCTest
 @testable import ZenTuner
 
-class TunerViewSnapshotTests: XCTestCase {
+final class TunerViewSnapshotTests: XCTestCase {
     override func setUp() {
         super.setUp()
         diffTool = "ksdiff"

@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUI
 
 // MARK: - Type Definition
 
@@ -21,9 +20,6 @@ struct Frequency: Equatable {
 
         /// A distance is sharp if it is greater than zero.
         var isSharp: Bool { cents > 0 }
-
-        /// Color used to represent this distance.
-        var color: Color { isPerceptible ? .red : .green }
 
         /// The distance in a full octave.
         static var octave: MusicalDistance { MusicalDistance(cents: 1200) }

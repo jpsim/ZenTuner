@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MatchedNoteView: View {
     let match: ScaleNote.Match
-    let modifierPreference: ModifierPreference
+    @State var modifierPreference: ModifierPreference
 
     var body: some View {
         ZStack(alignment: .noteModifier) {
@@ -31,6 +31,9 @@ struct MatchedNoteView: View {
             }
         }
         .animation(.easeInOut, value: match.distance.isPerceptible)
+        .onTapGesture {
+            modifierPreference = modifierPreference.toggled
+        }
     }
 
     private var preferredName: String {
@@ -56,7 +59,8 @@ struct MatchedNoteView: View {
 private extension View {
     func animatingPerceptibleForegroundColor(isPerceptible: Bool) -> some View {
         return self
-            .animatingForegroundColor(from: .green, to: .red, percentToColor: isPerceptible ? 1 : 0)
+            .animatingForegroundColor(from: .imperceptibleMusicalDistance, to: .perceptibleMusicalDistance,
+                                      percentToColor: isPerceptible ? 1 : 0)
     }
 }
 

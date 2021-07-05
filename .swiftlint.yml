@@ -85,6 +85,7 @@ identifier_name:
     # Other
     - id
     - to
+    - MicrophoneAccessAlert()
 
 file_name:
   excluded:

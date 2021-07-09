@@ -116,6 +116,8 @@
 		8F3ECD132682822100415B9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F3ECD2F26828B3400415B9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+MusicalDistance.swift"; sourceTree = "<group>"; };
+		8F560A3B2698963E000B33BF /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		8F560A3C2698963E000B33BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranspositionMenu.swift; sourceTree = "<group>"; };
 		8F848C86269365D30037EF97 /* MatchedNoteViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedNoteViewSnapshotTests.swift; sourceTree = "<group>"; };
 		8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunerViewSnapshotTests.swift; sourceTree = "<group>"; };
@@ -124,8 +126,6 @@
 		8FB571B125B72147007C28BC /* ZenTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZenTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB571B425B72147007C28BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FB571B925B72147007C28BC /* ZenTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZenTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8FB571BB25B72147007C28BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8FB571BC25B72147007C28BC /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		8FB571D825B73E9A007C28BC /* ModifierPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModifierPreference.swift; sourceTree = "<group>"; };
 		8FB571D925B73E9A007C28BC /* Frequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Frequency.swift; sourceTree = "<group>"; };
 		8FB571DA25B73E9A007C28BC /* ScaleNote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScaleNote.swift; sourceTree = "<group>"; };
@@ -187,12 +187,32 @@
 			path = watchOS;
 			sourceTree = "<group>";
 		};
-		8F3ECD072682821E00415B9F /* Zen Tuner WatchKit Extension */ = {
+		8F3ECD072682821E00415B9F /* WatchKit */ = {
 			isa = PBXGroup;
 			children = (
 				8F3ECD132682822100415B9F /* Info.plist */,
 			);
-			path = "Zen Tuner WatchKit Extension";
+			path = WatchKit;
+			sourceTree = "<group>";
+		};
+		8F560A392698963E000B33BF /* BuildSupport */ = {
+			isa = PBXGroup;
+			children = (
+				8F3ECD072682821E00415B9F /* WatchKit */,
+				8F3ECCFC2682821900415B9F /* watchOS */,
+				8FB571B325B72147007C28BC /* iOS */,
+				8F560A3A2698963E000B33BF /* macOS */,
+			);
+			path = BuildSupport;
+			sourceTree = "<group>";
+		};
+		8F560A3A2698963E000B33BF /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				8F560A3B2698963E000B33BF /* macOS.entitlements */,
+				8F560A3C2698963E000B33BF /* Info.plist */,
+			);
+			path = macOS;
 			sourceTree = "<group>";
 		};
 		8F8B37602678069400BC3568 /* Packages */ = {
@@ -206,19 +226,16 @@
 		8FB571A425B72146007C28BC = {
 			isa = PBXGroup;
 			children = (
+				8F560A392698963E000B33BF /* BuildSupport */,
 				8F8B37602678069400BC3568 /* Packages */,
-				8FB571A925B72146007C28BC /* Shared */,
-				8FB571B325B72147007C28BC /* iOS */,
-				8FB571BA25B72147007C28BC /* macOS */,
+				8FB571A925B72146007C28BC /* ZenTuner */,
 				8FE56CDB25BE05D20038664C /* ZenTunerTests */,
-				8F3ECCFC2682821900415B9F /* watchOS */,
-				8F3ECD072682821E00415B9F /* Zen Tuner WatchKit Extension */,
 				8FB571B225B72147007C28BC /* Products */,
 				8FB5720925B7412B007C28BC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		8FB571A925B72146007C28BC /* Shared */ = {
+		8FB571A925B72146007C28BC /* ZenTuner */ = {
 			isa = PBXGroup;
 			children = (
 				8FB571DC25B73E9A007C28BC /* Helpers */,
@@ -228,7 +245,7 @@
 				8FB571D425B722F2007C28BC /* Views */,
 				8FB571AC25B72147007C28BC /* Assets.xcassets */,
 			);
-			path = Shared;
+			path = ZenTuner;
 			sourceTree = "<group>";
 		};
 		8FB571B225B72147007C28BC /* Products */ = {
@@ -249,15 +266,6 @@
 				8FB571B425B72147007C28BC /* Info.plist */,
 			);
 			path = iOS;
-			sourceTree = "<group>";
-		};
-		8FB571BA25B72147007C28BC /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-				8FB571BB25B72147007C28BC /* Info.plist */,
-				8FB571BC25B72147007C28BC /* macOS.entitlements */,
-			);
-			path = macOS;
 			sourceTree = "<group>";
 		};
 		8FB571D425B722F2007C28BC /* Views */ = {
@@ -624,7 +632,7 @@
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
-				INFOPLIST_FILE = watchOS/Info.plist;
+				INFOPLIST_FILE = BuildSupport/watchOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner watchOS";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner watchOS";
@@ -653,7 +661,7 @@
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
-				INFOPLIST_FILE = watchOS/Info.plist;
+				INFOPLIST_FILE = BuildSupport/watchOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner watchOS";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner watchOS";
@@ -682,7 +690,7 @@
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Zen Tuner WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = BuildSupport/WatchKit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit Extension";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit Extension";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit Extension";
@@ -716,7 +724,7 @@
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Zen Tuner WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = BuildSupport/WatchKit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit Extension";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit Extension";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit Extension";
@@ -865,7 +873,7 @@
 				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = BuildSupport/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -890,7 +898,7 @@
 				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = BuildSupport/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -912,14 +920,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BuildSupport/macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
+				INFOPLIST_FILE = BuildSupport/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -939,14 +947,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BuildSupport/macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
+				INFOPLIST_FILE = BuildSupport/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

@@ -1,3 +1,8 @@
+## 0.2.1
+
+* The app no longer dims the display after a period of inactivity on
+  iOS.
+
 ## 0.2.0
 
 * Released on the Mac App Store.

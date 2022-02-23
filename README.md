@@ -5,9 +5,10 @@
 A minimal chromatic tuner for iOS & macOS. Works well with any
 instrument, whether it's woodwinds, brass, strings or voice.
 
-| Dark | Light |
-| - | - |
-| ![](images/zentuner-ios-dark.png) | ![](images/zentuner-ios-light.png) |
+|       | Dark                                | Light                                |
+| ----- | ----------------------------------- | ------------------------------------ |
+| iOS   | ![](images/zentuner-ios-dark.png)   | ![](images/zentuner-ios-light.png)   |
+| nacOS | ![](images/zentuner-macos-dark.png) | ![](images/zentuner-macos-light.png) |
 
 ## Features
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension HorizontalAlignment {
-    enum NoteCenter: AlignmentID {
+    private enum NoteCenter: AlignmentID {
         static func defaultValue(in context: ViewDimensions) -> CGFloat {
             context[HorizontalAlignment.center]
         }
@@ -9,7 +9,7 @@ extension HorizontalAlignment {
 
     static let noteCenter = HorizontalAlignment(NoteCenter.self)
 
-    enum OctaveCenter: AlignmentID {
+    private enum OctaveCenter: AlignmentID {
         static func defaultValue(in context: ViewDimensions) -> CGFloat {
             context[HorizontalAlignment.center]
         }
@@ -19,7 +19,7 @@ extension HorizontalAlignment {
 }
 
 extension VerticalAlignment {
-    enum NoteTickCenter: AlignmentID {
+    private enum NoteTickCenter: AlignmentID {
         static func defaultValue(in context: ViewDimensions) -> CGFloat {
             context[VerticalAlignment.center]
         }

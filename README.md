@@ -2,8 +2,8 @@
 
 ![CI](https://github.com/jpsim/ZenTuner/workflows/CI/badge.svg)
 
-A minimal chromatic tuner. Works well with any instrument, whether it's
-woodwinds, brass, strings or voice.
+A minimal chromatic tuner for iOS & macOS. Works well with any
+instrument, whether it's woodwinds, brass, strings or voice.
 
 | Dark | Light |
 | - | - |
@@ -17,7 +17,7 @@ woodwinds, brass, strings or voice.
 * One-touch menu to apply a transposition to easily tune all instruments
 * Tap the main note to adjust preference to prefer sharps or flats
 * Works well on all screen sizes and orientations, from the smallest
-  iPhone to the largest iPad
+  iPhone to the largest iPad or Mac
 
 ## Credits
 

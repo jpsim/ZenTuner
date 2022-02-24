@@ -1,7 +1,6 @@
 // Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/AudioKit/
 
 import AVFoundation
-import CMicrophonePitchDetector
 
 /// Tap to do pitch tracking on any node.
 final class PitchTap {
@@ -9,7 +8,7 @@ final class PitchTap {
 
     private var bufferSize: UInt32 { 4_096 }
     private let input: Node
-    private var tracker: PitchTrackerRef?
+    private var tracker: PitchTracker?
     private let handler: (Float) -> Void
 
     // MARK: - Starting
@@ -35,32 +34,26 @@ final class PitchTap {
         self.handler = handler
     }
 
-    deinit {
-        if let tracker = self.tracker {
-            ztPitchTrackerDestroy(tracker)
-        }
-    }
-
     // MARK: - Private
 
     private func analyzePitch(buffer: AVAudioPCMBuffer) {
         buffer.frameLength = bufferSize
         guard let floatData = buffer.floatChannelData else { return }
 
-        let tracker: PitchTrackerRef
+        let tracker: PitchTracker
         if let existingTracker = self.tracker {
             tracker = existingTracker
         } else {
-            tracker = ztPitchTrackerCreate(UInt32(buffer.format.sampleRate), Int32(bufferSize), 20)
+            tracker = PitchTracker(
+                sampleRate: Int32(buffer.format.sampleRate),
+                hopSize: Int32(bufferSize),
+                peakCount: 20
+            )
             self.tracker = tracker
         }
 
-        ztPitchTrackerAnalyze(tracker, floatData[0], bufferSize)
-        var amp: Float = 0
-        var pitch: Float = 0
-        ztPitchTrackerGetResults(tracker, &amp, &pitch)
-
-        if amp > 0.1 {
+        let frames = (0..<Int(bufferSize)).map { floatData[0].advanced(by: $0) }
+        if let pitch = tracker.getPitch(frames: frames) {
             self.handler(pitch)
         }
     }

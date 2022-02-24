@@ -16,11 +16,11 @@ final class PitchTracker {
         _ = withUnsafeMutablePointer(to: &data, zt_destroy)
     }
 
-    func getPitch(frames: UnsafeMutablePointer<Float>, count: Int) -> Float? {
+    func getPitch(frames: [UnsafeMutablePointer<Float>]) -> Float? {
         var pitch: Float = 0
         var amplitude: Float = 0
 
-        for frame in (0..<count).map({ frames.advanced(by: $0) }) {
+        for frame in frames {
             zt_ptrack_compute(data, ptrack, frame, &pitch, &amplitude)
         }
 

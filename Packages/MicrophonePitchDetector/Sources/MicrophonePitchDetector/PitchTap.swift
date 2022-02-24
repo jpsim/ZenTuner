@@ -52,7 +52,8 @@ final class PitchTap {
             self.tracker = tracker
         }
 
-        if let pitch = tracker.getPitch(frames: floatData[0], count: Int(bufferSize)) {
+        let frames = (0..<Int(bufferSize)).map { floatData[0].advanced(by: $0) }
+        if let pitch = tracker.getPitch(frames: frames) {
             self.handler(pitch)
         }
     }

@@ -3,13 +3,8 @@
 #ifndef ZENTUNER_H
 #define ZENTUNER_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 #include <stdio.h>
-#include "PitchTracker.h"
 
 #ifndef ZTFLOAT
 #define ZTFLOAT float
@@ -67,9 +62,5 @@ int zt_ptrack_create(zt_ptrack **p);
 int zt_ptrack_destroy(zt_ptrack **p);
 int zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks);
 int zt_ptrack_compute(zt_data *sp, zt_ptrack *p, ZTFLOAT *in, ZTFLOAT *freq, ZTFLOAT *amp);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

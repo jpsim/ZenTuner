@@ -12,6 +12,5 @@ let package = Package(
     targets: [
         .target(name: "MicrophonePitchDetector", dependencies: ["CMicrophonePitchDetector"]),
         .target(name: "CMicrophonePitchDetector")
-    ],
-    cxxLanguageStandard: .cxx14
+    ]
 )

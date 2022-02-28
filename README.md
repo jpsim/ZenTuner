@@ -3,12 +3,12 @@
 ![CI](https://github.com/jpsim/ZenTuner/workflows/CI/badge.svg)
 
 A minimal chromatic tuner for iOS & macOS. Works well with any
-instrument, whether it's woodwinds, brass, strings or voice.
+instrument, whether it’s woodwinds, brass, strings or voice.
 
 |       | Dark                                | Light                                |
 | ----- | ----------------------------------- | ------------------------------------ |
 | iOS   | ![](images/zentuner-ios-dark.png)   | ![](images/zentuner-ios-light.png)   |
-| nacOS | ![](images/zentuner-macos-dark.png) | ![](images/zentuner-macos-light.png) |
+| macOS | ![](images/zentuner-macos-dark.png) | ![](images/zentuner-macos-light.png) |
 
 ## Features
 
@@ -23,7 +23,7 @@ instrument, whether it's woodwinds, brass, strings or voice.
 ## Credits
 
 * [AudioKit][audiokit] powers the audio analysis for this tuner
-* Design inspired by the [Stuner App][stuner] mock ups by [Célio Silva][celio]
+* Design inspired by the [Stuner App][stuner] mockups by [Célio Silva][celio]
 
 ## License
 

@@ -1,8 +1,11 @@
 import Darwin.C.math
+import SwiftUI
 
 /// A note in a twelve-tone equal temperament scale. https://en.wikipedia.org/wiki/Equal_temperament
-enum ScaleNote: Int, CaseIterable {
+enum ScaleNote: Int, CaseIterable, Identifiable {
     case C, CSharp_DFlat, D, DSharp_EFlat, E, F, FSharp_GFlat, G, GSharp_AFlat, A, ASharp_BFlat, B
+
+    var id: Int { rawValue }
 
     /// A note match given an input frequency.
     struct Match: Hashable {

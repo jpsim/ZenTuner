@@ -1,25 +1,25 @@
 import SwiftUI
 
 struct TranspositionMenu: View {
-    private let transpositions = ScaleNote.allCases.map(\.transpositionName)
+    private let transpositions = ScaleNote.allCases
     @Binding var selectedTransposition: Int
 
     var body: some View {
         Menu(
             content: {
-                ForEach(0..<transpositions.count) { index in
+                ForEach(transpositions) { transposition in
                     Button(
                         action: {
-                            selectedTransposition = index
+                            selectedTransposition = transposition.rawValue
                         },
                         label: {
-                            Text(transpositions[index])
+                            Text(transposition.transpositionName)
                         }
                     )
                 }
             },
             label: {
-                Text(transpositions[selectedTransposition])
+                Text(transpositions[selectedTransposition].transpositionName)
                     // Increase tap area, some of the transpositions are just a single
                     // letter so the tap area can otherwise be quite small.
                     .frame(minWidth: 100, alignment: .leading)

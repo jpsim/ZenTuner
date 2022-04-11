@@ -59,7 +59,9 @@ extension AVAudioMixerNode {
 final class AudioEngine {
     /// Internal AVAudioEngine
     private let avEngine = AVAudioEngine()
+#if os(iOS)
     private let session = AVAudioSession.sharedInstance()
+#endif
 
     /// Main mixer at the end of the signal chain
     private var mainMixerNode: Mixer?
@@ -92,14 +94,18 @@ final class AudioEngine {
     /// Start the engine
     func start() throws {
         try avEngine.start()
+#if os(iOS)
         try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers])
         try session.setActive(true)
+#endif
     }
 
     /// Stop the engine
     func stop() throws {
         avEngine.stop()
+#if os(iOS)
         try session.setActive(false)
+#endif
     }
 
     // MARK: - Private

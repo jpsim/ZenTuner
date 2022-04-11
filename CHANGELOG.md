@@ -1,3 +1,8 @@
+## 0.2.2
+
+* Fixed an issue where the tuner would become unresponsive after
+  switching to other apps.
+
 ## 0.2.1
 
 * The app no longer dims the display after a period of inactivity on

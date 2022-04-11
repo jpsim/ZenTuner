@@ -28,7 +28,11 @@ public final class MicrophonePitchDetector: ObservableObject {
 
     public func stop() {
         guard hasMicrophoneAccess else { return }
-        engine.stop()
+        do {
+            try engine.stop()
+        } catch {
+            // TODO: Handle error
+        }
     }
 
     // MARK: - Private

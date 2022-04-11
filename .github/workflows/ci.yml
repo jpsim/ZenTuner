@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build macOS
-        run: xcodebuild build -scheme "ZenTuner_macOS"
+        run: xcodebuild build -scheme "ZenTuner_macOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
   lint:
     runs-on: ubuntu-18.04
     container:

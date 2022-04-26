@@ -2,6 +2,10 @@ import XCTest
 @testable import ZenTuner
 
 class ClosestNoteTests: XCTestCase {
+    func testRandomFailure() {
+        XCTAssertTrue(Bool.random())
+    }
+
     func testClosestNote() {
         let measureOptions = XCTMeasureOptions.default
         measureOptions.iterationCount = 100

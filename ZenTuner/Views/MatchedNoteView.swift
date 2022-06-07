@@ -58,9 +58,14 @@ struct MatchedNoteView: View {
 
 private extension View {
     func animatingPerceptibleForegroundColor(isPerceptible: Bool) -> some View {
-        return self
-            .animatingForegroundColor(from: .imperceptibleMusicalDistance, to: .perceptibleMusicalDistance,
-                                      percentToColor: isPerceptible ? 1 : 0)
+        if #available(iOS 16, macOS 13, *) {
+            return self
+                .foregroundColor(isPerceptible ? .perceptibleMusicalDistance : .imperceptibleMusicalDistance)
+        } else {
+            return self
+                .animatingForegroundColor(from: .imperceptibleMusicalDistance, to: .perceptibleMusicalDistance,
+                                          percentToColor: isPerceptible ? 1 : 0)
+        }
     }
 }
 

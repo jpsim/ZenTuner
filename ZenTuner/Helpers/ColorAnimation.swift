@@ -23,6 +23,7 @@ extension View {
     /// - returns: A `View` whose foreground color is animated when changed.
     @available(iOS, deprecated: 16)
     @available(macOS, deprecated: 13)
+    @available(watchOS, deprecated: 9)
     func animatingForegroundColor(from: Color, to: Color, percentToColor: Double) -> some View {
         return self
             .modifier(ColorAnimation(from: from, to: to, percentToColor: percentToColor))

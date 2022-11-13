@@ -3,29 +3,6 @@
 import AVFoundation
 
 extension AVAudioNode {
-    /// Disconnect without breaking other connections.
-    func disconnect(input: AVAudioNode) {
-        guard let engine = engine else { return }
-
-        var newConnections: [AVAudioNode: [AVAudioConnectionPoint]] = [:]
-        for bus in 0 ..< numberOfInputs {
-            if let connectionPoint = engine.inputConnectionPoint(for: self, inputBus: bus),
-               connectionPoint.node === input
-            {
-                let points = engine.outputConnectionPoints(for: input, outputBus: 0)
-                newConnections[input] = points.filter { $0.node != self }
-            }
-        }
-
-        for (node, connections) in newConnections {
-            if connections.isEmpty {
-                engine.disconnectNodeOutput(node)
-            } else {
-                engine.connect(node, to: connections, fromBus: 0, format: .stereo)
-            }
-        }
-    }
-
     /// Make a connection without breaking other connections.
     func connect(input: AVAudioNode, bus: Int) {
         guard let engine = engine else { return }

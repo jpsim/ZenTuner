@@ -31,24 +31,6 @@ class Mixer: Node {
         connections.contains(where: { $0 === node })
     }
 
-    /// Remove input from the mixer
-    /// - Parameter node: Node to remove
-    func removeInput(_ node: Node) {
-        inputs.removeAll(where: { $0 === node })
-        avAudioNode.disconnect(input: node.avAudioNode)
-    }
-
-    /// Remove all inputs from the mixer
-    func removeAllInputs() {
-        guard !connections.isEmpty else { return }
-
-        let nodes = connections.map { $0.avAudioNode }
-        for input in nodes {
-            avAudioNode.disconnect(input: input)
-        }
-        inputs.removeAll()
-    }
-
     func silenceOutput() {
         auMixer.outputVolume = 0
     }

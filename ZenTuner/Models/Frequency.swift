@@ -128,7 +128,7 @@ extension Frequency {
     /// - returns: A new frequency that's offset by the musical distance specified.
     func adding(_ distance: MusicalDistance) -> Frequency {
         var newMeasurement = measurement
-        newMeasurement.value = newMeasurement.value * Double(exp2(distance.cents / MusicalDistance.octave.cents))
+        newMeasurement.value *= Double(exp2(distance.cents / MusicalDistance.octave.cents))
         return Frequency(measurement: newMeasurement)
     }
 }

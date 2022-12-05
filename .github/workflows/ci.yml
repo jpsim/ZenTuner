@@ -27,9 +27,9 @@ jobs:
       - name: Build macOS
         run: xcodebuild build -scheme "ZenTuner_macOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
   lint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container:
-      image: ghcr.io/realm/swiftlint:0.47.0
+      image: ghcr.io/realm/swiftlint:0.50.1
     steps:
       - uses: actions/checkout@v1
       - name: Run SwiftLint

@@ -12,6 +12,8 @@ struct TunerScreen: View {
             modifierPreference: modifierPreference,
             selectedTransposition: selectedTransposition
         )
+        .opacity(pitchDetector.didReceiveAudio ? 1 : 0.5)
+        .animation(.easeInOut, value: pitchDetector.didReceiveAudio)
         .task {
             await pitchDetector.activate()
         }

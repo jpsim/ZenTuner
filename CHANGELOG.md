@@ -3,6 +3,8 @@
 * iOS 15 and macOS 12 are now required.
 * Fixed an issue where the tuner would not process audio when launched
   in some conditions, such as when using Siri to launch the app.
+* The UI now dims when audio session is starting up to make it easier to
+  know when when the tuner starts capturing audio.
 
 ## 0.2.2
 

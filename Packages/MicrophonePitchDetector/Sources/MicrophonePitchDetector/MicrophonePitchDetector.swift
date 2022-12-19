@@ -10,13 +10,27 @@ public final class MicrophonePitchDetector: ObservableObject {
     private var tracker: PitchTap!
 
     @Published public var pitch: Float = 440
+    @Published public var didReceiveAudio = false
     @Published public var showMicrophoneAccessAlert = false
 
-    public init() {
-        self.checkMicrophoneAuthorizationStatus()
+    public init() {}
+
+    @MainActor
+    public func activate() async {
+        var intervalMS: UInt64 = 30
+
+        while !didReceiveAudio {
+            try! await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
+            await checkMicrophoneAuthorizationStatus()
+            try! await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
+            start()
+            intervalMS = min(intervalMS * 2, 180)
+        }
     }
 
-    public func start() {
+    // MARK: - Private
+
+    private func start() {
         guard hasMicrophoneAccess else { return }
         do {
             try engine.start()
@@ -26,62 +40,58 @@ public final class MicrophonePitchDetector: ObservableObject {
         }
     }
 
-    public func stop() {
-        guard hasMicrophoneAccess else { return }
-        do {
-            try engine.stop()
-        } catch {
-            // TODO: Handle error
-        }
-    }
-
-    // MARK: - Private
-
-    private func checkMicrophoneAuthorizationStatus() {
+    @MainActor
+    private func checkMicrophoneAuthorizationStatus() async {
         guard !hasMicrophoneAccess else { return }
 
+        return await withUnsafeContinuation { continuation in
 #if os(watchOS)
-        AVAudioSession.sharedInstance().requestRecordPermission { granted in
-            if granted {
-                self.setUpPitchTracking()
-            } else {
-                self.showMicrophoneAccessAlert = true
-            }
-        }
-#else
-        switch AVCaptureDevice.authorizationStatus(for: .audio) {
-        case .authorized: // The user has previously granted access to the microphone.
-            self.setUpPitchTracking()
-        case .notDetermined: // The user has not yet been asked for microphone access.
-            AVCaptureDevice.requestAccess(for: .audio) { granted in
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
                 if granted {
                     self.setUpPitchTracking()
                 } else {
                     self.showMicrophoneAccessAlert = true
-                    return
                 }
+                continuation.resume()
             }
-        case .denied: // The user has previously denied access.
-            self.showMicrophoneAccessAlert = true
-            return
-        case .restricted: // The user can't grant access due to restrictions.
-            self.showMicrophoneAccessAlert = true
-            return
-        @unknown default:
-            self.showMicrophoneAccessAlert = true
-            return
-        }
+#else
+            switch AVCaptureDevice.authorizationStatus(for: .audio) {
+            case .authorized: // The user has previously granted access to the microphone.
+                self.setUpPitchTracking()
+            case .notDetermined: // The user has not yet been asked for microphone access.
+                AVCaptureDevice.requestAccess(for: .audio) { granted in
+                    if granted {
+                        self.setUpPitchTracking()
+                    } else {
+                        self.showMicrophoneAccessAlert = true
+                    }
+                }
+            case .denied: // The user has previously denied access.
+                self.showMicrophoneAccessAlert = true
+            case .restricted: // The user can't grant access due to restrictions.
+                self.showMicrophoneAccessAlert = true
+            @unknown default:
+                self.showMicrophoneAccessAlert = true
+            }
+            continuation.resume()
 #endif
+        }
     }
 
     private func setUpPitchTracking() {
-        tracker = PitchTap(engine.input) { pitch in
-            DispatchQueue.main.async {
-                self.pitch = pitch
-            }
-        }
+        Task { @MainActor in
+            tracker = PitchTap(engine.input, handler: { pitch in
+                Task { @MainActor in
+                    self.pitch = pitch
+                }
+            }, didReceiveAudio: {
+                Task { @MainActor in
+                    self.didReceiveAudio = true
+                }
+            })
 
-        hasMicrophoneAccess = true
-        start()
+            hasMicrophoneAccess = true
+            start()
+        }
     }
 }

@@ -1,6 +1,8 @@
 ## Next
 
 * iOS 15 and macOS 12 are now required.
+* Fixed an issue where the tuner would not process audio when launched
+  in some conditions, such as when using Siri to launch the app.
 
 ## 0.2.2
 

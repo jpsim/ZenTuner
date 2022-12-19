@@ -20,9 +20,9 @@ public final class MicrophonePitchDetector: ObservableObject {
         var intervalMS: UInt64 = 30
 
         while !didReceiveAudio {
-            try! await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
+            try? await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
             await checkMicrophoneAuthorizationStatus()
-            try! await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
+            try? await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
             start()
             intervalMS = min(intervalMS * 2, 180)
         }

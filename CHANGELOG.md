@@ -1,3 +1,7 @@
+## Next
+
+* iOS 15 and macOS 12 are now required.
+
 ## 0.2.2
 
 * Fixed an issue where the tuner would become unresponsive after

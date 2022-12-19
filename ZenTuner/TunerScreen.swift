@@ -2,7 +2,6 @@ import MicrophonePitchDetector
 import SwiftUI
 
 struct TunerScreen: View {
-    @Environment(\.scenePhase) private var scenePhase
     @ObservedObject private var pitchDetector = MicrophonePitchDetector()
     @AppStorage("modifierPreference") private var modifierPreference = ModifierPreference.preferSharps
     @AppStorage("selectedTransposition") private var selectedTransposition = 0
@@ -13,15 +12,8 @@ struct TunerScreen: View {
             modifierPreference: modifierPreference,
             selectedTransposition: selectedTransposition
         )
-        .onChange(of: scenePhase) { phase in
-            switch phase {
-            case .active:
-                pitchDetector.start()
-            case .inactive, .background:
-                pitchDetector.stop()
-            @unknown default:
-                pitchDetector.stop()
-            }
+        .task {
+            await pitchDetector.activate()
         }
         .alert(isPresented: $pitchDetector.showMicrophoneAccessAlert) {
             MicrophoneAccessAlert()

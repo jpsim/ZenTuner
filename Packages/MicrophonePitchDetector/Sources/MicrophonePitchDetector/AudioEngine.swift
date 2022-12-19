@@ -77,14 +77,6 @@ final class AudioEngine {
 #endif
     }
 
-    /// Stop the engine
-    func stop() throws {
-        avEngine.stop()
-#if os(iOS)
-        try session.setActive(false)
-#endif
-    }
-
     // MARK: - Private
 
     private func createSilentOutput() {

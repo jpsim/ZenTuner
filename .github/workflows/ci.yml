@@ -18,6 +18,7 @@ jobs:
       - name: Test
         run: xcodebuild test -scheme "ZenTuner_iOS" -destination platform="iOS Simulator,name=iPhone 14 Pro Max,OS=16.1"
       - name: Setup tmate session
+        if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3
   macos:
     runs-on: macos-12

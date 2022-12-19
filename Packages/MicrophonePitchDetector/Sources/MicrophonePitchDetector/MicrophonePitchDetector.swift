@@ -16,15 +16,24 @@ public final class MicrophonePitchDetector: ObservableObject {
     public init() {}
 
     @MainActor
-    public func activate() async {
+    public func activate(debug: Bool = false) async {
+        let startDate = Date()
         var intervalMS: UInt64 = 30
 
         while !didReceiveAudio {
+            if debug {
+                print("Waiting \(intervalMS * 2)ms")
+            }
             try? await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
             await checkMicrophoneAuthorizationStatus()
             try? await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
             start()
             intervalMS = min(intervalMS * 2, 180)
+        }
+
+        if debug {
+            let duration = String(format: "%.2fs", -startDate.timeIntervalSinceNow)
+            print("Took \(duration) to start")
         }
     }
 

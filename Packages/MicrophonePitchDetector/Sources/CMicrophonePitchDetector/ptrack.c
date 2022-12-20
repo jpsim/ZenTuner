@@ -148,7 +148,6 @@ void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float p
     for (i = 0; i < NPREV; i++) p->dbs[i] = -144.0;
     p->amplo = MINAMPS;
     p->npartial = 7;
-    p->dbfs = 32768.0;
 }
 
 void ptrack(zt_data *sp, zt_ptrack *p)

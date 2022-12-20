@@ -47,7 +47,7 @@ private func swift_zt_ptrack_compute(
     let buf = p.pointee.signal.ptr.bindMemory(to: Float.self, capacity: 1)
     var pos = p.pointee.cnt
     let h = p.pointee.hopsize
-    let scale = p.pointee.dbfs
+    let scale: Float = 32768.0
 
     if pos == h {
         ptrack(sp, p)

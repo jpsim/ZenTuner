@@ -42,7 +42,6 @@ typedef struct {
     float dbs[20];
     float amplo;
     float npartial;
-    float dbfs;
     zt_fft fft;
 } zt_ptrack;
 

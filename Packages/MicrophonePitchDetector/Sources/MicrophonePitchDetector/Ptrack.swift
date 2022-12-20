@@ -63,7 +63,7 @@ private let partialonset: [Float] = [
     192.0,
 ]
 
-func swift_zt_ptrack_init(sp: zt_data, p: inout zt_ptrack) {
+func swift_zt_ptrack_init(p: inout zt_ptrack, sampleRate: Float) {
     let winsize = Int(p.size*2)
     var powtwo = -1
     var tmp = winsize
@@ -109,7 +109,7 @@ func swift_zt_ptrack_init(sp: zt_data, p: inout zt_ptrack) {
 
     p.cnt = 0
     p.histcnt = 0
-    p.sr = Float(sp.sr)
+    p.sr = sampleRate
     let value: Float = -144.0
     p.dbs = (
         value,

@@ -14,7 +14,7 @@ public final class PitchTracker {
         ptrack = zt_ptrack()
         ptrack.size = Float(hopSize)
         ptrack.numpks = peakCount
-        swift_zt_ptrack_init(sp: data, p: &ptrack)
+        swift_zt_ptrack_init(p: &ptrack, sampleRate: Float(sampleRate))
     }
 
     public func getPitch(from buffer: AVAudioPCMBuffer, amplitudeThreshold: Double = 0.1) -> Double? {

@@ -324,11 +324,10 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
     }
 }
 
-void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npeak, float maxbin)
+void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npeak, float maxbin, int numpks)
 {
     HISTOPEAK histpeak;
 
-    int numpks = p->numpks;
     PEAK *peaklist = (PEAK *)p->peakarray.ptr;
     float *spectmp = (float *)p->spec2.ptr;
     float *histogram = spectmp + BINGUARD;

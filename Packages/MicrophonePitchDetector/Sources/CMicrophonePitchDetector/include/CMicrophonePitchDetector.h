@@ -41,12 +41,4 @@ typedef struct {
     zt_fft fft;
 } zt_ptrack;
 
-typedef struct histopeak
-{
-  float hpitch;
-  float hvalue;
-  float hloud;
-  int hindex;
-} HISTOPEAK;
-
 #endif

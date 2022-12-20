@@ -271,6 +271,13 @@ private func swift_ptrack_get_maxbin(n: Int) -> Float {
     return Float(BINPEROCT * (logn-2))
 }
 
+private struct HISTOPEAK {
+    var hpitch: Float = 0
+    var hvalue: Float = 0
+    var hloud: Float = 0
+    var hindex: Int32 = 0
+}
+
 private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudness: Float, npeak: inout Int32, maxbin: Float, numpks: Int32, partialonset: inout [Float], partialonset_count: Int32) {
     var histpeak = HISTOPEAK()
     let peaklist = p.peakarray.ptr.assumingMemoryBound(to: PEAK.self)

@@ -66,6 +66,35 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
+void ptrack_pt2(int npeak, int numpks, PEAK *peaklist, float maxbin, float *histogram, float totalloudness)
+{
+    int i, j, k;
+    if (npeak > numpks) npeak = numpks;
+    for (i = 0; i < maxbin; i++) histogram[i] = 0;
+    for (i = 0; i < npeak; i++) {
+        float pit = (float)(BPEROOVERLOG2 * logf(peaklist[i].pfreq) - 96.0);
+        float binbandwidth = FACTORTOBINS * peaklist[i].pwidth/peaklist[i].pfreq;
+        float putbandwidth = (binbandwidth < 2.0 ? 2.0 : binbandwidth);
+        float weightbandwidth = (binbandwidth < 1.0 ? 1.0 : binbandwidth);
+        float weightamp = 4.0 * peaklist[i].ploudness / totalloudness;
+        for (j = 0; j < NPARTIALONSET; j++) {
+            float bin = pit - partialonset[j];
+            if (bin < maxbin) {
+                float para, pphase, score = 30.0 * weightamp /
+                ((j+7) * weightbandwidth);
+                int firstbin = bin + 0.5 - 0.5 * putbandwidth;
+                int lastbin = bin + 0.5 + 0.5 * putbandwidth;
+                int ibw = lastbin - firstbin;
+                if (firstbin < -BINGUARD) break;
+                para = 1.0 / (putbandwidth * putbandwidth);
+                for (k = 0, pphase = firstbin-bin; k <= ibw; k++,pphase += 1.0) {
+                    histogram[k+firstbin] += score * (1.0 - para * pphase * pphase);
+                }
+            }
+        }
+    }
+}
+
 void ptrack_pt3(HISTOPEAK *histpeak, float maxbin, float *histogram)
 {
     int best, indx, j;
@@ -290,31 +319,7 @@ void ptrack(zt_data *sp, zt_ptrack *p)
             npeak++;
         }
 
-        if (npeak > numpks) npeak = numpks;
-        for (i = 0; i < maxbin; i++) histogram[i] = 0;
-        for (i = 0; i < npeak; i++) {
-            float pit = (float)(BPEROOVERLOG2 * logf(peaklist[i].pfreq) - 96.0);
-            float binbandwidth = FACTORTOBINS * peaklist[i].pwidth/peaklist[i].pfreq;
-            float putbandwidth = (binbandwidth < 2.0 ? 2.0 : binbandwidth);
-            float weightbandwidth = (binbandwidth < 1.0 ? 1.0 : binbandwidth);
-            float weightamp = 4.0 * peaklist[i].ploudness / totalloudness;
-            for (j = 0; j < NPARTIALONSET; j++) {
-                float bin = pit - partialonset[j];
-                if (bin < maxbin) {
-                    float para, pphase, score = 30.0 * weightamp /
-                    ((j+7) * weightbandwidth);
-                    int firstbin = bin + 0.5 - 0.5 * putbandwidth;
-                    int lastbin = bin + 0.5 + 0.5 * putbandwidth;
-                    int ibw = lastbin - firstbin;
-                    if (firstbin < -BINGUARD) break;
-                    para = 1.0 / (putbandwidth * putbandwidth);
-                    for (k = 0, pphase = firstbin-bin; k <= ibw; k++,pphase += 1.0) {
-                        histogram[k+firstbin] += score * (1.0 - para * pphase * pphase);
-                    }
-                }
-            }
-        }
-
+        ptrack_pt2(npeak, numpks, peaklist, maxbin, histogram, totalloudness);
         ptrack_pt3(&histpeak, maxbin, histogram);
         ptrack_pt4(histpeak, npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
         ptrack_pt5(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);

@@ -49,7 +49,7 @@ struct zt_ptrack {
     var spec1: zt_auxdata = zt_auxdata()
     var spec2: zt_auxdata = zt_auxdata()
     var peakarray: zt_auxdata = zt_auxdata()
-    var numpks: Int32 = 0
+    var numpks = 0
     var cnt: Int32 = 0
     var histcnt: Int32 = 0
     var hopsize: Int32 = 0
@@ -227,7 +227,7 @@ private struct HISTOPEAK {
     var hindex: Int32 = 0
 }
 
-private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudness: Float, npeak: inout Int32, maxbin: Float, numpks: Int32, partialonset: inout [Float], partialonset_count: Int32) {
+private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudness: Float, npeak: inout Int32, maxbin: Float, numpks: Int, partialonset: inout [Float], partialonset_count: Int32) {
     var histpeak = HISTOPEAK()
     let peaklist = p.peakarray.ptr.assumingMemoryBound(to: PEAK.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
@@ -331,8 +331,8 @@ private func swift_ptrack_pt2(npeak: inout Int32, numpks: Int, peaklist: UnsafeM
     }
 }
 
-private func swift_ptrack_pt3(npeak: inout Int32, numpks: Int32, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Float, partialonset: [Float], partialonset_count: Int) {
-    if npeak > numpks { npeak = numpks }
+private func swift_ptrack_pt3(npeak: inout Int32, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Float, partialonset: [Float], partialonset_count: Int) {
+    if npeak > numpks { npeak = Int32(numpks) }
     for i in 0..<Int(maxbin) { histogram[i] = 0 }
     for i in 0..<Int(npeak) {
         let pit = BPEROOVERLOG2 * logf(peaklist[i].pfreq) - 96.0

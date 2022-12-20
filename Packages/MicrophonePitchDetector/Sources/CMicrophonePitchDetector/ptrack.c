@@ -66,7 +66,7 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
-void ptrack_pt2(HISTOPEAK *histpeak, float maxbin, float *histogram)
+void ptrack_pt3(HISTOPEAK *histpeak, float maxbin, float *histogram)
 {
     int best, indx, j;
     for (best = 0, indx = -1, j=0; j < maxbin; j++) {
@@ -80,7 +80,7 @@ void ptrack_pt2(HISTOPEAK *histpeak, float maxbin, float *histogram)
     histpeak->hindex = indx;
 }
 
-void ptrack_pt3(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, int *nbelow8, float *cumpow, float *cumstrength, float *freqnum, float *freqden)
+void ptrack_pt4(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, int *nbelow8, float *cumpow, float *cumstrength, float *freqnum, float *freqden)
 {
     float putfreq = expf((1.0 / BPEROOVERLOG2) * (histpeak.hindex + 96.0));
 
@@ -106,7 +106,7 @@ void ptrack_pt3(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, i
     }
 }
 
-void ptrack_pt4(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, float hzperbin, int n)
+void ptrack_pt5(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, float hzperbin, int n)
 {
     if ((nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower) {
         histpeak->hvalue = 0;
@@ -290,34 +290,32 @@ void ptrack(zt_data *sp, zt_ptrack *p)
             npeak++;
         }
 
-          if (npeak > numpks) npeak = numpks;
-          for (i = 0; i < maxbin; i++) histogram[i] = 0;
-          for (i = 0; i < npeak; i++) {
+        if (npeak > numpks) npeak = numpks;
+        for (i = 0; i < maxbin; i++) histogram[i] = 0;
+        for (i = 0; i < npeak; i++) {
             float pit = (float)(BPEROOVERLOG2 * logf(peaklist[i].pfreq) - 96.0);
             float binbandwidth = FACTORTOBINS * peaklist[i].pwidth/peaklist[i].pfreq;
             float putbandwidth = (binbandwidth < 2.0 ? 2.0 : binbandwidth);
             float weightbandwidth = (binbandwidth < 1.0 ? 1.0 : binbandwidth);
             float weightamp = 4.0 * peaklist[i].ploudness / totalloudness;
             for (j = 0; j < NPARTIALONSET; j++) {
-              float bin = pit - partialonset[j];
-              if (bin < maxbin) {
-                float para, pphase, score = 30.0 * weightamp /
-                  ((j+7) * weightbandwidth);
-                int firstbin = bin + 0.5 - 0.5 * putbandwidth;
-                int lastbin = bin + 0.5 + 0.5 * putbandwidth;
-                int ibw = lastbin - firstbin;
-                if (firstbin < -BINGUARD) break;
-                para = 1.0 / (putbandwidth * putbandwidth);
-                for (k = 0, pphase = firstbin-bin; k <= ibw;
-                     k++,pphase += 1.0)
-                  histogram[k+firstbin] += score * (1.0 - para * pphase * pphase);
-
-              }
+                float bin = pit - partialonset[j];
+                if (bin < maxbin) {
+                    float para, pphase, score = 30.0 * weightamp /
+                    ((j+7) * weightbandwidth);
+                    int firstbin = bin + 0.5 - 0.5 * putbandwidth;
+                    int lastbin = bin + 0.5 + 0.5 * putbandwidth;
+                    int ibw = lastbin - firstbin;
+                    if (firstbin < -BINGUARD) break;
+                    para = 1.0 / (putbandwidth * putbandwidth);
+                    for (k = 0, pphase = firstbin-bin; k <= ibw; k++,pphase += 1.0)
+                        histogram[k+firstbin] += score * (1.0 - para * pphase * pphase);
+                }
             }
-          }
+        }
 
-        ptrack_pt2(&histpeak, maxbin, histogram);
-        ptrack_pt3(histpeak, npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
-        ptrack_pt4(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
+        ptrack_pt3(&histpeak, maxbin, histogram);
+        ptrack_pt4(histpeak, npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
+        ptrack_pt5(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
     }
 }

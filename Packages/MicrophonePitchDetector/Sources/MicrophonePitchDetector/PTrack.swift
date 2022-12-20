@@ -12,7 +12,7 @@
 
 import CMicrophonePitchDetector
 
-private let MINFREQINBINS = 5
+private let MINFREQINBINS: Float = 5
 private let MAXWINSIZ = 8192
 private let MINWINSIZ = 128
 private let NPREV = 20
@@ -320,17 +320,17 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
         &freqden
     )
 
-    ptrack_pt6(
-        &p,
-        nbelow8,
-        npartials,
-        totalpower,
-        &histpeak,
-        cumpow,
-        cumstrength,
-        freqnum,
-        freqden,
-        n
+    swift_ptrack_pt6(
+        p: &p,
+        nbelow8: Int(nbelow8),
+        npartials: Int(npartials),
+        totalpower: totalpower,
+        histpeak: &histpeak,
+        cumpow: cumpow,
+        cumstrength: cumstrength,
+        freqnum: freqnum,
+        freqden: freqden,
+        n: Int(n)
     )
 }
 
@@ -344,4 +344,24 @@ private func swift_ptrack_pt4(histpeak: inout HISTOPEAK, maxbin: Float, histogra
 
     histpeak.hvalue = best
     histpeak.hindex = indx
+}
+
+private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Float, histpeak: inout HISTOPEAK, cumpow: Float, cumstrength: Float, freqnum: Float, freqden: Float, n: Int) {
+    if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower {
+        histpeak.hvalue = 0
+    } else {
+        var pitchpow = cumstrength * cumstrength
+        let freqinbins = freqnum / freqden
+        pitchpow = pitchpow * pitchpow
+
+        if freqinbins < MINFREQINBINS {
+            histpeak.hvalue = 0
+        } else {
+            let hzperbin = Float(p.sr) / Float(n + n)
+            let hpitch = hzperbin * freqnum / freqden
+            histpeak.hpitch = hpitch
+            p.cps = hpitch
+            histpeak.hloud = DBSCAL * logf(pitchpow / Float(n))
+        }
+    }
 }

@@ -221,22 +221,3 @@ void ptrack_pt5(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, i
         }
     }
 }
-
-void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, int n)
-{
-    if ((nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower) {
-        histpeak->hvalue = 0;
-    } else {
-        float pitchpow = (cumstrength * cumstrength);
-        float freqinbins = freqnum/freqden;
-        pitchpow = pitchpow * pitchpow;
-
-        if (freqinbins < MINFREQINBINS) {
-            histpeak->hvalue = 0;
-        } else {
-            float hzperbin = (float) p->sr / (n + n);
-            p->cps = histpeak->hpitch = hzperbin * freqnum/freqden;
-            histpeak->hloud = DBSCAL * logf(pitchpow/n);
-        }
-    }
-}

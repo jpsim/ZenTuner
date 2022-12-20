@@ -144,8 +144,7 @@ func swift_zt_ptrack_compute(
     let scale: Float = 32768.0
 
     if pos == h {
-        let n = 2 * p.hopsize
-        ptrack(&p, n)
+        ptrackSwift(p: &p)
         pos = 0
     }
 
@@ -184,4 +183,10 @@ private extension zt_ptrack {
         default: fatalError("Illegal offset")
         }
     }
+}
+
+private func ptrackSwift(p: inout zt_ptrack) {
+    let n = 2 * p.hopsize
+    ptrack_set_histcnt(&p, n)
+    ptrack(&p, n)
 }

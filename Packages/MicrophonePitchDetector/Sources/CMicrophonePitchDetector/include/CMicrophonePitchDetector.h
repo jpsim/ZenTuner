@@ -41,6 +41,7 @@ typedef struct {
     zt_fft fft;
 } zt_ptrack;
 
+void ptrack_set_histcnt(zt_ptrack *p, int n);
 void ptrack(zt_ptrack *p, int n);
 
 #endif

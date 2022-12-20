@@ -8,9 +8,7 @@ public final class PitchTracker {
     public static var defaultBufferSize: UInt32 { 4_096 }
 
     public init(sampleRate: Int32, hopSize: Float = Float(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
-        let out = UnsafeMutablePointer<Float>.allocate(capacity: 1)
-        out.initialize(to: 0)
-        data = zt_data(out: out, sr: sampleRate, len: 5 * UInt(sampleRate), pos: 0)
+        data = zt_data(sr: sampleRate, len: 5 * UInt(sampleRate), pos: 0)
         ptrack = zt_ptrack()
         ptrack.size = hopSize
         ptrack.numpks = peakCount

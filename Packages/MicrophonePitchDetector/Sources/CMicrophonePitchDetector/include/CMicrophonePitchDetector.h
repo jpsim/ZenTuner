@@ -11,7 +11,6 @@ typedef struct {
 } zt_auxdata;
 
 typedef struct {
-    float *out;
     int sr;
     unsigned long len;
     unsigned long pos;

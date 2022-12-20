@@ -137,28 +137,29 @@ func swift_zt_ptrack_init(sp: zt_data, p: inout zt_ptrack) {
 }
 
 func swift_zt_ptrack_compute(
-    _ sp: UnsafeMutablePointer<zt_data>!,
-    _ p: UnsafeMutablePointer<zt_ptrack>!,
+    _ sp: inout zt_data,
+    _ p: inout zt_ptrack,
     _ in: UnsafeMutablePointer<Float>!,
-    _ freq: UnsafeMutablePointer<Float>!,
-    _ amp: UnsafeMutablePointer<Float>!
+    _ freq: inout Float,
+    _ amp: inout Float
 ) {
-    let buf = p.pointee.signal.ptr.bindMemory(to: Float.self, capacity: 1)
-    var pos = p.pointee.cnt
-    let h = p.pointee.hopsize
+    let buf = p.signal.ptr.bindMemory(to: Float.self, capacity: 1)
+    var pos = p.cnt
+    let h = p.hopsize
     let scale: Float = 32768.0
 
     if pos == h {
-        ptrack(sp, p)
+        ptrack(&sp, &p)
         pos = 0
     }
+
     buf[Int(pos)] = `in`.pointee * scale
     pos += 1
 
-    freq.pointee = p.pointee.cps
-    amp.pointee = exp(p.pointee.getDBS(atIndex: p.pointee.histcnt) / 20.0 * log(10.0))
+    freq = p.cps
+    amp = exp(p.getDBS(atIndex: p.histcnt) / 20.0 * log(10.0))
 
-    p.pointee.cnt = pos
+    p.cnt = pos
 }
 
 private extension zt_ptrack {

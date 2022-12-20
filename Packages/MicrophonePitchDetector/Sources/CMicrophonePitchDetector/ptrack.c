@@ -195,29 +195,3 @@ void ptrack_pt3(int npeak, int numpks, PEAK *peaklist, float maxbin, float *hist
         }
     }
 }
-
-void ptrack_pt5(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, int *nbelow8, float *cumpow, float *cumstrength, float *freqnum, float *freqden)
-{
-    float putfreq = expf((1.0 / BPEROOVERLOG2) * (histpeak.hindex + 96.0));
-
-    for (int j = 0; j < npeak; j++) {
-        float fpnum = peaklist[j].pfreq/putfreq;
-        int pnum = (int)(fpnum + 0.5);
-        float fipnum = pnum;
-        float deviation;
-        if (pnum > 16 || pnum < 1) continue;
-        deviation = 1.0 - fpnum/fipnum;
-        if (deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE) {
-            float stdev, weight;
-            (*npartials)++;
-            if (pnum < 8) (*nbelow8)++;
-            *cumpow += peaklist[j].ppow;
-            *cumstrength += sqrt(sqrt(peaklist[j].ppow));
-            stdev = (peaklist[j].pwidth > MINBW ?
-               peaklist[j].pwidth : MINBW);
-            weight = 1.0 / ((stdev*fipnum) * (stdev*fipnum));
-            *freqden += weight;
-            *freqnum += weight * peaklist[j].pfreq/fipnum;
-        }
-    }
-}

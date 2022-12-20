@@ -308,16 +308,16 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
     var npartials: Int32 = 0
     var nbelow8: Int32 = 0
 
-    ptrack_pt5(
-        histpeak,
-        npeak,
-        peaklist,
-        &npartials,
-        &nbelow8,
-        &cumpow,
-        &cumstrength,
-        &freqnum,
-        &freqden
+    swift_ptrack_pt5(
+        histpeak: histpeak,
+        npeak: Int(npeak),
+        peaklist: peaklist,
+        npartials: &npartials,
+        nbelow8: &nbelow8,
+        cumpow: &cumpow,
+        cumstrength: &cumstrength,
+        freqnum: &freqnum,
+        freqden: &freqden
     )
 
     swift_ptrack_pt6(
@@ -345,6 +345,32 @@ private func swift_ptrack_pt4(histpeak: inout HISTOPEAK, maxbin: Float, histogra
     histpeak.hvalue = best
     histpeak.hindex = indx
 }
+
+private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeMutablePointer<PEAK>, npartials: inout Int32, nbelow8: inout Int32, cumpow: inout Float, cumstrength: inout Float, freqnum: inout Float, freqden: inout Float) {
+    let putfreq = expf((1.0 / BPEROOVERLOG2) * (Float(histpeak.hindex) + 96.0))
+
+    for j in 0..<npeak {
+        let fpnum = peaklist[j].pfreq / putfreq
+        let pnum = Int(fpnum + 0.5)
+        let fipnum = Float(pnum)
+        var deviation: Float
+        if pnum > 16 || pnum < 1 { continue }
+        deviation = 1.0 - fpnum / fipnum
+        if deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE {
+            var stdev: Float
+            var weight: Float
+            npartials += 1
+            if pnum < 8 { nbelow8 += 1 }
+            cumpow += peaklist[j].ppow
+            cumstrength += sqrt(sqrt(peaklist[j].ppow))
+            stdev = peaklist[j].pwidth > MINBW ? peaklist[j].pwidth : MINBW
+            weight = 1.0 / (stdev * fipnum) * (stdev * fipnum)
+            freqden += weight
+            freqnum += weight * peaklist[j].pfreq / fipnum
+        }
+    }
+}
+
 
 private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Float, histpeak: inout HISTOPEAK, cumpow: Float, cumstrength: Float, freqnum: Float, freqden: Float, n: Int) {
     if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower {

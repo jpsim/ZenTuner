@@ -220,15 +220,15 @@ private func ptrackSwift(p: inout zt_ptrack) {
     if totaldb >= p.amplo {
         var npeak: Int32 = 0
         ptrack(
-            &p,
-            n,
-            totalpower,
-            totalloudness,
-            &npeak,
-            swift_ptrack_get_maxbin(n: Int(n)),
-            p.numpks,
-            &partialonset,
-            Int32(partialonset.count)
+            p: &p,
+            n: n,
+            totalpower: totalpower,
+            totalloudness: totalloudness,
+            npeak: &npeak,
+            maxbin: swift_ptrack_get_maxbin(n: Int(n)),
+            numpks: p.numpks,
+            partialonset: &partialonset,
+            partialonset_count: Int32(partialonset.count)
         )
     }
 }
@@ -270,4 +270,65 @@ private func swift_ptrack_get_maxbin(n: Int) -> Float {
         logn += 1
     }
     return Float(BINPEROCT * (logn-2))
+}
+
+private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudness: Float, npeak: inout Int32, maxbin: Float, numpks: Int32, partialonset: inout [Float], partialonset_count: Int32) {
+    var histpeak = HISTOPEAK()
+    let peaklist = p.peakarray.ptr.assumingMemoryBound(to: PEAK.self)
+    let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
+    let histogram = spectmp.advanced(by: BINGUARD)
+    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
+
+    ptrack_pt2(
+        &npeak,
+        Int32(numpks),
+        peaklist,
+        totalpower,
+        spec,
+        Int32(n)
+    )
+
+    ptrack_pt3(
+        npeak,
+        numpks,
+        peaklist,
+        maxbin,
+        histogram,
+        totalloudness,
+        &partialonset,
+        partialonset_count
+    )
+    ptrack_pt4(&histpeak, maxbin, histogram)
+
+    var cumpow: Float = 0
+    var cumstrength: Float = 0
+    var freqnum: Float = 0
+    var freqden: Float = 0
+    var npartials: Int32 = 0
+    var nbelow8: Int32 = 0
+
+    ptrack_pt5(
+        histpeak,
+        npeak,
+        peaklist,
+        &npartials,
+        &nbelow8,
+        &cumpow,
+        &cumstrength,
+        &freqnum,
+        &freqden
+    )
+
+    ptrack_pt6(
+        &p,
+        nbelow8,
+        npartials,
+        totalpower,
+        &histpeak,
+        cumpow,
+        cumstrength,
+        freqnum,
+        freqden,
+        n
+    )
 }

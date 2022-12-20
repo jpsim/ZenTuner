@@ -50,6 +50,10 @@ typedef struct histopeak
 } HISTOPEAK;
 
 void ptrack_set_spec(zt_ptrack *p);
-void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npeak, float maxbin, int numpks, float partialonset[], int partialonset_count);
+void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n);
+void ptrack_pt3(int npeak, int numpks, PEAK *peaklist, float maxbin, float *histogram, float totalloudness, float partialonset[], int partialonset_count);
+void ptrack_pt4(HISTOPEAK *histpeak, float maxbin, float *histogram);
+void ptrack_pt5(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, int *nbelow8, float *cumpow, float *cumstrength, float *freqnum, float *freqden);
+void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, int n);
 
 #endif

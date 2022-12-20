@@ -33,7 +33,7 @@
 #define COEF5 ((float)(.5 * 0.002533))
 #define FLTLEN 5
 
-void ptrack_set_spec(zt_ptrack *p)
+void ptrack_set_spec_pt1(zt_ptrack *p)
 {
     float *spec = (float *)p->spec1.ptr;
     float *spectmp = (float *)p->spec2.ptr;
@@ -49,6 +49,13 @@ void ptrack_set_spec(zt_ptrack *p)
     }
 
     zt_fft_cpx(&p->fft, spec, hop);
+}
+
+void ptrack_set_spec_pt2(zt_ptrack *p)
+{
+    float *spec = (float *)p->spec1.ptr;
+    float *spectmp = (float *)p->spec2.ptr;
+    int i, k, hop = p->hopsize, n = 2*hop;
 
     for (i = 0, k = 2*FLTLEN; i < hop; i+=2, k += 4) {
         spectmp[k]   = spec[i];
@@ -69,6 +76,15 @@ void ptrack_set_spec(zt_ptrack *p)
         spectmp[k]   = spectmp[i];
         spectmp[k+1] = -spectmp[k+1];
     }
+}
+
+void ptrack_set_spec_pt3(zt_ptrack *p)
+{
+    float *spec = (float *)p->spec1.ptr;
+    float *spectmp = (float *)p->spec2.ptr;
+    float *prev  = (float *)p->prev.ptr;
+    int i, j, k, hop = p->hopsize, n = 2*hop;
+    int halfhop = hop>>1;
 
     for (i = j = 0, k = 2*FLTLEN; i < halfhop; i++, j+=8, k+=2) {
         float re,  im;
@@ -109,9 +125,14 @@ void ptrack_set_spec(zt_ptrack *p)
         spec[j+1] = 0.707106781186547524400844362104849 * (im - re);
         spec[j+4] = prev[k] - spectmp[k+1];
         spec[j+5] = prev[k+1] + spectmp[k];
-
     }
-
+}
+void ptrack_set_spec_pt4(zt_ptrack *p)
+{
+    float *spec = (float *)p->spec1.ptr;
+    float *spectmp = (float *)p->spec2.ptr;
+    float *prev  = (float *)p->prev.ptr;
+    int i, k, hop = p->hopsize, n = 2*hop;
 
     for (i = 0; i < n + 4*FLTLEN; i++) prev[i] = spectmp[i];
 

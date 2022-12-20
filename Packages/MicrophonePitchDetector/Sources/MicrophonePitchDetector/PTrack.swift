@@ -213,7 +213,7 @@ private extension zt_ptrack {
 private func ptrackSwift(p: inout zt_ptrack) {
     let n = 2 * p.hopsize
     swift_ptrack_set_histcnt(p: &p, n: n)
-    ptrack_set_spec(&p)
+    swift_ptrack_set_spec(p: &p)
     var totalpower: Float = 0
     var totalloudness: Float = 0
     var totaldb: Float = 0
@@ -466,10 +466,10 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
 }
 
 private func swift_ptrack_set_spec(p: inout zt_ptrack) {
-    swift_ptrack_set_spec_pt1(p: &p)
-    swift_ptrack_set_spec_pt2(p: &p)
-    swift_ptrack_set_spec_pt3(p: &p)
-    swift_ptrack_set_spec_pt4(p: &p)
+    ptrack_set_spec_pt1(&p)
+    ptrack_set_spec_pt2(&p)
+    ptrack_set_spec_pt3(&p)
+    ptrack_set_spec_pt4(&p)
 }
 
 private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {

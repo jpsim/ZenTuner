@@ -49,7 +49,11 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
-void ptrack_set_spec(zt_ptrack *p);
+void ptrack_set_spec_pt1(zt_ptrack *p);
+void ptrack_set_spec_pt2(zt_ptrack *p);
+void ptrack_set_spec_pt3(zt_ptrack *p);
+void ptrack_set_spec_pt4(zt_ptrack *p);
+
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n);
 
 #endif

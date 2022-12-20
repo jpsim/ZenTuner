@@ -42,7 +42,6 @@ void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float 
         float height = spec[i+2];
         float h1 = spec[i-2];
         float h2 = spec[i+6];
-        float totalfreq, peakfr, tmpfr1, tmpfr2, m, v, stdev;
 
         if (height < h1 || height < h2 ||
             h1 < 0.00001*totalpower ||
@@ -51,22 +50,22 @@ void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float 
             continue;
         }
 
-        peakfr = get_peakfr(spec, height, i);
-        tmpfr1 = get_tmpfr1(spec, h1, i);
-        tmpfr2 = get_tmpfr2(spec, h2, i);
+        float peakfr = get_peakfr(spec, height, i);
+        float tmpfr1 = get_tmpfr1(spec, h1, i);
+        float tmpfr2 = get_tmpfr2(spec, h2, i);
 
-        m = 0.333333333333 * (peakfr + tmpfr1 + tmpfr2);
-        v = 0.5 * ((peakfr-m)*(peakfr-m) +
-                   (tmpfr1-m)*(tmpfr1-m) + (tmpfr2-m)*(tmpfr2-m));
+        float m = 0.333333333333 * (peakfr + tmpfr1 + tmpfr2);
+        float v = 0.5 * ((peakfr-m)*(peakfr-m) +
+                         (tmpfr1-m)*(tmpfr1-m) + (tmpfr2-m)*(tmpfr2-m));
 
-        totalfreq = (i >> 2) + m;
+        float totalfreq = (i >> 2) + m;
         if (v * totalpower > THRSH * height ||
             v < 1.0e-30)
         {
             continue;
         }
 
-        stdev = (float)sqrt((float)v);
+        float stdev = (float)sqrt((float)v);
         if (totalfreq < 4) {
             totalfreq = 4;
         }

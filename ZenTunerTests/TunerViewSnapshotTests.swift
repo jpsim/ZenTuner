@@ -33,7 +33,11 @@ final class TunerViewSnapshotTests: XCTestCase {
 
 private extension Snapshotting where Value: View, Format == UIImage {
     static func image(_ config: ViewImageConfig, _ style: UIUserInterfaceStyle) -> Snapshotting {
-        return .image(layout: .device(config: config), traits: .init(userInterfaceStyle: style))
+        return .image(
+            perceptualPrecision: 0.99,
+            layout: .device(config: config),
+            traits: .init(userInterfaceStyle: style)
+        )
     }
 }
 

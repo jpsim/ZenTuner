@@ -10,27 +10,26 @@ on:
 
 jobs:
   test:
-    runs-on: macos-11
+    runs-on: macos-12
     env:
-      # Update to Xcode 13.3 once a workaround is found for https://github.com/pointfreeco/swift-snapshot-testing/issues/598
-      DEVELOPER_DIR: /Applications/Xcode_13.2.1.app
+      DEVELOPER_DIR: /Applications/Xcode_14.1.app
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Test
-        run: xcodebuild test -scheme "ZenTuner_iOS" -destination platform="iOS Simulator,name=iPhone 13 Pro Max,OS=15.2"
+        run: xcodebuild test -scheme "ZenTuner_iOS" -destination platform="iOS Simulator,name=iPhone 14 Pro Max,OS=16.1"
   macos:
     runs-on: macos-12
     env:
-      DEVELOPER_DIR: /Applications/Xcode_13.3.app
+      DEVELOPER_DIR: /Applications/Xcode_14.1.app
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Build macOS
         run: xcodebuild build -scheme "ZenTuner_macOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
   lint:
     runs-on: ubuntu-20.04
     container:
-      image: ghcr.io/realm/swiftlint:0.50.1
+      image: ghcr.io/realm/swiftlint:0.50.3
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Run SwiftLint
         run: swiftlint lint --strict

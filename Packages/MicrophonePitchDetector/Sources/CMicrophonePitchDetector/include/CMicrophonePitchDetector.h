@@ -9,8 +9,6 @@
 #ifndef ZTFLOAT
 #define ZTFLOAT float
 #endif
-#define ZT_OK 1
-#define ZT_NOT_OK 0
 
 typedef struct {
     size_t size;
@@ -24,11 +22,11 @@ typedef struct {
     unsigned long pos;
 } zt_data;
 
-int zt_auxdata_alloc(zt_auxdata *aux, size_t size);
-int zt_auxdata_free(zt_auxdata *aux);
+void zt_auxdata_alloc(zt_auxdata *aux, size_t size);
+void zt_auxdata_free(zt_auxdata *aux);
 
-int zt_create(zt_data **spp);
-int zt_destroy(zt_data **spp);
+void zt_create(zt_data **spp);
+void zt_destroy(zt_data **spp);
 
 typedef struct {
     ZTFLOAT *utbl;
@@ -58,9 +56,9 @@ typedef struct {
     zt_fft fft;
 } zt_ptrack;
 
-int zt_ptrack_create(zt_ptrack **p);
-int zt_ptrack_destroy(zt_ptrack **p);
-int zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks);
-int zt_ptrack_compute(zt_data *sp, zt_ptrack *p, ZTFLOAT *in, ZTFLOAT *freq, ZTFLOAT *amp);
+void zt_ptrack_create(zt_ptrack **p);
+void zt_ptrack_destroy(zt_ptrack **p);
+void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks);
+void zt_ptrack_compute(zt_data *sp, zt_ptrack *p, ZTFLOAT *in, ZTFLOAT *freq, ZTFLOAT *amp);
 
 #endif

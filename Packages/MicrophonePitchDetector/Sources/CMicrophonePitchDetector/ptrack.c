@@ -236,7 +236,7 @@ void ptrack_pt5(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, i
     }
 }
 
-void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, float hzperbin, int n)
+void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, int n)
 {
     if ((nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower) {
         histpeak->hvalue = 0;
@@ -248,6 +248,7 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
         if (freqinbins < MINFREQINBINS) {
             histpeak->hvalue = 0;
         } else {
+            float hzperbin = (float) p->sr / (n + n);
             p->cps = histpeak->hpitch = hzperbin * freqnum/freqden;
             histpeak->hloud = DBSCAL * logf(pitchpow/n);
         }
@@ -270,6 +271,5 @@ void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npe
     float cumpow = 0, cumstrength = 0, freqnum = 0, freqden = 0;
     int npartials = 0, nbelow8 = 0;
     ptrack_pt5(histpeak, *npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
-    float hzperbin = (float) p->sr / (n + n);
-    ptrack_pt6(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
+    ptrack_pt6(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, n);
 }

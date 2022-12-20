@@ -2,13 +2,15 @@ import AVFoundation
 import CMicrophonePitchDetector
 
 public final class PitchTracker {
-    private var data = zt_data()
+    private var data: zt_data
     private var ptrack = zt_ptrack()
 
     public static var defaultBufferSize: UInt32 { 4_096 }
 
     public init(sampleRate: Int32, hopSize: Int32 = Int32(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
-        swift_zt_create(&data, sampleRate: sampleRate)
+        let out = UnsafeMutablePointer<Float>.allocate(capacity: 1)
+        out.initialize(to: 0)
+        data = zt_data(out: out, sr: sampleRate, len: 5 * UInt(sampleRate), pos: 0)
         swift_zt_ptrack_init(sp: &data, p: &ptrack, ihopsize: Int(hopSize), ipeaks: Int(peakCount))
     }
 

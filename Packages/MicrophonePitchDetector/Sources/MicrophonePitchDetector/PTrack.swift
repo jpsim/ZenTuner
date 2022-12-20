@@ -35,6 +35,7 @@ private let COEF3: Float = 0.5 * 0.095326
 private let COEF4: Float = 0.5 * -0.022748
 private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
+private let MAGIC: Float = 0.707106781186547524400844362104849
 
 private func swift_zt_auxdata_alloc(aux: inout zt_auxdata, size: Int) {
     aux.ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: 1)

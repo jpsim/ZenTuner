@@ -75,7 +75,7 @@ func swift_zt_ptrack_init(p: inout zt_ptrack, sampleRate: Float) {
 
     swift_zt_fft_init(p: &p, M: powtwo - 1)
 
-    if Int(winsize) != (1 << Int(powtwo)) {
+    if winsize != (1 << powtwo) {
         return
     }
 

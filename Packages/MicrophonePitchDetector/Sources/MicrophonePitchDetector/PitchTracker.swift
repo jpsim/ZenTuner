@@ -166,7 +166,6 @@ private func swift_zt_ptrack_init(sp: UnsafeMutablePointer<zt_data>?, p: UnsafeM
         value
     )
     p.pointee.amplo = Float(MINAMPS)
-    p.pointee.npartial = 7
 }
 
 private func swift_zt_ptrack_compute(

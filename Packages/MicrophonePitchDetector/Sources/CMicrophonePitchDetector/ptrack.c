@@ -245,7 +245,7 @@ void ptrack(zt_data *sp, zt_ptrack *p)
               float bin = pit - partialonset[j];
               if (bin < maxbin) {
                 float para, pphase, score = 30.0 * weightamp /
-                  ((j+p->npartial) * weightbandwidth);
+                  ((j+7) * weightbandwidth);
                 int firstbin = bin + 0.5 - 0.5 * putbandwidth;
                 int lastbin = bin + 0.5 + 0.5 * putbandwidth;
                 int ibw = lastbin - firstbin;

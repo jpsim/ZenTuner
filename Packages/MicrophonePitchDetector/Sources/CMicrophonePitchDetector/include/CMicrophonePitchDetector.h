@@ -31,7 +31,8 @@ typedef struct {
     int16_t *BRLowCpx;
 } zt_fft;
 
-void zt_fft_init(zt_fft *fft, int M);
+void fftCosInit(int M, float *Utbl);
+void fftBRInit(int M, int16_t *BRLow);
 void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize);
 
 typedef struct {

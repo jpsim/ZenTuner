@@ -28,7 +28,7 @@
 * routines to initialize tables used by fft routines *
 *****************************************************/
 
-static void fftCosInit(int M, float *Utbl)
+void fftCosInit(int M, float *Utbl)
 {
     /* Compute Utbl, the cosine table for ffts  */
     /* of size (pow(2,M)/4 +1)                  */
@@ -1109,35 +1109,7 @@ static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow)
     }
 }
 
-void zt_fft_init(zt_fft *fft, int M)
-{
-    float *utbl;
-    int16_t *BRLow;
-    int16_t *BRLowCpx;
-//    int i;
-
-    /* init cos table */
-    utbl = (float*) malloc((POW2(M) / 4 + 1) * sizeof(float));
-    fftCosInit(M, utbl);
-
-    BRLowCpx =
-      (int16_t*) malloc(POW2(M / 2 - 1) * sizeof(int16_t));
-    fftBRInit(M, BRLowCpx);
-
-    /* init bit reversed table for real FFT */
-     BRLow =
-      (int16_t*) malloc(POW2((M - 1) / 2 - 1) * sizeof(int16_t));
-    fftBRInit(M - 1, BRLow);
-
-    fft->BRLow = BRLow;
-    fft->BRLowCpx = BRLowCpx;
-    fft->utbl = utbl;
-}
-
 void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize)
 {
-//    float *Utbl;
-//    int16_t *BRLow;
-    int   M = log2(FFTsize);
-    ffts1(buf, M, fft->utbl, fft->BRLowCpx);
+    ffts1(buf, log2(FFTsize), fft->utbl, fft->BRLowCpx);
 }

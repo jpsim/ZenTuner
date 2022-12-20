@@ -100,11 +100,11 @@ private func swift_zt_ptrack_init(sp: UnsafeMutablePointer<zt_data>?, p: UnsafeM
     var tmp = winsize
 
     while tmp > 0 {
-      tmp >>= 1
-      powtwo += 1
+        tmp >>= 1
+        powtwo += 1
     }
 
-    zt_fft_init(&p.pointee.fft, Int32(powtwo - 1))
+    swift_zt_fft_init(p: p, M: powtwo - 1)
 
     if Int(winsize) != (1 << Int(powtwo)) {
         return
@@ -232,4 +232,24 @@ private func swift_zt_create(_ spp: UnsafeMutablePointer<UnsafeMutablePointer<zt
     sp.pointee.sr = 44100
     sp.pointee.len = 5 * UInt(sp.pointee.sr)
     sp.pointee.pos = 0
+}
+
+// MARK: - Ported from fft.c
+
+private func swift_zt_fft_init(p: UnsafeMutablePointer<zt_ptrack>, M: Int) {
+    let utbl = UnsafeMutablePointer<Float>.allocate(capacity: (pow2(M) / 4 + 1))
+    fftCosInit(Int32(M), utbl)
+
+    let BRLowCpx = UnsafeMutablePointer<Int16>.allocate(capacity: pow2(M / 2 - 1))
+    fftBRInit(Int32(M), BRLowCpx)
+
+    let BRLow = UnsafeMutablePointer<Int16>.allocate(capacity: pow2((M - 1) / 2 - 1))
+    fftBRInit(Int32(M) - 1, BRLow)
+    p.pointee.fft.BRLow = BRLow
+    p.pointee.fft.BRLowCpx = BRLowCpx
+    p.pointee.fft.utbl = utbl
+}
+
+private func pow2(_ n: Int) -> Int {
+    1 << n
 }

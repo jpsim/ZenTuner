@@ -16,8 +16,6 @@
 #include "CMicrophonePitchDetector.h"
 
 #define MINFREQINBINS 5
-#define MAXWINSIZ 8192
-#define MINWINSIZ 128
 #define NPREV 20
 #define MINBW 0.03
 #define BINPEROCT 48
@@ -28,7 +26,6 @@
 #define DBSCAL 3.333
 #define DBOFFSET -92.3
 #define MINBIN 3
-#define MINAMPS 40
 
 #define THRSH 10.
 
@@ -40,18 +37,6 @@
 #define FLTLEN 5
 
 #define NPARTIALONSET ((int)(sizeof(partialonset)/sizeof(float)))
-
-void zt_auxdata_alloc(zt_auxdata *aux, size_t size)
-{
-    aux->ptr = malloc(size);
-    aux->size = size;
-    memset(aux->ptr, 0, size);
-}
-
-void zt_auxdata_free(zt_auxdata *aux)
-{
-    free(aux->ptr);
-}
 
 static const float partialonset[] =
 {
@@ -81,74 +66,6 @@ typedef struct histopeak
   int hindex;
   int hused;
 } HISTOPEAK;
-
-typedef struct peak
-{
-  float pfreq;
-  float pwidth;
-  float ppow;
-  float ploudness;
-} PEAK;
-
-void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float pi)
-{
-    p->size = ihopsize;
-
-    int i, winsize = p->size*2, powtwo, tmp;
-    float *tmpb;
-
-    if (winsize < MINWINSIZ || winsize > MAXWINSIZ) {
-      fprintf(stderr, "Woops\n");
-      return;
-    }
-
-    tmp = winsize;
-
-    powtwo = -1;
-
-    while (tmp) {
-      tmp >>= 1;
-      powtwo++;
-    }
-
-    /* 3 days of debugging later... I found this off by one error */
-    /* powtwo needs to be powtwo - 1 for fft_init */
-    zt_fft_init(&p->fft, powtwo - 1);
-
-    if (winsize != (1 << powtwo)) {
-        fprintf(stderr, "Woops\n");
-        return;
-    }
-
-    p->hopsize = p->size;
-
-    zt_auxdata_alloc(&p->signal, p->hopsize * sizeof(float));
-    zt_auxdata_alloc(&p->prev, (p->hopsize*2 + 4*FLTLEN)*sizeof(float));
-    zt_auxdata_alloc(&p->sin, (p->hopsize*2)*sizeof(float));
-    zt_auxdata_alloc(&p->spec2, (winsize*4 + 4*FLTLEN)*sizeof(float));
-    zt_auxdata_alloc(&p->spec1, (winsize*4)*sizeof(float));
-
-    for (i = 0, tmpb = (float *)p->signal.ptr; i < p->hopsize; i++)
-        tmpb[i] = 0.0;
-    for (i = 0, tmpb = (float *)p->prev.ptr; i < winsize + 4 * FLTLEN; i++)
-        tmpb[i] = 0.0;
-    for (i = 0, tmpb = (float *)p->sin.ptr; i < p->hopsize; i++) {
-        tmpb[2*i] =   (float) cos((pi*i)/(winsize));
-        tmpb[2*i+1] = -(float)sin((pi*i)/(winsize));
-    }
-
-    p->cnt = 0;
-    p->numpks = ipeaks;
-
-    zt_auxdata_alloc(&p->peakarray, (p->numpks+1)*sizeof(PEAK));
-
-    p->cnt = 0;
-    p->histcnt = 0;
-    p->sr = sp->sr;
-    for (i = 0; i < NPREV; i++) p->dbs[i] = -144.0;
-    p->amplo = MINAMPS;
-    p->npartial = 7;
-}
 
 void ptrack(zt_data *sp, zt_ptrack *p)
 {

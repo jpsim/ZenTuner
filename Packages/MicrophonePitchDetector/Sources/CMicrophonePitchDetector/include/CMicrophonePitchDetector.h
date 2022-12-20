@@ -18,6 +18,14 @@ typedef struct {
     unsigned long pos;
 } zt_data;
 
+typedef struct peak
+{
+  float pfreq;
+  float pwidth;
+  float ppow;
+  float ploudness;
+} PEAK;
+
 typedef struct {
     float *utbl;
     int16_t *BRLow;
@@ -45,7 +53,6 @@ typedef struct {
     zt_fft fft;
 } zt_ptrack;
 
-void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float pi);
 void ptrack(zt_data *sp, zt_ptrack *p);
 
 #endif

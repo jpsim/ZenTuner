@@ -53,7 +53,7 @@ struct zt_ptrack {
     var cnt = 0
     var histcnt = 0
     var hopsize = 0
-    var sr: Float = 0
+    var sr = 0.0
     var cps: Float = 0
     var dbs: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var amplo = 0.0

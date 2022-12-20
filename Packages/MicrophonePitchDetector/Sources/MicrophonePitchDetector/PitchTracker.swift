@@ -10,7 +10,7 @@ public final class PitchTracker {
         ptrack = zt_ptrack()
         ptrack.size = hopSize
         ptrack.numpks = peakCount
-        ptrack.sr = Float(sampleRate)
+        ptrack.sr = Double(sampleRate)
         swift_zt_ptrack_init(p: &ptrack)
     }
 

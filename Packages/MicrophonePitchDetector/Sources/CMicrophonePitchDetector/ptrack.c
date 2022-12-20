@@ -66,6 +66,24 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
+void ptrack_pt2(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, float hzperbin, int n)
+{
+    if ((nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower) {
+        histpeak->hvalue = 0;
+    } else {
+        float pitchpow = (cumstrength * cumstrength);
+        float freqinbins = freqnum/freqden;
+        pitchpow = pitchpow * pitchpow;
+
+        if (freqinbins < MINFREQINBINS) {
+            histpeak->hvalue = 0;
+        } else {
+            p->cps = histpeak->hpitch = hzperbin * freqnum/freqden;
+            histpeak->hloud = DBSCAL * logf(pitchpow/n);
+        }
+    }
+}
+
 void ptrack(zt_data *sp, zt_ptrack *p)
 {
     float *spec = (float *)p->spec1.ptr;
@@ -291,19 +309,7 @@ void ptrack(zt_data *sp, zt_ptrack *p)
                 freqnum += weight * peaklist[j].pfreq/fipnum;
             }
         }
-        if ((nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower) {
-            histpeak.hvalue = 0;
-        } else {
-            float pitchpow = (cumstrength * cumstrength);
-            float freqinbins = freqnum/freqden;
-            pitchpow = pitchpow * pitchpow;
 
-            if (freqinbins < MINFREQINBINS) {
-                histpeak.hvalue = 0;
-            } else {
-                p->cps = histpeak.hpitch = hzperbin * freqnum/freqden;
-                histpeak.hloud = DBSCAL * logf(pitchpow/n);
-            }
-        }
+        ptrack_pt2(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
     }
 }

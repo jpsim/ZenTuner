@@ -308,8 +308,9 @@ void ptrack(zt_data *sp, zt_ptrack *p)
                     int ibw = lastbin - firstbin;
                     if (firstbin < -BINGUARD) break;
                     para = 1.0 / (putbandwidth * putbandwidth);
-                    for (k = 0, pphase = firstbin-bin; k <= ibw; k++,pphase += 1.0)
+                    for (k = 0, pphase = firstbin-bin; k <= ibw; k++,pphase += 1.0) {
                         histogram[k+firstbin] += score * (1.0 - para * pphase * pphase);
+                    }
                 }
             }
         }

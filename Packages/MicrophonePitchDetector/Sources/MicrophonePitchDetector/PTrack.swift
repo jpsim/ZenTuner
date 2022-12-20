@@ -12,7 +12,7 @@
 
 import CMicrophonePitchDetector
 
-private let MINFREQINBINS: Float = 5
+private let MINFREQINBINS = 5.0
 private let NPREV = 20
 private let MINBW: Float = 0.03
 private let BINPEROCT = 48
@@ -404,7 +404,7 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
         let freqinbins = freqnum / freqden
         pitchpow = pitchpow * pitchpow
 
-        if freqinbins < MINFREQINBINS {
+        if freqinbins < Float(MINFREQINBINS) {
             histpeak.hvalue = 0
         } else {
             let hzperbin = Float(p.sr) / Float(n + n)

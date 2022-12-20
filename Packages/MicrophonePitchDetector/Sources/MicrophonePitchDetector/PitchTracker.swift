@@ -3,7 +3,7 @@ import CMicrophonePitchDetector
 
 public final class PitchTracker {
     private var data: zt_data
-    private var ptrack = zt_ptrack()
+    private var ptrack: zt_ptrack
 
     public static var defaultBufferSize: UInt32 { 4_096 }
 
@@ -11,7 +11,10 @@ public final class PitchTracker {
         let out = UnsafeMutablePointer<Float>.allocate(capacity: 1)
         out.initialize(to: 0)
         data = zt_data(out: out, sr: sampleRate, len: 5 * UInt(sampleRate), pos: 0)
-        swift_zt_ptrack_init(sp: &data, p: &ptrack, ihopsize: Int(hopSize), ipeaks: Int(peakCount))
+        ptrack = zt_ptrack()
+        ptrack.size = Float(hopSize)
+        ptrack.numpks = peakCount
+        swift_zt_ptrack_init(sp: &data, p: &ptrack)
     }
 
     public func getPitch(from buffer: AVAudioPCMBuffer, amplitudeThreshold: Double = 0.1) -> Double? {

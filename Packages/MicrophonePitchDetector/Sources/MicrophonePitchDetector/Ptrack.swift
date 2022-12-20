@@ -65,12 +65,8 @@ private let partialonset: [Float] = [
 
 func swift_zt_ptrack_init(
     sp: UnsafeMutablePointer<zt_data>,
-    p: UnsafeMutablePointer<zt_ptrack>,
-    ihopsize: Int,
-    ipeaks: Int
+    p: UnsafeMutablePointer<zt_ptrack>
 ) {
-    p.pointee.size = Float(ihopsize)
-
     let winsize = Int(p.pointee.size*2)
     var powtwo = -1
     var tmp = winsize
@@ -111,7 +107,6 @@ func swift_zt_ptrack_init(
     }
 
     p.pointee.cnt = 0
-    p.pointee.numpks = Int32(ipeaks)
 
     swift_zt_auxdata_alloc(aux: &p.pointee.peakarray, size: (Int(p.pointee.numpks)+1)*MemoryLayout<PEAK>.size)
 

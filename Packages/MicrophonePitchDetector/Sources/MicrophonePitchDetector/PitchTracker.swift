@@ -8,7 +8,7 @@ public final class PitchTracker {
     public static var defaultBufferSize: UInt32 { 4_096 }
 
     public init(sampleRate: Int32, hopSize: Int32 = Int32(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
-        withUnsafeMutablePointer(to: &data, zt_create)
+        withUnsafeMutablePointer(to: &data, swift_zt_create)
         data!.pointee.sr = sampleRate
         withUnsafeMutablePointer(to: &ptrack, zt_ptrack_create)
         zt_ptrack_init(data, ptrack, hopSize, peakCount)
@@ -92,4 +92,16 @@ private extension zt_ptrack {
         default: fatalError("Illegal offset")
         }
     }
+}
+
+private func swift_zt_create(_ spp: UnsafeMutablePointer<UnsafeMutablePointer<zt_data>?>) {
+    spp.pointee = UnsafeMutablePointer<zt_data>.allocate(capacity: 1)
+    spp.pointee?.initialize(to: zt_data())
+    let sp = spp.pointee!
+    let out = UnsafeMutablePointer<Float>.allocate(capacity: 1)
+    out.initialize(to: 0)
+    sp.pointee.out = out
+    sp.pointee.sr = 44100
+    sp.pointee.len = 5 * UInt(sp.pointee.sr)
+    sp.pointee.pos = 0
 }

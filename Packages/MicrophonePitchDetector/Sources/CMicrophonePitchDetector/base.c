@@ -5,18 +5,6 @@
 #include <string.h>
 #include "CMicrophonePitchDetector.h"
 
-void zt_create(zt_data **spp)
-{
-    *spp = (zt_data *) malloc(sizeof(zt_data));
-    zt_data *sp = *spp;
-    ZTFLOAT *out = malloc(sizeof(ZTFLOAT));
-    *out = 0;
-    sp->out = out;
-    sp->sr = 44100;
-    sp->len = 5 * sp->sr;
-    sp->pos = 0;
-}
-
 void zt_destroy(zt_data **spp)
 {
     zt_data *sp = *spp;

@@ -16,7 +16,7 @@ typedef struct {
 } zt_auxdata;
 
 typedef struct {
-    ZTFLOAT *out;
+    float *out;
     int sr;
     unsigned long len;
     unsigned long pos;
@@ -25,7 +25,6 @@ typedef struct {
 void zt_auxdata_alloc(zt_auxdata *aux, size_t size);
 void zt_auxdata_free(zt_auxdata *aux);
 
-void zt_create(zt_data **spp);
 void zt_destroy(zt_data **spp);
 
 typedef struct {

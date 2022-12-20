@@ -133,7 +133,6 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
 }
 
 func swift_zt_ptrack_compute(
-    _ sp: inout zt_data,
     _ p: inout zt_ptrack,
     _ in: UnsafeMutablePointer<Float>!,
     _ freq: inout Float,
@@ -145,7 +144,7 @@ func swift_zt_ptrack_compute(
     let scale: Float = 32768.0
 
     if pos == h {
-        ptrack(&sp, &p)
+        ptrack(&p)
         pos = 0
     }
 

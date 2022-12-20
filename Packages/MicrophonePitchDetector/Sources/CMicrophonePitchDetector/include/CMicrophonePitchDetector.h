@@ -10,12 +10,6 @@ typedef struct {
     void *ptr;
 } zt_auxdata;
 
-typedef struct {
-    int sr;
-    unsigned long len;
-    unsigned long pos;
-} zt_data;
-
 typedef struct peak
 {
   float pfreq;
@@ -47,6 +41,6 @@ typedef struct {
     zt_fft fft;
 } zt_ptrack;
 
-void ptrack(zt_data *sp, zt_ptrack *p);
+void ptrack(zt_ptrack *p);
 
 #endif

@@ -64,7 +64,6 @@ typedef struct histopeak
   float hvalue;
   float hloud;
   int hindex;
-  int hused;
 } HISTOPEAK;
 
 void ptrack(zt_data *sp, zt_ptrack *p)

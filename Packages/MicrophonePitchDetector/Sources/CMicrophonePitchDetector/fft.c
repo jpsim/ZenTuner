@@ -19,7 +19,7 @@
 #define POW2(m) ((uint32_t) 1 << (m))       /* integer power of 2 for m<32 */
 
 /* fft's with M bigger than this bust primary cache */
-#define MCACHE  (11 - (sizeof(ZTFLOAT) / 8))
+#define MCACHE  (11 - (sizeof(float) / 8))
 
 /* some math constants to 40 decimal places */
 #define MYROOT2   1.414213562373095048801688724209698078569   /* sqrt(2)    */
@@ -28,7 +28,7 @@
 * routines to initialize tables used by fft routines *
 *****************************************************/
 
-static void fftCosInit(int M, ZTFLOAT *Utbl)
+static void fftCosInit(int M, float *Utbl)
 {
     /* Compute Utbl, the cosine table for ffts  */
     /* of size (pow(2,M)/4 +1)                  */
@@ -41,7 +41,7 @@ static void fftCosInit(int M, ZTFLOAT *Utbl)
 
     Utbl[0] = 1.0;
     for (i1 = 1; i1 < fftN/4; i1++)
-      Utbl[i1] = cos((2.0 * M_PI * (ZTFLOAT)i1) / (ZTFLOAT)fftN);
+      Utbl[i1] = cos((2.0 * M_PI * (float)i1) / (float)fftN);
     Utbl[fftN/4] = 0.0;
 }
 
@@ -74,33 +74,33 @@ void fftBRInit(int M, int16_t *BRLow)
 * parts of ffts1 *
 *****************/
 
-static void bitrevR2(ZTFLOAT *ioptr, int M, int16_t *BRLow)
+static void bitrevR2(float *ioptr, int M, int16_t *BRLow)
 {
     /*** bit reverse and first radix 2 stage of forward or inverse fft ***/
-    ZTFLOAT f0r;
-    ZTFLOAT f0i;
-    ZTFLOAT f1r;
-    ZTFLOAT f1i;
-    ZTFLOAT f2r;
-    ZTFLOAT f2i;
-    ZTFLOAT f3r;
-    ZTFLOAT f3i;
-    ZTFLOAT f4r;
-    ZTFLOAT f4i;
-    ZTFLOAT f5r;
-    ZTFLOAT f5i;
-    ZTFLOAT f6r;
-    ZTFLOAT f6i;
-    ZTFLOAT f7r;
-    ZTFLOAT f7i;
-    ZTFLOAT t0r;
-    ZTFLOAT t0i;
-    ZTFLOAT t1r;
-    ZTFLOAT t1i;
-    ZTFLOAT *p0r;
-    ZTFLOAT *p1r;
-    ZTFLOAT *IOP;
-    ZTFLOAT *iolimit;
+    float f0r;
+    float f0i;
+    float f1r;
+    float f1i;
+    float f2r;
+    float f2i;
+    float f3r;
+    float f3i;
+    float f4r;
+    float f4i;
+    float f5r;
+    float f5i;
+    float f6r;
+    float f6i;
+    float f7r;
+    float f7i;
+    float t0r;
+    float t0i;
+    float t1r;
+    float t1i;
+    float *p0r;
+    float *p1r;
+    float *IOP;
+    float *iolimit;
     int Colstart;
     int iCol;
     unsigned int posA;
@@ -211,11 +211,11 @@ static void bitrevR2(ZTFLOAT *ioptr, int M, int16_t *BRLow)
     }
 }
 
-static void fft2pt(ZTFLOAT *ioptr)
+static void fft2pt(float *ioptr)
 {
     /***   RADIX 2 fft      ***/
-    ZTFLOAT f0r, f0i, f1r, f1i;
-    ZTFLOAT t0r, t0i;
+    float f0r, f0i, f1r, f1i;
+    float t0r, t0i;
 
     /* bit reversed load */
     f0r = ioptr[0];
@@ -241,11 +241,11 @@ static void fft2pt(ZTFLOAT *ioptr)
     ioptr[3] = f1i;
 }
 
-static void fft4pt(ZTFLOAT *ioptr)
+static void fft4pt(float *ioptr)
 {
     /***   RADIX 4 fft      ***/
-    ZTFLOAT f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
-    ZTFLOAT t0r, t0i, t1r, t1i;
+    float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
+    float t0r, t0i, t1r, t1i;
 
     /* bit reversed load */
     f0r = ioptr[0];
@@ -296,14 +296,14 @@ static void fft4pt(ZTFLOAT *ioptr)
     ioptr[7] = f3i;
 }
 
-static void fft8pt(ZTFLOAT *ioptr)
+static void fft8pt(float *ioptr)
 {
     /***   RADIX 8 fft      ***/
-    ZTFLOAT w0r = (ZTFLOAT)(1.0 / MYROOT2);    /* cos(pi/4)   */
-    ZTFLOAT f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
-    ZTFLOAT f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
-    ZTFLOAT t0r, t0i, t1r, t1i;
-    const ZTFLOAT Two = 2.0;
+    float w0r = (float)(1.0 / MYROOT2);    /* cos(pi/4)   */
+    float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
+    float f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
+    float t0r, t0i, t1r, t1i;
+    const float Two = 2.0;
 
     /* bit reversed load */
     f0r = ioptr[0];
@@ -413,7 +413,7 @@ static void fft8pt(ZTFLOAT *ioptr)
     ioptr[15] = f6i;
 }
 
-static void bfR2(ZTFLOAT *ioptr, int M, int NDiffU)
+static void bfR2(float *ioptr, int M, int NDiffU)
 {
     /*** 2nd radix 2 stage ***/
     unsigned int pos;
@@ -423,11 +423,11 @@ static void bfR2(ZTFLOAT *ioptr, int M, int NDiffU)
     unsigned int NSameU;
     unsigned int SameUCnt;
 
-    ZTFLOAT *pstrt;
-    ZTFLOAT *p0r, *p1r, *p2r, *p3r;
+    float *pstrt;
+    float *p0r, *p1r, *p2r, *p3r;
 
-    ZTFLOAT f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
-    ZTFLOAT f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
+    float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
+    float f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
 
     pinc = NDiffU * 2;            /* 2 floats per complex */
     pnext = pinc * 4;
@@ -520,7 +520,7 @@ static void bfR2(ZTFLOAT *ioptr, int M, int NDiffU)
     }
 }
 
-static void bfR4(ZTFLOAT *ioptr, int M, int NDiffU)
+static void bfR4(float *ioptr, int M, int NDiffU)
 {
     /*** 1 radix 4 stage ***/
     unsigned int pos;
@@ -531,14 +531,14 @@ static void bfR4(ZTFLOAT *ioptr, int M, int NDiffU)
     unsigned int NSameU;
     unsigned int SameUCnt;
 
-    ZTFLOAT *pstrt;
-    ZTFLOAT *p0r, *p1r, *p2r, *p3r;
+    float *pstrt;
+    float *p0r, *p1r, *p2r, *p3r;
 
-    ZTFLOAT w1r = 1.0 / MYROOT2;    /* cos(pi/4)   */
-    ZTFLOAT f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
-    ZTFLOAT f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
-    ZTFLOAT t1r, t1i;
-    const ZTFLOAT Two = 2.0;
+    float w1r = 1.0 / MYROOT2;    /* cos(pi/4)   */
+    float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
+    float f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
+    float t1r, t1i;
+    const float Two = 2.0;
 
     pinc = NDiffU * 2;            /* 2 floats per complex */
     pnext = pinc * 4;
@@ -727,7 +727,7 @@ static void bfR4(ZTFLOAT *ioptr, int M, int NDiffU)
     *(p0r + posi) = f4i;
 }
 
-static void bfstages(ZTFLOAT *ioptr, int M, ZTFLOAT *Utbl, int Ustride,
+static void bfstages(float *ioptr, int M, float *Utbl, int Ustride,
                      int NDiffU, int StageCnt)
 {
     /***   RADIX 8 Stages   ***/
@@ -743,15 +743,15 @@ static void bfstages(ZTFLOAT *ioptr, int M, ZTFLOAT *Utbl, int Ustride,
     unsigned int SameUCnt;
     unsigned int U2toU3;
 
-    ZTFLOAT *pstrt;
-    ZTFLOAT *p0r, *p1r, *p2r, *p3r;
-    ZTFLOAT *u0r, *u0i, *u1r, *u1i, *u2r, *u2i;
+    float *pstrt;
+    float *p0r, *p1r, *p2r, *p3r;
+    float *u0r, *u0i, *u1r, *u1i, *u2r, *u2i;
 
-    ZTFLOAT w0r, w0i, w1r, w1i, w2r, w2i, w3r, w3i;
-    ZTFLOAT f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
-    ZTFLOAT f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
-    ZTFLOAT t0r, t0i, t1r, t1i;
-    const ZTFLOAT Two = 2.0;
+    float w0r, w0i, w1r, w1i, w2r, w2i, w3r, w3i;
+    float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
+    float f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
+    float t0r, t0i, t1r, t1i;
+    const float Two = 2.0;
 
     pinc = NDiffU * 2;            /* 2 floats per complex */
     pnext = pinc * 8;
@@ -1047,7 +1047,7 @@ static void bfstages(ZTFLOAT *ioptr, int M, ZTFLOAT *Utbl, int Ustride,
     }
 }
 
-static void fftrecurs(ZTFLOAT *ioptr, int M, ZTFLOAT *Utbl, int Ustride, int NDiffU,
+static void fftrecurs(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU,
                       int StageCnt)
 {
     /* recursive bfstages calls to maximize on chip cache efficiency */
@@ -1064,7 +1064,7 @@ static void fftrecurs(ZTFLOAT *ioptr, int M, ZTFLOAT *Utbl, int Ustride, int NDi
     }
 }
 
-static void ffts1(ZTFLOAT *ioptr, int M, ZTFLOAT *Utbl, int16_t *BRLow)
+static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow)
 {
     /* Compute in-place complex fft on the rows of the input array  */
     /* INPUTS                                                       */
@@ -1111,13 +1111,13 @@ static void ffts1(ZTFLOAT *ioptr, int M, ZTFLOAT *Utbl, int16_t *BRLow)
 
 void zt_fft_init(zt_fft *fft, int M)
 {
-    ZTFLOAT *utbl;
+    float *utbl;
     int16_t *BRLow;
     int16_t *BRLowCpx;
 //    int i;
 
     /* init cos table */
-    utbl = (ZTFLOAT*) malloc((POW2(M) / 4 + 1) * sizeof(ZTFLOAT));
+    utbl = (float*) malloc((POW2(M) / 4 + 1) * sizeof(float));
     fftCosInit(M, utbl);
 
     BRLowCpx =
@@ -1134,9 +1134,9 @@ void zt_fft_init(zt_fft *fft, int M)
     fft->utbl = utbl;
 }
 
-void zt_fft_cpx(zt_fft *fft, ZTFLOAT *buf, int FFTsize)
+void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize)
 {
-//    ZTFLOAT *Utbl;
+//    float *Utbl;
 //    int16_t *BRLow;
     int   M = log2(FFTsize);
     ffts1(buf, M, fft->utbl, fft->BRLowCpx);

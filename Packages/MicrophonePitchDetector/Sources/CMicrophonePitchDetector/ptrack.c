@@ -32,14 +32,14 @@
 
 #define THRSH 10.
 
-#define COEF1 ((ZTFLOAT)(.5 * 1.227054))
-#define COEF2 ((ZTFLOAT)(.5 * -0.302385))
-#define COEF3 ((ZTFLOAT)(.5 * 0.095326))
-#define COEF4 ((ZTFLOAT)(.5 * -0.022748))
-#define COEF5 ((ZTFLOAT)(.5 * 0.002533))
+#define COEF1 ((float)(.5 * 1.227054))
+#define COEF2 ((float)(.5 * -0.302385))
+#define COEF3 ((float)(.5 * 0.095326))
+#define COEF4 ((float)(.5 * -0.022748))
+#define COEF5 ((float)(.5 * 0.002533))
 #define FLTLEN 5
 
-#define NPARTIALONSET ((int)(sizeof(partialonset)/sizeof(ZTFLOAT)))
+#define NPARTIALONSET ((int)(sizeof(partialonset)/sizeof(float)))
 
 void zt_auxdata_alloc(zt_auxdata *aux, size_t size)
 {
@@ -53,7 +53,7 @@ void zt_auxdata_free(zt_auxdata *aux)
     free(aux->ptr);
 }
 
-static const ZTFLOAT partialonset[] =
+static const float partialonset[] =
 {
     0.0,
     48.0,
@@ -75,19 +75,19 @@ static const ZTFLOAT partialonset[] =
 
 typedef struct histopeak
 {
-  ZTFLOAT hpitch;
-  ZTFLOAT hvalue;
-  ZTFLOAT hloud;
+  float hpitch;
+  float hvalue;
+  float hloud;
   int hindex;
   int hused;
 } HISTOPEAK;
 
 typedef struct peak
 {
-  ZTFLOAT pfreq;
-  ZTFLOAT pwidth;
-  ZTFLOAT ppow;
-  ZTFLOAT ploudness;
+  float pfreq;
+  float pwidth;
+  float ppow;
+  float ploudness;
 } PEAK;
 
 void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float pi)
@@ -95,7 +95,7 @@ void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float p
     p->size = ihopsize;
 
     int i, winsize = p->size*2, powtwo, tmp;
-    ZTFLOAT *tmpb;
+    float *tmpb;
 
     if (winsize < MINWINSIZ || winsize > MAXWINSIZ) {
       fprintf(stderr, "Woops\n");
@@ -122,19 +122,19 @@ void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float p
 
     p->hopsize = p->size;
 
-    zt_auxdata_alloc(&p->signal, p->hopsize * sizeof(ZTFLOAT));
-    zt_auxdata_alloc(&p->prev, (p->hopsize*2 + 4*FLTLEN)*sizeof(ZTFLOAT));
-    zt_auxdata_alloc(&p->sin, (p->hopsize*2)*sizeof(ZTFLOAT));
-    zt_auxdata_alloc(&p->spec2, (winsize*4 + 4*FLTLEN)*sizeof(ZTFLOAT));
-    zt_auxdata_alloc(&p->spec1, (winsize*4)*sizeof(ZTFLOAT));
+    zt_auxdata_alloc(&p->signal, p->hopsize * sizeof(float));
+    zt_auxdata_alloc(&p->prev, (p->hopsize*2 + 4*FLTLEN)*sizeof(float));
+    zt_auxdata_alloc(&p->sin, (p->hopsize*2)*sizeof(float));
+    zt_auxdata_alloc(&p->spec2, (winsize*4 + 4*FLTLEN)*sizeof(float));
+    zt_auxdata_alloc(&p->spec1, (winsize*4)*sizeof(float));
 
-    for (i = 0, tmpb = (ZTFLOAT *)p->signal.ptr; i < p->hopsize; i++)
+    for (i = 0, tmpb = (float *)p->signal.ptr; i < p->hopsize; i++)
         tmpb[i] = 0.0;
-    for (i = 0, tmpb = (ZTFLOAT *)p->prev.ptr; i < winsize + 4 * FLTLEN; i++)
+    for (i = 0, tmpb = (float *)p->prev.ptr; i < winsize + 4 * FLTLEN; i++)
         tmpb[i] = 0.0;
-    for (i = 0, tmpb = (ZTFLOAT *)p->sin.ptr; i < p->hopsize; i++) {
-        tmpb[2*i] =   (ZTFLOAT) cos((pi*i)/(winsize));
-        tmpb[2*i+1] = -(ZTFLOAT)sin((pi*i)/(winsize));
+    for (i = 0, tmpb = (float *)p->sin.ptr; i < p->hopsize; i++) {
+        tmpb[2*i] =   (float) cos((pi*i)/(winsize));
+        tmpb[2*i+1] = -(float)sin((pi*i)/(winsize));
     }
 
     p->cnt = 0;
@@ -153,23 +153,23 @@ void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float p
 
 void ptrack(zt_data *sp, zt_ptrack *p)
 {
-    ZTFLOAT *spec = (ZTFLOAT *)p->spec1.ptr;
-    ZTFLOAT *spectmp = (ZTFLOAT *)p->spec2.ptr;
-    ZTFLOAT *sig = (ZTFLOAT *)p->signal.ptr;
-    ZTFLOAT *sinus  = (ZTFLOAT *)p->sin.ptr;
-    ZTFLOAT *prev  = (ZTFLOAT *)p->prev.ptr;
+    float *spec = (float *)p->spec1.ptr;
+    float *spectmp = (float *)p->spec2.ptr;
+    float *sig = (float *)p->signal.ptr;
+    float *sinus  = (float *)p->sin.ptr;
+    float *prev  = (float *)p->prev.ptr;
     PEAK  *peaklist = (PEAK *)p->peakarray.ptr;
     HISTOPEAK histpeak;
     int i, j, k, hop = p->hopsize, n = 2*hop, npeak = 0, logn = -1, count, tmp;
-    ZTFLOAT totalpower = 0, totalloudness = 0, totaldb = 0;
-    ZTFLOAT maxbin,  *histogram = spectmp + BINGUARD;
-    ZTFLOAT hzperbin = (ZTFLOAT) p->sr / (n + n);
+    float totalpower = 0, totalloudness = 0, totaldb = 0;
+    float maxbin,  *histogram = spectmp + BINGUARD;
+    float hzperbin = (float) p->sr / (n + n);
     int numpks = p->numpks;
     int indx, halfhop = hop>>1;
-    ZTFLOAT best;
-    ZTFLOAT cumpow = 0, cumstrength = 0, freqnum = 0, freqden = 0;
+    float best;
+    float cumpow = 0, cumstrength = 0, freqnum = 0, freqden = 0;
     int npartials = 0,  nbelow8 = 0;
-    ZTFLOAT putfreq;
+    float putfreq;
 
     count = p->histcnt + 1;
     if (count == NPREV) count = 0;
@@ -209,7 +209,7 @@ void ptrack(zt_data *sp, zt_ptrack *p)
     }
 
     for (i = j = 0, k = 2*FLTLEN; i < halfhop; i++, j+=8, k+=2) {
-        ZTFLOAT re,  im;
+        float re,  im;
 
         re= COEF1 * ( prev[k-2] - prev[k+1]  + spectmp[k-2] - prev[k+1]) +
             COEF2 * ( prev[k-3] - prev[k+2]  + spectmp[k-3]  - spectmp[ 2]) +
@@ -256,14 +256,14 @@ void ptrack(zt_data *sp, zt_ptrack *p)
     for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
 
     for (i = 4*MINBIN, totalpower = 0; i < (n-2)*4; i += 4) {
-        ZTFLOAT re = spec[i] - 0.5 * (spec[i-8] + spec[i+8]);
-        ZTFLOAT im = spec[i+1] - 0.5 * (spec[i-7] + spec[i+9]);
+        float re = spec[i] - 0.5 * (spec[i-8] + spec[i+8]);
+        float im = spec[i+1] - 0.5 * (spec[i-7] + spec[i+9]);
         spec[i+3] = (totalpower += (spec[i+2] = re * re + im * im));
     }
 
     if (totalpower > 1.0e-9) {
-        totaldb = (ZTFLOAT)DBSCAL * logf(totalpower/n);
-        totalloudness = (ZTFLOAT)sqrtf((ZTFLOAT)sqrtf(totalpower));
+        totaldb = (float)DBSCAL * logf(totalpower/n);
+        totalloudness = (float)sqrtf((float)sqrtf(totalpower));
         if (totaldb < 0) totaldb = 0;
     }
     else totaldb = totalloudness = 0.0;
@@ -274,8 +274,8 @@ void ptrack(zt_data *sp, zt_ptrack *p)
         npeak = 0;
 
         for (i = 4*MINBIN;i < (4*(n-2)) && npeak < numpks; i+=4) {
-            ZTFLOAT height = spec[i+2], h1 = spec[i-2], h2 = spec[i+6];
-            ZTFLOAT totalfreq, peakfr, tmpfr1, tmpfr2, m, var, stdev;
+            float height = spec[i+2], h1 = spec[i-2], h2 = spec[i+6];
+            float totalfreq, peakfr, tmpfr1, tmpfr2, m, var, stdev;
 
             if (height < h1 || height < h2 ||
             h1 < 0.00001*totalpower ||
@@ -306,7 +306,7 @@ void ptrack(zt_data *sp, zt_ptrack *p)
             if (var * totalpower > THRSH * height
             || var < 1.0e-30) continue;
 
-            stdev = (ZTFLOAT)sqrt((ZTFLOAT)var);
+            stdev = (float)sqrt((float)var);
             if (totalfreq < 4) totalfreq = 4;
 
 
@@ -320,15 +320,15 @@ void ptrack(zt_data *sp, zt_ptrack *p)
           if (npeak > numpks) npeak = numpks;
           for (i = 0; i < maxbin; i++) histogram[i] = 0;
           for (i = 0; i < npeak; i++) {
-            ZTFLOAT pit = (ZTFLOAT)(BPEROOVERLOG2 * logf(peaklist[i].pfreq) - 96.0);
-            ZTFLOAT binbandwidth = FACTORTOBINS * peaklist[i].pwidth/peaklist[i].pfreq;
-            ZTFLOAT putbandwidth = (binbandwidth < 2.0 ? 2.0 : binbandwidth);
-            ZTFLOAT weightbandwidth = (binbandwidth < 1.0 ? 1.0 : binbandwidth);
-            ZTFLOAT weightamp = 4.0 * peaklist[i].ploudness / totalloudness;
+            float pit = (float)(BPEROOVERLOG2 * logf(peaklist[i].pfreq) - 96.0);
+            float binbandwidth = FACTORTOBINS * peaklist[i].pwidth/peaklist[i].pfreq;
+            float putbandwidth = (binbandwidth < 2.0 ? 2.0 : binbandwidth);
+            float weightbandwidth = (binbandwidth < 1.0 ? 1.0 : binbandwidth);
+            float weightamp = 4.0 * peaklist[i].ploudness / totalloudness;
             for (j = 0; j < NPARTIALONSET; j++) {
-              ZTFLOAT bin = pit - partialonset[j];
+              float bin = pit - partialonset[j];
               if (bin < maxbin) {
-                ZTFLOAT para, pphase, score = 30.0 * weightamp /
+                float para, pphase, score = 30.0 * weightamp /
                   ((j+p->npartial) * weightbandwidth);
                 int firstbin = bin + 0.5 - 0.5 * putbandwidth;
                 int lastbin = bin + 0.5 + 0.5 * putbandwidth;
@@ -357,14 +357,14 @@ void ptrack(zt_data *sp, zt_ptrack *p)
         putfreq = expf((1.0 / BPEROOVERLOG2) * (histpeak.hindex + 96.0));
 
         for (j = 0; j < npeak; j++) {
-            ZTFLOAT fpnum = peaklist[j].pfreq/putfreq;
+            float fpnum = peaklist[j].pfreq/putfreq;
             int pnum = (int)(fpnum + 0.5);
-            ZTFLOAT fipnum = pnum;
-            ZTFLOAT deviation;
+            float fipnum = pnum;
+            float deviation;
             if (pnum > 16 || pnum < 1) continue;
             deviation = 1.0 - fpnum/fipnum;
             if (deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE) {
-                ZTFLOAT stdev, weight;
+                float stdev, weight;
                 npartials++;
                 if (pnum < 8) nbelow8++;
                 cumpow += peaklist[j].ppow;
@@ -379,8 +379,8 @@ void ptrack(zt_data *sp, zt_ptrack *p)
         if ((nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower) {
             histpeak.hvalue = 0;
         } else {
-            ZTFLOAT pitchpow = (cumstrength * cumstrength);
-            ZTFLOAT freqinbins = freqnum/freqden;
+            float pitchpow = (cumstrength * cumstrength);
+            float freqinbins = freqnum/freqden;
             pitchpow = pitchpow * pitchpow;
 
             if (freqinbins < MINFREQINBINS) {

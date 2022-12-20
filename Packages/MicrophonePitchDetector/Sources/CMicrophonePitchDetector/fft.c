@@ -1141,10 +1141,3 @@ void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize)
     int   M = log2(FFTsize);
     ffts1(buf, M, fft->utbl, fft->BRLowCpx);
 }
-
-void zt_fft_destroy(zt_fft *fft)
-{
-    free(fft->utbl);
-    free(fft->BRLow);
-    free(fft->BRLowCpx);
-}

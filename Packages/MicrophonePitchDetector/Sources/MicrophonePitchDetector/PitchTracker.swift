@@ -65,14 +65,10 @@ private let FLTLEN = 5
 
 private let NPARTIALONSET = Int(partialonset.count)
 
-private func zt_auxdata_alloc(aux: inout zt_auxdata, size: Int) {
+private func swift_zt_auxdata_alloc(aux: inout zt_auxdata, size: Int) {
     aux.ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: 1)
     aux.size = size
     memset(aux.ptr, 0, size)
-}
-
-private func zt_auxdata_free(aux: inout zt_auxdata) {
-    aux.ptr.deallocate()
 }
 
 private let partialonset: [Float] = [
@@ -116,11 +112,11 @@ private func swift_zt_ptrack_init(sp: UnsafeMutablePointer<zt_data>?, p: UnsafeM
 
     p.pointee.hopsize = Int32(p.pointee.size)
 
-    zt_auxdata_alloc(aux: &p.pointee.signal, size: Int(p.pointee.hopsize) * MemoryLayout<Float>.size)
-    zt_auxdata_alloc(aux: &p.pointee.prev, size: (Int(p.pointee.hopsize)*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
-    zt_auxdata_alloc(aux: &p.pointee.sin, size: (Int(p.pointee.hopsize)*2)*MemoryLayout<Float>.size)
-    zt_auxdata_alloc(aux: &p.pointee.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
-    zt_auxdata_alloc(aux: &p.pointee.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.pointee.signal, size: Int(p.pointee.hopsize) * MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.pointee.prev, size: (Int(p.pointee.hopsize)*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.pointee.sin, size: (Int(p.pointee.hopsize)*2)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.pointee.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.pointee.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
 
     let signalPointer = p.pointee.signal.ptr.bindMemory(to: Float.self, capacity: Int(p.pointee.hopsize))
     for i in 0..<Int(p.pointee.hopsize) {
@@ -141,7 +137,7 @@ private func swift_zt_ptrack_init(sp: UnsafeMutablePointer<zt_data>?, p: UnsafeM
     p.pointee.cnt = 0
     p.pointee.numpks = Int32(ipeaks)
 
-    zt_auxdata_alloc(aux: &p.pointee.peakarray, size: (Int(p.pointee.numpks)+1)*MemoryLayout<PEAK>.size)
+    swift_zt_auxdata_alloc(aux: &p.pointee.peakarray, size: (Int(p.pointee.numpks)+1)*MemoryLayout<PEAK>.size)
 
     p.pointee.cnt = 0
     p.pointee.histcnt = 0

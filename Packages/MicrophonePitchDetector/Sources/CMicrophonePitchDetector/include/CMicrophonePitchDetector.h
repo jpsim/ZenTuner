@@ -4,7 +4,6 @@
 #define ZENTUNER_H
 
 #include <stdint.h>
-#include <stdio.h>
 
 typedef struct {
     size_t size;
@@ -32,10 +31,8 @@ typedef struct {
     int16_t *BRLowCpx;
 } zt_fft;
 
-void zt_fft_create(zt_fft **fft);
 void zt_fft_init(zt_fft *fft, int M);
 void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize);
-void zt_fft_destroy(zt_fft *fft);
 
 typedef struct {
     float freq, amp;

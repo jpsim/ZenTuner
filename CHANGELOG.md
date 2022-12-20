@@ -1,4 +1,4 @@
-## Next
+## 0.3.0
 
 * iOS 15 and macOS 12 are now required.
 * Fixed an issue where the tuner would not process audio when launched

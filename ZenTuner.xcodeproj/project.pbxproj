@@ -628,7 +628,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
@@ -636,9 +636,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner watchOS";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner watchOS";
-				INFOPLIST_KEY_CFBundleVersion = 14;
+				INFOPLIST_KEY_CFBundleVersion = 15;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -657,7 +657,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = Zen_Tuner_WatchKit_Extension;
@@ -665,9 +665,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner watchOS";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner watchOS";
-				INFOPLIST_KEY_CFBundleVersion = 14;
+				INFOPLIST_KEY_CFBundleVersion = 15;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -685,7 +685,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
@@ -694,7 +694,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit Extension";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit Extension";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit Extension";
-				INFOPLIST_KEY_CFBundleVersion = 14;
+				INFOPLIST_KEY_CFBundleVersion = 15;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -702,7 +702,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -719,7 +719,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
@@ -728,7 +728,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Zen Tuner WatchKit Extension";
 				INFOPLIST_KEY_CFBundleExecutable = "Zen Tuner WatchKit Extension";
 				INFOPLIST_KEY_CFBundleName = "Zen Tuner WatchKit Extension";
-				INFOPLIST_KEY_CFBundleVersion = 14;
+				INFOPLIST_KEY_CFBundleVersion = 15;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -736,7 +736,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -783,7 +783,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -844,7 +844,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -870,7 +870,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = BuildSupport/iOS/Info.plist;
@@ -879,7 +879,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = iphoneos;
@@ -895,7 +895,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = BuildSupport/iOS/Info.plist;
@@ -904,7 +904,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = iphoneos;
@@ -923,7 +923,7 @@
 				CODE_SIGN_ENTITLEMENTS = BuildSupport/macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -933,7 +933,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = macosx;
@@ -950,7 +950,7 @@
 				CODE_SIGN_ENTITLEMENTS = BuildSupport/macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -960,7 +960,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = macosx;
@@ -974,7 +974,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 865LEQR26C;
 				INFOPLIST_FILE = ZenTunerTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -998,7 +998,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 865LEQR26C;
 				INFOPLIST_FILE = ZenTunerTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;

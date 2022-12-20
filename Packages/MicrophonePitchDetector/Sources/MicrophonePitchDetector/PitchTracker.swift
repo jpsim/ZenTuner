@@ -263,7 +263,7 @@ private func swiftfftCosInit(M: Int, Utbl: UnsafeMutablePointer<Float>) {
     Utbl[fftN/4] = 0.0
 }
 
-func swiftfftBRInit(M: Int, BRLow: UnsafeMutablePointer<Int16>) {
+private func swiftfftBRInit(M: Int, BRLow: UnsafeMutablePointer<Int16>) {
     let Mroot_1 = M / 2 - 1
     let Nroot_1 = pow2(Mroot_1)
     for i in 0..<Nroot_1 {

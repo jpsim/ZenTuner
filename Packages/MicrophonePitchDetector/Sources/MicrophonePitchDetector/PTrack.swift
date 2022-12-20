@@ -187,7 +187,7 @@ private extension zt_ptrack {
 
 private func ptrackSwift(p: inout zt_ptrack) {
     let n = 2 * p.hopsize
-    ptrack_set_histcnt(&p, n)
+    swift_ptrack_set_histcnt(p: &p, n: n)
     ptrack_set_spec(&p)
     var totalpower: Float = 0
     var totalloudness: Float = 0
@@ -205,4 +205,10 @@ private func ptrackSwift(p: inout zt_ptrack) {
             p.numpks
         )
     }
+}
+
+private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int32) {
+    var count = p.histcnt + 1
+    if (count == NPREV) { count = 0 }
+    p.histcnt = count
 }

@@ -66,13 +66,6 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
-void ptrack_set_histcnt(zt_ptrack *p, int n)
-{
-    int count = p->histcnt + 1;
-    if (count == NPREV) count = 0;
-    p->histcnt = count;
-}
-
 void ptrack_set_spec(zt_ptrack *p)
 {
     float *spec = (float *)p->spec1.ptr;

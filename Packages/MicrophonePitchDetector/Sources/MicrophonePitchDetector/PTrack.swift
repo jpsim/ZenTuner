@@ -466,7 +466,7 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
 }
 
 private func swift_ptrack_set_spec(p: inout zt_ptrack) {
-    ptrack_set_spec_pt1(&p)
+    swift_ptrack_set_spec_pt1(p: &p)
     ptrack_set_spec_pt2(&p)
     ptrack_set_spec_pt3(&p)
     ptrack_set_spec_pt4(&p)

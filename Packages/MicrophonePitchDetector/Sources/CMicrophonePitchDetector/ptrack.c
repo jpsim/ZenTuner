@@ -90,24 +90,6 @@ typedef struct peak
   ZTFLOAT ploudness;
 } PEAK;
 
-void zt_ptrack_create(zt_ptrack **p)
-{
-    *p = malloc(sizeof(zt_ptrack));
-}
-
-void zt_ptrack_destroy(zt_ptrack **p)
-{
-    zt_ptrack *pp = *p;
-    zt_auxdata_free(&pp->signal);
-    zt_auxdata_free(&pp->prev);
-    zt_auxdata_free(&pp->sin);
-    zt_auxdata_free(&pp->spec2);
-    zt_auxdata_free(&pp->spec1);
-    zt_auxdata_free(&pp->peakarray);
-    zt_fft_destroy(&pp->fft);
-    free(*p);
-}
-
 void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float pi)
 {
     p->size = ihopsize;

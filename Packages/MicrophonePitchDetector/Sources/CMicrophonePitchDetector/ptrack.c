@@ -120,44 +120,41 @@ void ptrack_set_spec(zt_ptrack *p)
 
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)
 {
-    int i;
-
-    for (i = 4*MINBIN;i < (4*(n-2)) && *npeak < numpks; i+=4) {
-        float height = spec[i+2], h1 = spec[i-2], h2 = spec[i+6];
-        float totalfreq, peakfr, tmpfr1, tmpfr2, m, var, stdev;
+    for (int i = 4*MINBIN; i < (4*(n-2)) && *npeak < numpks; i += 4) {
+        float height = spec[i+2];
+        float h1 = spec[i-2];
+        float h2 = spec[i+6];
+        float totalfreq, peakfr, tmpfr1, tmpfr2, m, v, stdev;
 
         if (height < h1 || height < h2 ||
-        h1 < 0.00001*totalpower ||
-        h2 < 0.00001*totalpower) continue;
+            h1 < 0.00001*totalpower ||
+            h2 < 0.00001*totalpower)
+        {
+            continue;
+        }
 
-        peakfr= ((spec[i-8] - spec[i+8]) * (2.0 * spec[i] -
-                                    spec[i+8] - spec[i-8]) +
-         (spec[i-7] - spec[i+9]) * (2.0 * spec[i+1] -
-                                    spec[i+9] - spec[i-7])) /
-        (height + height);
-        tmpfr1=  ((spec[i-12] - spec[i+4]) *
-          (2.0 * spec[i-4] - spec[i+4] - spec[i-12]) +
-          (spec[i-11] - spec[i+5]) * (2.0 * spec[i-3] -
-                                      spec[i+5] - spec[i-11])) /
-        (2.0 * h1) - 1;
-        tmpfr2= ((spec[i-4] - spec[i+12]) * (2.0 * spec[i+4] -
-                                     spec[i+12] - spec[i-4]) +
-         (spec[i-3] - spec[i+13]) * (2.0 * spec[i+5] -
-                                     spec[i+13] - spec[i-3])) /
-        (2.0 * h2) + 1;
-
+        peakfr = ((spec[i-8] - spec[i+8]) * (2.0 * spec[i] - spec[i+8] - spec[i-8]) +
+                  (spec[i-7] - spec[i+9]) * (2.0 * spec[i+1] - spec[i+9] - spec[i-7])) / (height + height);
+        tmpfr1 =  ((spec[i-12] - spec[i+4]) * (2.0 * spec[i-4] - spec[i+4] - spec[i-12]) +
+                   (spec[i-11] - spec[i+5]) * (2.0 * spec[i-3] - spec[i+5] - spec[i-11])) / (2.0 * h1) - 1;
+        tmpfr2 = ((spec[i-4] - spec[i+12]) * (2.0 * spec[i+4] - spec[i+12] - spec[i-4]) +
+                  (spec[i-3] - spec[i+13]) * (2.0 * spec[i+5] - spec[i+13] - spec[i-3])) / (2.0 * h2) + 1;
 
         m = 0.333333333333 * (peakfr + tmpfr1 + tmpfr2);
-        var = 0.5 * ((peakfr-m)*(peakfr-m) +
-                 (tmpfr1-m)*(tmpfr1-m) + (tmpfr2-m)*(tmpfr2-m));
+        v = 0.5 * ((peakfr-m)*(peakfr-m) +
+                   (tmpfr1-m)*(tmpfr1-m) + (tmpfr2-m)*(tmpfr2-m));
 
-        totalfreq = (i>>2) + m;
-        if (var * totalpower > THRSH * height
-        || var < 1.0e-30) continue;
+        totalfreq = (i >> 2) + m;
+        if (v * totalpower > THRSH * height ||
+            v < 1.0e-30)
+        {
+            continue;
+        }
 
-        stdev = (float)sqrt((float)var);
-        if (totalfreq < 4) totalfreq = 4;
-
+        stdev = (float)sqrt((float)v);
+        if (totalfreq < 4) {
+            totalfreq = 4;
+        }
 
         peaklist[*npeak].pwidth = stdev;
         peaklist[*npeak].ppow = height;

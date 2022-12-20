@@ -151,7 +151,7 @@ void ptrack_set_spec(zt_ptrack *p)
     for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
 }
 
-void ptrack_set_totals(zt_ptrack *p, float *spec, float *totalpower, float *totalloudness, float *totaldb, int n, int count)
+void ptrack_set_totals(zt_ptrack *p, float *spec, float *totalpower, float *totalloudness, float *totaldb, int n)
 {
     int i;
     for (i = 4*MINBIN, *totalpower = 0; i < (n-2)*4; i += 4) {
@@ -167,7 +167,7 @@ void ptrack_set_totals(zt_ptrack *p, float *spec, float *totalpower, float *tota
     }
     else *totaldb = *totalloudness = 0.0;
 
-    p->dbs[count] = *totaldb + DBOFFSET;
+    p->dbs[p->histcnt] = *totaldb + DBOFFSET;
 }
 
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)
@@ -306,18 +306,23 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
     }
 }
 
-void ptrack(zt_data *sp, zt_ptrack *p)
+void ptrack_set_histcnt(zt_ptrack *p, int n)
 {
-    int n = 2*p->hopsize;
     int count = p->histcnt + 1;
     if (count == NPREV) count = 0;
     p->histcnt = count;
+}
+
+void ptrack(zt_data *sp, zt_ptrack *p)
+{
+    int n = 2*p->hopsize;
+    ptrack_set_histcnt(p, n);
 
     ptrack_set_spec(p);
 
     float *spec = (float *)p->spec1.ptr;
     float totalpower = 0, totalloudness = 0, totaldb = 0;
-    ptrack_set_totals(p, spec, &totalpower, &totalloudness, &totaldb, n, count);
+    ptrack_set_totals(p, spec, &totalpower, &totalloudness, &totaldb, n);
 
     if (totaldb >= p->amplo) {
         int npeak = 0;

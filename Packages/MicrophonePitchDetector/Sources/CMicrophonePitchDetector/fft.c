@@ -12,10 +12,6 @@
 #include <math.h>
 #include "CMicrophonePitchDetector.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 #define POW2(m) ((uint32_t) 1 << (m))       /* integer power of 2 for m<32 */
 
 /* fft's with M bigger than this bust primary cache */
@@ -163,208 +159,6 @@ static void bitrevR2(float *ioptr, int M, int16_t *BRLow)
         *(p0r + posBi) = f3i;
       }
     }
-}
-
-static void fft2pt(float *ioptr)
-{
-    /***   RADIX 2 fft      ***/
-    float f0r, f0i, f1r, f1i;
-    float t0r, t0i;
-
-    /* bit reversed load */
-    f0r = ioptr[0];
-    f0i = ioptr[1];
-    f1r = ioptr[2];
-    f1i = ioptr[3];
-
-    /* Butterflys           */
-    /*
-       f0   -       -       t0
-       f1   -  1 -  f1
-     */
-
-    t0r = f0r + f1r;
-    t0i = f0i + f1i;
-    f1r = f0r - f1r;
-    f1i = f0i - f1i;
-
-    /* store result */
-    ioptr[0] = t0r;
-    ioptr[1] = t0i;
-    ioptr[2] = f1r;
-    ioptr[3] = f1i;
-}
-
-static void fft4pt(float *ioptr)
-{
-    /***   RADIX 4 fft      ***/
-    float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
-    float t0r, t0i, t1r, t1i;
-
-    /* bit reversed load */
-    f0r = ioptr[0];
-    f0i = ioptr[1];
-    f1r = ioptr[4];
-    f1i = ioptr[5];
-    f2r = ioptr[2];
-    f2i = ioptr[3];
-    f3r = ioptr[6];
-    f3i = ioptr[7];
-
-    /* Butterflys           */
-    /*
-       f0   -       -       t0      -       -       f0
-       f1   -  1 -  f1      -       -       f1
-       f2   -       -       f2      -  1 -  f2
-       f3   -  1 -  t1      - -i -  f3
-     */
-
-    t0r = f0r + f1r;
-    t0i = f0i + f1i;
-    f1r = f0r - f1r;
-    f1i = f0i - f1i;
-
-    t1r = f2r - f3r;
-    t1i = f2i - f3i;
-    f2r = f2r + f3r;
-    f2i = f2i + f3i;
-
-    f0r = t0r + f2r;
-    f0i = t0i + f2i;
-    f2r = t0r - f2r;
-    f2i = t0i - f2i;
-
-    f3r = f1r - t1i;
-    f3i = f1i + t1r;
-    f1r = f1r + t1i;
-    f1i = f1i - t1r;
-
-    /* store result */
-    ioptr[0] = f0r;
-    ioptr[1] = f0i;
-    ioptr[2] = f1r;
-    ioptr[3] = f1i;
-    ioptr[4] = f2r;
-    ioptr[5] = f2i;
-    ioptr[6] = f3r;
-    ioptr[7] = f3i;
-}
-
-static void fft8pt(float *ioptr)
-{
-    /***   RADIX 8 fft      ***/
-    float w0r = (float)(1.0 / MYROOT2);    /* cos(pi/4)   */
-    float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
-    float f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
-    float t0r, t0i, t1r, t1i;
-    const float Two = 2.0;
-
-    /* bit reversed load */
-    f0r = ioptr[0];
-    f0i = ioptr[1];
-    f1r = ioptr[8];
-    f1i = ioptr[9];
-    f2r = ioptr[4];
-    f2i = ioptr[5];
-    f3r = ioptr[12];
-    f3i = ioptr[13];
-    f4r = ioptr[2];
-    f4i = ioptr[3];
-    f5r = ioptr[10];
-    f5i = ioptr[11];
-    f6r = ioptr[6];
-    f6i = ioptr[7];
-    f7r = ioptr[14];
-    f7i = ioptr[15];
-    /* Butterflys           */
-    /*
-       f0   -       -       t0      -       -       f0      -       -       f0
-       f1   -  1 -  f1      -       -       f1      -       -       f1
-       f2   -       -       f2      -  1 -  f2      -       -       f2
-       f3   -  1 -  t1      - -i -  f3      -       -       f3
-       f4   -       -       t0      -       -       f4      -  1 -  t0
-       f5   -  1 -  f5      -       -       f5      - w3 -  f4
-       f6   -       -       f6      -  1 -  f6      - -i -  t1
-       f7   -  1 -  t1      - -i -  f7      - iw3-  f6
-     */
-
-    t0r = f0r + f1r;
-    t0i = f0i + f1i;
-    f1r = f0r - f1r;
-    f1i = f0i - f1i;
-
-    t1r = f2r - f3r;
-    t1i = f2i - f3i;
-    f2r = f2r + f3r;
-    f2i = f2i + f3i;
-
-    f0r = t0r + f2r;
-    f0i = t0i + f2i;
-    f2r = t0r - f2r;
-    f2i = t0i - f2i;
-
-    f3r = f1r - t1i;
-    f3i = f1i + t1r;
-    f1r = f1r + t1i;
-    f1i = f1i - t1r;
-
-    t0r = f4r + f5r;
-    t0i = f4i + f5i;
-    f5r = f4r - f5r;
-    f5i = f4i - f5i;
-
-    t1r = f6r - f7r;
-    t1i = f6i - f7i;
-    f6r = f6r + f7r;
-    f6i = f6i + f7i;
-
-    f4r = t0r + f6r;
-    f4i = t0i + f6i;
-    f6r = t0r - f6r;
-    f6i = t0i - f6i;
-
-    f7r = f5r - t1i;
-    f7i = f5i + t1r;
-    f5r = f5r + t1i;
-    f5i = f5i - t1r;
-
-    t0r = f0r - f4r;
-    t0i = f0i - f4i;
-    f0r = f0r + f4r;
-    f0i = f0i + f4i;
-
-    t1r = f2r - f6i;
-    t1i = f2i + f6r;
-    f2r = f2r + f6i;
-    f2i = f2i - f6r;
-
-    f4r = f1r - f5r * w0r - f5i * w0r;
-    f4i = f1i + f5r * w0r - f5i * w0r;
-    f1r = f1r * Two - f4r;
-    f1i = f1i * Two - f4i;
-
-    f6r = f3r + f7r * w0r - f7i * w0r;
-    f6i = f3i + f7r * w0r + f7i * w0r;
-    f3r = f3r * Two - f6r;
-    f3i = f3i * Two - f6i;
-
-    /* store result */
-    ioptr[0] = f0r;
-    ioptr[1] = f0i;
-    ioptr[2] = f1r;
-    ioptr[3] = f1i;
-    ioptr[4] = f2r;
-    ioptr[5] = f2i;
-    ioptr[6] = f3r;
-    ioptr[7] = f3i;
-    ioptr[8] = t0r;
-    ioptr[9] = t0i;
-    ioptr[10] = f4r;
-    ioptr[11] = f4i;
-    ioptr[12] = t1r;
-    ioptr[13] = t1i;
-    ioptr[14] = f6r;
-    ioptr[15] = f6i;
 }
 
 static void bfR2(float *ioptr, int M, int NDiffU)
@@ -1032,35 +826,21 @@ static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow)
     int StageCnt;
     int NDiffU;
 
-    switch (M) {
-    case 0:
-      break;
-    case 1:
-      fft2pt(ioptr);            /* a 2 pt fft */
-      break;
-    case 2:
-      fft4pt(ioptr);            /* a 4 pt fft */
-      break;
-    case 3:
-      fft8pt(ioptr);            /* an 8 pt fft */
-      break;
-    default:
-      bitrevR2(ioptr, M, BRLow);  /* bit reverse and first radix 2 stage */
-      StageCnt = (M - 1) / 3;     /* number of radix 8 stages           */
-      NDiffU = 2;                 /* one radix 2 stage already complete */
-      if ((M - 1 - (StageCnt * 3)) == 1) {
-        bfR2(ioptr, M, NDiffU); /* 1 radix 2 stage */
-        NDiffU *= 2;
-      }
-      if ((M - 1 - (StageCnt * 3)) == 2) {
-        bfR4(ioptr, M, NDiffU); /* 1 radix 4 stage */
-        NDiffU *= 4;
-      }
-      if (M <= (int) MCACHE)
-        bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt);  /* RADIX 8 Stages */
-      else
-        fftrecurs(ioptr, M, Utbl, 1, NDiffU, StageCnt); /* RADIX 8 Stages */
+    bitrevR2(ioptr, M, BRLow);  /* bit reverse and first radix 2 stage */
+    StageCnt = (M - 1) / 3;     /* number of radix 8 stages           */
+    NDiffU = 2;                 /* one radix 2 stage already complete */
+    if ((M - 1 - (StageCnt * 3)) == 1) {
+      bfR2(ioptr, M, NDiffU); /* 1 radix 2 stage */
+      NDiffU *= 2;
     }
+    if ((M - 1 - (StageCnt * 3)) == 2) {
+      bfR4(ioptr, M, NDiffU); /* 1 radix 4 stage */
+      NDiffU *= 4;
+    }
+    if (M <= (int) MCACHE)
+      bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt);  /* RADIX 8 Stages */
+    else
+      fftrecurs(ioptr, M, Utbl, 1, NDiffU, StageCnt); /* RADIX 8 Stages */
 }
 
 void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize)

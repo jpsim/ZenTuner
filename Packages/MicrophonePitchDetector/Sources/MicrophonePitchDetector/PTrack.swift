@@ -153,19 +153,9 @@ func swift_zt_ptrack_compute(
     pos += 1
 
     freq = p.cps
-    amp = exp(p.getDBS(atIndex: p.histcnt) / 20.0 * log(10.0))
+    amp = exp(p.dbs[Int(p.histcnt)] / 20.0 * log(10.0))
 
     p.cnt = pos
-}
-
-private extension zt_ptrack {
-    mutating func setDBS(atIndex index: Int32, to value: Float) {
-        dbs[Int(index)] = value
-    }
-
-    func getDBS(atIndex index: Int32) -> Float {
-        return dbs[Int(index)]
-    }
 }
 
 private func ptrackSwift(p: inout zt_ptrack) {
@@ -219,7 +209,7 @@ private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Float
         totalloudness = 0.0
     }
 
-    p.setDBS(atIndex: p.histcnt, to: totaldb + DBOFFSET)
+    p.dbs[Int(p.histcnt)] = totaldb + DBOFFSET
 }
 
 private func swift_ptrack_get_maxbin(n: Int) -> Float {

@@ -189,7 +189,7 @@ private func swift_zt_ptrack_compute(
     pos += 1
 
     freq.pointee = p.pointee.cps
-    amp.pointee =  exp(p.pointee.getDBS(atIndex: p.pointee.histcnt) / 20.0 * log(10.0))
+    amp.pointee = exp(p.pointee.getDBS(atIndex: p.pointee.histcnt) / 20.0 * log(10.0))
 
     p.pointee.cnt = pos
 }

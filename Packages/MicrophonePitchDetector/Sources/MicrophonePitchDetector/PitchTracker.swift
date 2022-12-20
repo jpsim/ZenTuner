@@ -7,12 +7,12 @@ public final class PitchTracker {
 
     public static var defaultBufferSize: UInt32 { 4_096 }
 
-    public init(sampleRate: Int32, hopSize: Int32 = Int32(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
+    public init(sampleRate: Int32, hopSize: Float = Float(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
         let out = UnsafeMutablePointer<Float>.allocate(capacity: 1)
         out.initialize(to: 0)
         data = zt_data(out: out, sr: sampleRate, len: 5 * UInt(sampleRate), pos: 0)
         ptrack = zt_ptrack()
-        ptrack.size = Float(hopSize)
+        ptrack.size = hopSize
         ptrack.numpks = peakCount
         swift_zt_ptrack_init(p: &ptrack, sampleRate: Float(sampleRate))
     }

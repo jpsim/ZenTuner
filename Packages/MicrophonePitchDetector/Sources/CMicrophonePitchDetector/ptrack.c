@@ -66,7 +66,33 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
-void ptrack_pt2(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, float hzperbin, int n)
+void ptrack_pt2(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, int *nbelow8, float *cumpow, float *cumstrength, float *freqnum, float *freqden)
+{
+    float putfreq = expf((1.0 / BPEROOVERLOG2) * (histpeak.hindex + 96.0));
+
+    for (int j = 0; j < npeak; j++) {
+        float fpnum = peaklist[j].pfreq/putfreq;
+        int pnum = (int)(fpnum + 0.5);
+        float fipnum = pnum;
+        float deviation;
+        if (pnum > 16 || pnum < 1) continue;
+        deviation = 1.0 - fpnum/fipnum;
+        if (deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE) {
+            float stdev, weight;
+            (*npartials)++;
+            if (pnum < 8) (*nbelow8)++;
+            *cumpow += peaklist[j].ppow;
+            *cumstrength += sqrt(sqrt(peaklist[j].ppow));
+            stdev = (peaklist[j].pwidth > MINBW ?
+               peaklist[j].pwidth : MINBW);
+            weight = 1.0 / ((stdev*fipnum) * (stdev*fipnum));
+            *freqden += weight;
+            *freqnum += weight * peaklist[j].pfreq/fipnum;
+        }
+    }
+}
+
+void ptrack_pt3(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, float hzperbin, int n)
 {
     if ((nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower) {
         histpeak->hvalue = 0;
@@ -287,29 +313,7 @@ void ptrack(zt_data *sp, zt_ptrack *p)
         histpeak.hvalue = best;
         histpeak.hindex = indx;
 
-        putfreq = expf((1.0 / BPEROOVERLOG2) * (histpeak.hindex + 96.0));
-
-        for (j = 0; j < npeak; j++) {
-            float fpnum = peaklist[j].pfreq/putfreq;
-            int pnum = (int)(fpnum + 0.5);
-            float fipnum = pnum;
-            float deviation;
-            if (pnum > 16 || pnum < 1) continue;
-            deviation = 1.0 - fpnum/fipnum;
-            if (deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE) {
-                float stdev, weight;
-                npartials++;
-                if (pnum < 8) nbelow8++;
-                cumpow += peaklist[j].ppow;
-                cumstrength += sqrt(sqrt(peaklist[j].ppow));
-                stdev = (peaklist[j].pwidth > MINBW ?
-                   peaklist[j].pwidth : MINBW);
-                weight = 1.0 / ((stdev*fipnum) * (stdev*fipnum));
-                freqden += weight;
-                freqnum += weight * peaklist[j].pfreq/fipnum;
-            }
-        }
-
-        ptrack_pt2(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
+        ptrack_pt2(histpeak, npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
+        ptrack_pt3(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
     }
 }

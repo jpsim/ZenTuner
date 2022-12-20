@@ -24,52 +24,6 @@
 /* some math constants to 40 decimal places */
 #define MYROOT2   1.414213562373095048801688724209698078569   /* sqrt(2)    */
 
-/*****************************************************
-* routines to initialize tables used by fft routines *
-*****************************************************/
-
-void fftCosInit(int M, float *Utbl)
-{
-    /* Compute Utbl, the cosine table for ffts  */
-    /* of size (pow(2,M)/4 +1)                  */
-    /* INPUTS                                   */
-    /*   M = log2 of fft size                   */
-    /* OUTPUTS                                  */
-    /*   *Utbl = cosine table                   */
-    unsigned int fftN = POW2(M);
-    unsigned int i1;
-
-    Utbl[0] = 1.0;
-    for (i1 = 1; i1 < fftN/4; i1++)
-      Utbl[i1] = cos((2.0 * M_PI * (float)i1) / (float)fftN);
-    Utbl[fftN/4] = 0.0;
-}
-
-void fftBRInit(int M, int16_t *BRLow)
-{
-    /* Compute BRLow, the bit reversed table for ffts */
-    /* of size pow(2,M/2 -1)                          */
-    /* INPUTS                                         */
-    /*   M = log2 of fft size                         */
-    /* OUTPUTS                                        */
-    /*   *BRLow = bit reversed counter table          */
-    int Mroot_1 = M / 2 - 1;
-    int Nroot_1 = POW2(Mroot_1);
-    int i1;
-    int bitsum;
-    int bitmask;
-    int bit;
-
-    for (i1 = 0; i1 < Nroot_1; i1++) {
-      bitsum = 0;
-      bitmask = 1;
-      for (bit = 1; bit <= Mroot_1; bitmask <<= 1, bit++)
-        if (i1 & bitmask)
-          bitsum = bitsum + (Nroot_1 >> bit);
-      BRLow[i1] = bitsum;
-    }
-}
-
 /*****************
 * parts of ffts1 *
 *****************/

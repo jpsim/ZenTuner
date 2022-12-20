@@ -15,41 +15,11 @@
 #include <string.h>
 #include "CMicrophonePitchDetector.h"
 
-#define MINFREQINBINS 5
-#define MINBW 0.03
-#define BPEROOVERLOG2 69.24936196
-#define FACTORTOBINS 4/0.0145453
-#define BINGUARD 10
-#define PARTIALDEVIANCE 0.023
-#define DBSCAL 3.333
 #define MINBIN 3
 
 #define THRSH 10.
 
-#define COEF1 ((float)(.5 * 1.227054))
-#define COEF2 ((float)(.5 * -0.302385))
-#define COEF3 ((float)(.5 * 0.095326))
-#define COEF4 ((float)(.5 * -0.022748))
-#define COEF5 ((float)(.5 * 0.002533))
 #define FLTLEN 5
-
-void ptrack_set_spec_pt1(zt_ptrack *p)
-{
-    float *spec = (float *)p->spec1.ptr;
-    float *spectmp = (float *)p->spec2.ptr;
-    float *sig = (float *)p->signal.ptr;
-    float *sinus  = (float *)p->sin.ptr;
-    float *prev  = (float *)p->prev.ptr;
-    int i, j, k, hop = p->hopsize, n = 2*hop;
-    int halfhop = hop>>1;
-
-    for (i = 0, k = 0; i < hop; i++, k += 2) {
-        spec[k]   = sig[i] * sinus[k];
-        spec[k+1] = sig[i] * sinus[k+1];
-    }
-
-    zt_fft_cpx(&p->fft, spec, hop);
-}
 
 void ptrack_set_spec_pt2(zt_ptrack *p)
 {
@@ -76,67 +46,6 @@ void ptrack_set_spec_pt2(zt_ptrack *p)
         spectmp[k]   = spectmp[i];
         spectmp[k+1] = -spectmp[k+1];
     }
-}
-
-void ptrack_set_spec_pt3(zt_ptrack *p)
-{
-    float *spec = (float *)p->spec1.ptr;
-    float *spectmp = (float *)p->spec2.ptr;
-    float *prev  = (float *)p->prev.ptr;
-    int i, j, k, hop = p->hopsize, n = 2*hop;
-    int halfhop = hop>>1;
-
-    for (i = j = 0, k = 2*FLTLEN; i < halfhop; i++, j+=8, k+=2) {
-        float re,  im;
-
-        re= COEF1 * ( prev[k-2] - prev[k+1]  + spectmp[k-2] - prev[k+1]) +
-            COEF2 * ( prev[k-3] - prev[k+2]  + spectmp[k-3]  - spectmp[ 2]) +
-            COEF3 * (-prev[k-6] +prev[k+5]  -spectmp[k-6] +spectmp[k+5]) +
-            COEF4 * (-prev[k-7] +prev[k+6]  -spectmp[k-7] +spectmp[k+6]) +
-            COEF5 * ( prev[k-10] -prev[k+9]  +spectmp[k-10] -spectmp[k+9]);
-
-        im= COEF1 * ( prev[k-1] +prev[k]  +spectmp[k-1] +spectmp[k]) +
-            COEF2 * (-prev[k-4] -prev[k+3]  -spectmp[k-4] -spectmp[k+3]) +
-            COEF3 * (-prev[k-5] -prev[k+4]  -spectmp[k-5] -spectmp[k+4]) +
-            COEF4 * ( prev[k-8] +prev[k+7]  +spectmp[k-8] +spectmp[k+7]) +
-            COEF5 * ( prev[k-9] +prev[k+8]  +spectmp[k-9] +spectmp[k+8]);
-
-        spec[j]   = 0.707106781186547524400844362104849 * (re + im);
-        spec[j+1] = 0.707106781186547524400844362104849 * (im - re);
-        spec[j+4] = prev[k] + spectmp[k+1];
-        spec[j+5] = prev[k+1] - spectmp[k];
-
-        j += 8;
-        k += 2;
-
-        re= COEF1 * ( prev[k-2] -prev[k+1]  -spectmp[k-2] +spectmp[k+1]) +
-            COEF2 * ( prev[k-3] -prev[k+2]  -spectmp[k-3] +spectmp[k+2]) +
-            COEF3 * (-prev[k-6] +prev[k+5]  +spectmp[k-6] -spectmp[k+5]) +
-            COEF4 * (-prev[k-7] +prev[k+6]  +spectmp[k-7] -spectmp[k+6]) +
-            COEF5 * ( prev[k-10] -prev[k+9]  -spectmp[k-10] +spectmp[k+9]);
-
-        im= COEF1 * ( prev[k-1] +prev[k]  -spectmp[k-1] -spectmp[k]) +
-            COEF2 * (-prev[k-4] -prev[k+3]  +spectmp[k-4] +spectmp[k+3]) +
-            COEF3 * (-prev[k-5] -prev[k+4]  +spectmp[k-5] +spectmp[k+4]) +
-            COEF4 * ( prev[k-8] +prev[k+7]  -spectmp[k-8] -spectmp[k+7]) +
-            COEF5 * ( prev[k-9] +prev[k+8]  -spectmp[k-9] -spectmp[k+8]);
-
-        spec[j]   = 0.707106781186547524400844362104849 * (re + im);
-        spec[j+1] = 0.707106781186547524400844362104849 * (im - re);
-        spec[j+4] = prev[k] - spectmp[k+1];
-        spec[j+5] = prev[k+1] + spectmp[k];
-    }
-}
-void ptrack_set_spec_pt4(zt_ptrack *p)
-{
-    float *spec = (float *)p->spec1.ptr;
-    float *spectmp = (float *)p->spec2.ptr;
-    float *prev  = (float *)p->prev.ptr;
-    int i, k, hop = p->hopsize, n = 2*hop;
-
-    for (i = 0; i < n + 4*FLTLEN; i++) prev[i] = spectmp[i];
-
-    for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
 }
 
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)

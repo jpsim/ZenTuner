@@ -343,9 +343,12 @@ private func swift_ptrack_pt2(npeak: inout Int32, numpks: Int, peaklist: UnsafeM
 
         if height < h1 || height < h2 || h1 < 0.00001*totalpower || h2 < 0.00001*totalpower { continue }
 
-        peakfr = get_peakfr(spec, height, Int32(i))
-        tmpfr1 = get_tmpfr1(spec, h1, Int32(i))
-        tmpfr2 = get_tmpfr2(spec, h2, Int32(i))
+        peakfr = ((spec[i-8] - spec[i+8]) * (2.0 * spec[i] - spec[i+8] - spec[i-8]) +
+                  (spec[i-7] - spec[i+9]) * (2.0 * spec[i+1] - spec[i+9] - spec[i-7])) / (height + height)
+        tmpfr1 = ((spec[i-12] - spec[i+4]) * (2.0 * spec[i-4] - spec[i+4] - spec[i-12]) +
+                  (spec[i-11] - spec[i+5]) * (2.0 * spec[i-3] - spec[i+5] - spec[i-11])) / (2.0 * h1) - 1
+        tmpfr2 = ((spec[i-4] - spec[i+12]) * (2.0 * spec[i+4] - spec[i+12] - spec[i-4]) +
+                  (spec[i-3] - spec[i+13]) * (2.0 * spec[i+5] - spec[i+13] - spec[i-3])) / (2.0 * h2) + 1
 
         m = 0.333333333333 * (peakfr + tmpfr1 + tmpfr2)
         `var` = 0.5 * ((peakfr-m)*(peakfr-m) +

@@ -49,8 +49,4 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
-float get_peakfr(float *spec, float height, int i);
-float get_tmpfr1(float *spec, float h1, int i);
-float get_tmpfr2(float *spec, float h2, int i);
-
 #endif

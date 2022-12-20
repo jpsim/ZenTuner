@@ -10,14 +10,6 @@ typedef struct {
     void *ptr;
 } zt_auxdata;
 
-typedef struct peak
-{
-  float pfreq;
-  float pwidth;
-  float ppow;
-  float ploudness;
-} PEAK;
-
 typedef struct {
     float *utbl;
     int16_t *BRLow;

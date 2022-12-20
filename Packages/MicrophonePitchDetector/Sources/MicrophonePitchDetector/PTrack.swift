@@ -340,6 +340,13 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
     )
 }
 
+private struct PEAK {
+    var pfreq: Float = 0
+    var pwidth: Float = 0
+    var ppow: Float = 0
+    var ploudness: Float = 0
+}
+
 private func swift_ptrack_pt2(npeak: inout Int32, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, totalpower: Float, spec: UnsafeMutablePointer<Float>, n: Int) {
     for i in stride(from: 4*MINBIN, to: 4*(n-2), by: 4) {
         if npeak >= numpks { break }

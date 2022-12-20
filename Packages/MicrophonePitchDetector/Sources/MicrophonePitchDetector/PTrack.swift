@@ -14,12 +14,12 @@ import CMicrophonePitchDetector
 
 private let MINFREQINBINS = 5.0
 private let NPREV = 20
-private let MINBW: Float = 0.03
+private let MINBW = 0.03
 private let BINPEROCT = 48
 private let BPEROOVERLOG2: Float = 69.24936196
 private let FACTORTOBINS: Float = 4/0.0145453
 private let BINGUARD = 10
-private let PARTIALDEVIANCE: Float = 0.023
+private let PARTIALDEVIANCE = 0.023
 private let DBSCAL: Float = 3.333
 private let DBOFFSET: Float = -92.3
 private let MINBIN = 3
@@ -257,8 +257,8 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
 
     var cumpow: Float = 0
     var cumstrength: Float = 0
-    var freqnum: Float = 0
-    var freqden: Float = 0
+    var freqnum: Double = 0
+    var freqden: Double = 0
     var npartials: Int32 = 0
     var nbelow8: Int32 = 0
 
@@ -370,33 +370,33 @@ private func swift_ptrack_pt4(histpeak: inout HISTOPEAK, maxbin: Float, histogra
     histpeak.hindex = indx
 }
 
-private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeMutablePointer<PEAK>, npartials: inout Int32, nbelow8: inout Int32, cumpow: inout Float, cumstrength: inout Float, freqnum: inout Float, freqden: inout Float) {
+private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeMutablePointer<PEAK>, npartials: inout Int32, nbelow8: inout Int32, cumpow: inout Float, cumstrength: inout Float, freqnum: inout Double, freqden: inout Double) {
     let putfreq = expf((1.0 / BPEROOVERLOG2) * (Float(histpeak.hindex) + 96.0))
 
     for j in 0..<npeak {
-        let fpnum = peaklist[j].pfreq / putfreq
+        let fpnum = Double(peaklist[j].pfreq / putfreq)
         let pnum = Int(fpnum + 0.5)
-        let fipnum = Float(pnum)
-        var deviation: Float
+        let fipnum = Double(pnum)
+        var deviation: Double
         if pnum > 16 || pnum < 1 { continue }
         deviation = 1.0 - fpnum / fipnum
         if deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE {
-            var stdev: Float
-            var weight: Float
+            var stdev: Double
+            var weight: Double
             npartials += 1
             if pnum < 8 { nbelow8 += 1 }
             cumpow += peaklist[j].ppow
             cumstrength += sqrt(sqrt(peaklist[j].ppow))
-            stdev = peaklist[j].pwidth > MINBW ? peaklist[j].pwidth : MINBW
+            stdev = Double(peaklist[j].pwidth) > MINBW ? Double(peaklist[j].pwidth) : MINBW
             weight = 1.0 / (stdev * fipnum) * (stdev * fipnum)
             freqden += weight
-            freqnum += weight * peaklist[j].pfreq / fipnum
+            freqnum += weight * Double(peaklist[j].pfreq) / fipnum
         }
     }
 }
 
 
-private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Float, cumstrength: Float, freqnum: Float, freqden: Float, n: Int) {
+private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Float, cumstrength: Float, freqnum: Double, freqden: Double, n: Int) {
     if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * Float(totalpower) {
         histpeak.hvalue = 0
     } else {
@@ -404,12 +404,12 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
         let freqinbins = freqnum / freqden
         pitchpow = pitchpow * pitchpow
 
-        if freqinbins < Float(MINFREQINBINS) {
+        if freqinbins < MINFREQINBINS {
             histpeak.hvalue = 0
         } else {
-            let hzperbin = Float(p.sr) / Float(n + n)
+            let hzperbin = p.sr / Double(n + n)
             let hpitch = hzperbin * freqnum / freqden
-            histpeak.hpitch = hpitch
+            histpeak.hpitch = Float(hpitch)
             p.cps = Double(hpitch)
             histpeak.hloud = DBSCAL * logf(pitchpow / Float(n))
         }

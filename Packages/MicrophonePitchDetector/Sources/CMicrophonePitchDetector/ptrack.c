@@ -196,20 +196,6 @@ void ptrack_pt3(int npeak, int numpks, PEAK *peaklist, float maxbin, float *hist
     }
 }
 
-void ptrack_pt4(HISTOPEAK *histpeak, float maxbin, float *histogram)
-{
-    int best, indx, j;
-    for (best = 0, indx = -1, j=0; j < maxbin; j++) {
-        if (histogram[j] > best) {
-            indx = j;
-            best = histogram[j];
-        }
-    }
-
-    histpeak->hvalue = best;
-    histpeak->hindex = indx;
-}
-
 void ptrack_pt5(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, int *nbelow8, float *cumpow, float *cumstrength, float *freqnum, float *freqden)
 {
     float putfreq = expf((1.0 / BPEROOVERLOG2) * (histpeak.hindex + 96.0));

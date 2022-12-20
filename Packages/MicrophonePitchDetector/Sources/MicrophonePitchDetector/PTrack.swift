@@ -298,7 +298,8 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
         &partialonset,
         partialonset_count
     )
-    ptrack_pt4(&histpeak, maxbin, histogram)
+
+    swift_ptrack_pt4(histpeak: &histpeak, maxbin: maxbin, histogram: histogram)
 
     var cumpow: Float = 0
     var cumstrength: Float = 0
@@ -331,4 +332,16 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
         freqden,
         n
     )
+}
+
+private func swift_ptrack_pt4(histpeak: inout HISTOPEAK, maxbin: Float, histogram: UnsafeMutablePointer<Float>) {
+    var best: Float = 0
+    var indx: Int32 = -1
+    for j in 0..<Int(maxbin) where histogram[j] > best {
+        indx = Int32(j)
+        best = histogram[j]
+    }
+
+    histpeak.hvalue = best
+    histpeak.hindex = indx
 }

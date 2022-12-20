@@ -63,11 +63,8 @@ private let partialonset: [Float] = [
     192.0,
 ]
 
-func swift_zt_ptrack_init(
-    sp: UnsafeMutablePointer<zt_data>,
-    p: UnsafeMutablePointer<zt_ptrack>
-) {
-    let winsize = Int(p.pointee.size*2)
+func swift_zt_ptrack_init(sp: zt_data, p: inout zt_ptrack) {
+    let winsize = Int(p.size*2)
     var powtwo = -1
     var tmp = winsize
 
@@ -76,45 +73,45 @@ func swift_zt_ptrack_init(
         powtwo += 1
     }
 
-    swift_zt_fft_init(p: p, M: powtwo - 1)
+    swift_zt_fft_init(p: &p, M: powtwo - 1)
 
     if Int(winsize) != (1 << Int(powtwo)) {
         return
     }
 
-    p.pointee.hopsize = Int32(p.pointee.size)
+    p.hopsize = Int32(p.size)
 
-    swift_zt_auxdata_alloc(aux: &p.pointee.signal, size: Int(p.pointee.hopsize) * MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.pointee.prev, size: (Int(p.pointee.hopsize)*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.pointee.sin, size: (Int(p.pointee.hopsize)*2)*MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.pointee.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.pointee.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.signal, size: Int(p.hopsize) * MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.prev, size: (Int(p.hopsize)*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.sin, size: (Int(p.hopsize)*2)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
 
-    let signalPointer = p.pointee.signal.ptr.bindMemory(to: Float.self, capacity: Int(p.pointee.hopsize))
-    for i in 0..<Int(p.pointee.hopsize) {
+    let signalPointer = p.signal.ptr.bindMemory(to: Float.self, capacity: Int(p.hopsize))
+    for i in 0..<Int(p.hopsize) {
         signalPointer[i] = 0.0
     }
 
-    let prevPointer = p.pointee.prev.ptr.bindMemory(to: Float.self, capacity: winsize + 4 * FLTLEN)
+    let prevPointer = p.prev.ptr.bindMemory(to: Float.self, capacity: winsize + 4 * FLTLEN)
     for i in 0..<winsize + 4 * FLTLEN {
         prevPointer[i] = 0.0
     }
 
-    let sinPointer = p.pointee.sin.ptr.bindMemory(to: Float.self, capacity: Int(p.pointee.hopsize))
-    for i in 0..<Int(p.pointee.hopsize) {
+    let sinPointer = p.sin.ptr.bindMemory(to: Float.self, capacity: Int(p.hopsize))
+    for i in 0..<Int(p.hopsize) {
         sinPointer[2*i] = cos((.pi*Float(i))/(Float(winsize)))
         sinPointer[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
     }
 
-    p.pointee.cnt = 0
+    p.cnt = 0
 
-    swift_zt_auxdata_alloc(aux: &p.pointee.peakarray, size: (Int(p.pointee.numpks)+1)*MemoryLayout<PEAK>.size)
+    swift_zt_auxdata_alloc(aux: &p.peakarray, size: (Int(p.numpks)+1)*MemoryLayout<PEAK>.size)
 
-    p.pointee.cnt = 0
-    p.pointee.histcnt = 0
-    p.pointee.sr = Float(sp.pointee.sr)
+    p.cnt = 0
+    p.histcnt = 0
+    p.sr = Float(sp.sr)
     let value: Float = -144.0
-    p.pointee.dbs = (
+    p.dbs = (
         value,
         value,
         value,
@@ -136,7 +133,7 @@ func swift_zt_ptrack_init(
         value,
         value
     )
-    p.pointee.amplo = Float(MINAMPS)
+    p.amplo = Float(MINAMPS)
 }
 
 func swift_zt_ptrack_compute(

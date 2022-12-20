@@ -420,3 +420,128 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
         }
     }
 }
+
+private func swift_ptrack_set_spec(p: inout zt_ptrack) {
+    swift_ptrack_set_spec_pt1(p: &p)
+    swift_ptrack_set_spec_pt2(p: &p)
+    swift_ptrack_set_spec_pt3(p: &p)
+    swift_ptrack_set_spec_pt4(p: &p)
+}
+
+private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {
+    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
+    let sig = p.signal.ptr.assumingMemoryBound(to: Float.self)
+    let sinus = p.sin.ptr.assumingMemoryBound(to: Float.self)
+    let hop = p.hopsize
+
+    for i in 0..<hop {
+        let k = i * 2
+        spec[Int(k)] = sig[Int(i)] * sinus[Int(k)]
+        spec[Int(k) + 1] = sig[Int(i)] * sinus[Int(k) + 1]
+    }
+
+    zt_fft_cpx(&p.fft, spec, hop)
+}
+
+private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {
+    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
+    let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
+    let hop = p.hopsize
+    let n = 2 * hop
+
+    for i in stride(from: 0, to: Int(hop), by: 2) {
+        let k = i * 2 + 2 * FLTLEN
+        spectmp[k] = spec[i]
+        spectmp[k + 1] = spec[i + 1]
+    }
+
+    for i in stride(from: Int(n) - 2, to: -1, by: -2) {
+        let k = i * 2 + 2 * FLTLEN + 2
+        spectmp[k] = spec[i]
+        spectmp[k + 1] = -spec[i + 1]
+    }
+
+    for i in stride(from: 2 * FLTLEN, to: FLTLEN * 4, by: 2) {
+        let k = i - 2
+        spectmp[k] = spectmp[i]
+        spectmp[k + 1] = -spectmp[i + 1]
+    }
+
+    for i in stride(from: Int(n) - 2, to: -1, by: -2) {
+        let k = i * 2 + 2 * FLTLEN + Int(n)
+        spectmp[k] = spectmp[i]
+        spectmp[k + 1] = -spectmp[k + 1]
+    }
+}
+
+private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
+    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
+    let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
+    let prev = p.prev.ptr.assumingMemoryBound(to: Float.self)
+    let hop = p.hopsize
+    let halfhop = hop >> 1
+    var j = 0
+    var k = 2 * FLTLEN
+
+    for _ in 0..<halfhop {
+        var re: Float
+        var im: Float
+
+        re = COEF1 * (prev[k - 2] - prev[k + 1] + spectmp[k - 2] - prev[k + 1]) +
+             COEF2 * (prev[k - 3] - prev[k + 2] + spectmp[k - 3] - spectmp[2]) +
+             COEF3 * (-prev[k - 6] + prev[k + 5] - spectmp[k - 6] + spectmp[k + 5]) +
+             COEF4 * (-prev[k - 7] + prev[k + 6] - spectmp[k - 7] + spectmp[k + 6]) +
+             COEF5 * (prev[k - 10] - prev[k + 9] + spectmp[k - 10] - spectmp[k + 9])
+
+        im = COEF1 * (prev[k - 1] + prev[k] + spectmp[k - 1] + spectmp[k]) +
+             COEF2 * (-prev[k - 4] - prev[k + 3] - spectmp[k - 4] - spectmp[k + 3]) +
+             COEF3 * (-prev[k - 5] - prev[k + 4] - spectmp[k - 5] - spectmp[k + 4]) +
+             COEF4 * (prev[k - 8] + prev[k + 7] + spectmp[k - 8] + spectmp[k + 7]) +
+             COEF5 * (prev[k - 9] + prev[k + 8] + spectmp[k - 9] + spectmp[k + 8])
+
+        spec[j] = MAGIC * (re + im)
+        spec[j + 1] = MAGIC * (im - re)
+        spec[j + 4] = prev[k] + spectmp[k + 1]
+        spec[j + 5] = prev[k + 1] - spectmp[k]
+
+        j += 8
+        k += 2
+
+        re = COEF1 * ( prev[k-2] - prev[k+1]  - spectmp[k-2] + spectmp[k+1]) +
+             COEF2 * ( prev[k-3] - prev[k+2]  - spectmp[k-3] + spectmp[k+2]) +
+             COEF3 * (-prev[k-6] + prev[k+5]  + spectmp[k-6] - spectmp[k+5]) +
+             COEF4 * (-prev[k-7] + prev[k+6]  + spectmp[k-7] - spectmp[k+6]) +
+             COEF5 * ( prev[k-10] - prev[k+9] - spectmp[k-10] + spectmp[k+9])
+
+        im = COEF1 * ( prev[k-1] + prev[k]   - spectmp[k-1] - spectmp[k]) +
+             COEF2 * (-prev[k-4] - prev[k+3] + spectmp[k-4] + spectmp[k+3]) +
+             COEF3 * (-prev[k-5] - prev[k+4] + spectmp[k-5] + spectmp[k+4]) +
+             COEF4 * ( prev[k-8] + prev[k+7] - spectmp[k-8] - spectmp[k+7]) +
+             COEF5 * ( prev[k-9] + prev[k+8] - spectmp[k-9] - spectmp[k+8])
+
+        spec[j]   = MAGIC * (re + im)
+        spec[j+1] = MAGIC * (im - re)
+        spec[j+4] = prev[k] - spectmp[k+1]
+        spec[j+5] = prev[k+1] + spectmp[k]
+
+        j += 8
+        k += 2
+    }
+}
+
+private func swift_ptrack_set_spec_pt4(p: inout zt_ptrack) {
+    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
+    let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
+    let prev = p.prev.ptr.assumingMemoryBound(to: Float.self)
+    let hop = p.hopsize
+    let n = Int(2 * hop)
+
+    for i in 0..<n + 4 * FLTLEN {
+        prev[i] = spectmp[i]
+    }
+
+    for i in 0..<MINBIN {
+        spec[4 * i + 2] = 0
+        spec[4 * i + 3] = 0
+    }
+}

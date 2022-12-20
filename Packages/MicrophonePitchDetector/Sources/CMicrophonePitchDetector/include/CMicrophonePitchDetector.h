@@ -49,6 +49,8 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
-void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n);
+float get_peakfr(float *spec, float height, int i);
+float get_tmpfr1(float *spec, float h1, int i);
+float get_tmpfr2(float *spec, float h2, int i);
 
 #endif

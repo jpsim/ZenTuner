@@ -280,13 +280,13 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
     let histogram = spectmp.advanced(by: BINGUARD)
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
 
-    ptrack_pt2(
-        &npeak,
-        Int32(numpks),
-        peaklist,
-        totalpower,
-        spec,
-        Int32(n)
+    swift_ptrack_pt2(
+        npeak: &npeak,
+        numpks: Int(numpks),
+        peaklist: peaklist,
+        totalpower: totalpower,
+        spec: spec,
+        n: Int(n)
     )
 
     swift_ptrack_pt3(
@@ -336,28 +336,16 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
 }
 
 private func swift_ptrack_pt2(npeak: inout Int32, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, totalpower: Float, spec: UnsafeMutablePointer<Float>, n: Int) {
-    for i in 4*MINBIN..<4*(n-2) {
+    for i in stride(from: 4*MINBIN, to: 4*(n-2), by: 4) {
         if npeak >= numpks { break }
         let height = spec[i+2], h1 = spec[i-2], h2 = spec[i+6]
         var totalfreq, peakfr, tmpfr1, tmpfr2, m, `var`, stdev: Float
 
         if height < h1 || height < h2 || h1 < 0.00001*totalpower || h2 < 0.00001*totalpower { continue }
 
-        peakfr = ((spec[i-8] - spec[i+8]) * (2.0 * spec[i] -
-                                            spec[i+8] - spec[i-8]) +
-                 (spec[i-7] - spec[i+9]) * (2.0 * spec[i+1] -
-                                            spec[i+9] - spec[i-7])) /
-        (height + height)
-        tmpfr1 =  ((spec[i-12] - spec[i+4]) *
-                  (2.0 * spec[i-4] - spec[i+4] - spec[i-12]) +
-                  (spec[i-11] - spec[i+5]) * (2.0 * spec[i-3] -
-                                              spec[i+5] - spec[i-11])) /
-        (2.0 * h1) - 1
-        tmpfr2 = ((spec[i-4] - spec[i+12]) * (2.0 * spec[i+4] -
-                                             spec[i+12] - spec[i-4]) +
-                 (spec[i-3] - spec[i+13]) * (2.0 * spec[i+5] -
-                                             spec[i+13] - spec[i-3])) /
-        (2.0 * h2) + 1
+        peakfr = get_peakfr(spec, height, Int32(i))
+        tmpfr1 = get_tmpfr1(spec, h1, Int32(i))
+        tmpfr2 = get_tmpfr2(spec, h2, Int32(i))
 
         m = 0.333333333333 * (peakfr + tmpfr1 + tmpfr2)
         `var` = 0.5 * ((peakfr-m)*(peakfr-m) +

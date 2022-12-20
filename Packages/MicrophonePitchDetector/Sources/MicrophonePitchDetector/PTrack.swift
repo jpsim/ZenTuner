@@ -35,6 +35,11 @@ private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
 private let MAGIC: Float = 0.707106781186547524400844362104849
 
+final class zt_auxdata {
+    var size: Int = 0
+    var ptr: UnsafeMutableRawPointer! = nil
+}
+
 struct zt_ptrack {
     var freq: Float = 0
     var amp: Float = 0

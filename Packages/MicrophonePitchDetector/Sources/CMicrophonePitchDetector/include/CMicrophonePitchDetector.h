@@ -6,11 +6,6 @@
 #include <stdint.h>
 
 typedef struct {
-    size_t size;
-    void *ptr;
-} zt_auxdata;
-
-typedef struct {
     float *utbl;
     int16_t *BRLow;
     int16_t *BRLowCpx;

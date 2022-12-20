@@ -18,19 +18,4 @@ typedef struct {
 
 void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize);
 
-typedef struct {
-    float freq, amp;
-    float size;
-    zt_auxdata signal, prev, sin, spec1, spec2, peakarray;
-    int numpks;
-    int cnt;
-    int histcnt;
-    int hopsize;
-    float sr;
-    float cps;
-    float dbs[20];
-    float amplo;
-    zt_fft fft;
-} zt_ptrack;
-
 #endif

@@ -35,6 +35,27 @@ private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
 private let MAGIC: Float = 0.707106781186547524400844362104849
 
+struct zt_ptrack {
+    var freq: Float = 0
+    var amp: Float = 0
+    var size: Float = 0
+    var signal: zt_auxdata = zt_auxdata()
+    var prev: zt_auxdata = zt_auxdata()
+    var sin: zt_auxdata = zt_auxdata()
+    var spec1: zt_auxdata = zt_auxdata()
+    var spec2: zt_auxdata = zt_auxdata()
+    var peakarray: zt_auxdata = zt_auxdata()
+    var numpks: Int32 = 0
+    var cnt: Int32 = 0
+    var histcnt: Int32 = 0
+    var hopsize: Int32 = 0
+    var sr: Float = 0
+    var cps: Float = 0
+    var dbs: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    var amplo: Float = 0
+    var fft: zt_fft = zt_fft()
+}
+
 private func swift_zt_auxdata_alloc(aux: inout zt_auxdata, size: Int) {
     aux.ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: 1)
     aux.size = size
@@ -103,29 +124,7 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
 
     swift_zt_auxdata_alloc(aux: &p.peakarray, size: (Int(p.numpks)+1)*MemoryLayout<PEAK>.size)
 
-    let value: Float = -144.0
-    p.dbs = (
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value,
-        value
-    )
+    p.dbs = Array(repeating: -144.0, count: 20)
     p.amplo = Float(MINAMPS)
 }
 
@@ -156,55 +155,11 @@ func swift_zt_ptrack_compute(
 
 private extension zt_ptrack {
     mutating func setDBS(atIndex index: Int32, to value: Float) {
-        switch index {
-        case 0: dbs.0 = value
-        case 1: dbs.1 = value
-        case 2: dbs.2 = value
-        case 3: dbs.3 = value
-        case 4: dbs.4 = value
-        case 5: dbs.5 = value
-        case 6: dbs.6 = value
-        case 7: dbs.7 = value
-        case 8: dbs.8 = value
-        case 9: dbs.9 = value
-        case 10: dbs.10 = value
-        case 11: dbs.11 = value
-        case 12: dbs.12 = value
-        case 13: dbs.13 = value
-        case 14: dbs.14 = value
-        case 15: dbs.15 = value
-        case 16: dbs.16 = value
-        case 17: dbs.17 = value
-        case 18: dbs.18 = value
-        case 19: dbs.19 = value
-        default: fatalError("Illegal offset")
-        }
+        dbs[Int(index)] = value
     }
 
     func getDBS(atIndex index: Int32) -> Float {
-        switch index {
-        case 0: return dbs.0
-        case 1: return dbs.1
-        case 2: return dbs.2
-        case 3: return dbs.3
-        case 4: return dbs.4
-        case 5: return dbs.5
-        case 6: return dbs.6
-        case 7: return dbs.7
-        case 8: return dbs.8
-        case 9: return dbs.9
-        case 10: return dbs.10
-        case 11: return dbs.11
-        case 12: return dbs.12
-        case 13: return dbs.13
-        case 14: return dbs.14
-        case 15: return dbs.15
-        case 16: return dbs.16
-        case 17: return dbs.17
-        case 18: return dbs.18
-        case 19: return dbs.19
-        default: fatalError("Illegal offset")
-        }
+        return dbs[Int(index)]
     }
 }
 

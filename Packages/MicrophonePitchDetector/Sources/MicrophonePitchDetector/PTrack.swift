@@ -193,5 +193,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
     var totalloudness: Float = 0
     var totaldb: Float = 0
     ptrack_set_totals(&p, &totalpower, &totalloudness, &totaldb, n)
-    ptrack(&p, n, totalpower, totalloudness, totaldb)
+    if totaldb >= p.amplo {
+        ptrack(&p, n, totalpower, totalloudness)
+    }
 }

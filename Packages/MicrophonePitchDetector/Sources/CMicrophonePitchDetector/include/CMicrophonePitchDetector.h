@@ -44,6 +44,6 @@ typedef struct {
 void ptrack_set_histcnt(zt_ptrack *p, int n);
 void ptrack_set_spec(zt_ptrack *p);
 void ptrack_set_totals(zt_ptrack *p, float *totalpower, float *totalloudness, float *totaldb, int n);
-void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, float totaldb);
+void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness);
 
 #endif

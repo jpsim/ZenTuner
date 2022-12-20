@@ -197,11 +197,11 @@ private extension zt_ptrack {
     }
 }
 
-func swift_zt_create(_ spp: UnsafeMutablePointer<zt_data>) {
+func swift_zt_create(_ spp: UnsafeMutablePointer<zt_data>, sampleRate: Int32) {
     spp.initialize(to: zt_data())
     spp.pointee.out = UnsafeMutablePointer<Float>.allocate(capacity: 1)
     spp.pointee.out.initialize(to: 0)
-    spp.pointee.sr = 44100
     spp.pointee.len = 5 * UInt(spp.pointee.sr)
     spp.pointee.pos = 0
+    spp.pointee.sr = sampleRate
 }

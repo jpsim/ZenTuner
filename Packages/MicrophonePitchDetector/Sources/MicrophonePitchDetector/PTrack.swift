@@ -189,5 +189,9 @@ private func ptrackSwift(p: inout zt_ptrack) {
     let n = 2 * p.hopsize
     ptrack_set_histcnt(&p, n)
     ptrack_set_spec(&p)
-    ptrack(&p, n)
+    var totalpower: Float = 0
+    var totalloudness: Float = 0
+    var totaldb: Float = 0
+    ptrack_set_totals(&p, &totalpower, &totalloudness, &totaldb, n)
+    ptrack(&p, n, totalpower, totalloudness, totaldb)
 }

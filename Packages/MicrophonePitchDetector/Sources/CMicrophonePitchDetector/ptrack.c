@@ -66,6 +66,13 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
+void ptrack_set_histcnt(zt_ptrack *p, int n)
+{
+    int count = p->histcnt + 1;
+    if (count == NPREV) count = 0;
+    p->histcnt = count;
+}
+
 void ptrack_set_spec(zt_ptrack *p)
 {
     float *spec = (float *)p->spec1.ptr;
@@ -151,8 +158,9 @@ void ptrack_set_spec(zt_ptrack *p)
     for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
 }
 
-void ptrack_set_totals(zt_ptrack *p, float *spec, float *totalpower, float *totalloudness, float *totaldb, int n)
+void ptrack_set_totals(zt_ptrack *p, float *totalpower, float *totalloudness, float *totaldb, int n)
 {
+    float *spec = (float *)p->spec1.ptr;
     int i;
     for (i = 4*MINBIN, *totalpower = 0; i < (n-2)*4; i += 4) {
         float re = spec[i] - 0.5 * (spec[i-8] + spec[i+8]);
@@ -306,13 +314,6 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
     }
 }
 
-void ptrack_set_histcnt(zt_ptrack *p, int n)
-{
-    int count = p->histcnt + 1;
-    if (count == NPREV) count = 0;
-    p->histcnt = count;
-}
-
 void ptrack(zt_data *sp, zt_ptrack *p)
 {
     int n = 2*p->hopsize;
@@ -320,9 +321,8 @@ void ptrack(zt_data *sp, zt_ptrack *p)
 
     ptrack_set_spec(p);
 
-    float *spec = (float *)p->spec1.ptr;
     float totalpower = 0, totalloudness = 0, totaldb = 0;
-    ptrack_set_totals(p, spec, &totalpower, &totalloudness, &totaldb, n);
+    ptrack_set_totals(p, &totalpower, &totalloudness, &totaldb, n);
 
     if (totaldb >= p->amplo) {
         int npeak = 0;
@@ -341,6 +341,7 @@ void ptrack(zt_data *sp, zt_ptrack *p)
         float *spectmp = (float *)p->spec2.ptr;
         float *histogram = spectmp + BINGUARD;
 
+        float *spec = (float *)p->spec1.ptr;
         ptrack_pt2(&npeak, numpks, peaklist, totalpower, spec, n);
         ptrack_pt3(npeak, numpks, peaklist, maxbin, histogram, totalloudness);
         ptrack_pt4(&histpeak, maxbin, histogram);

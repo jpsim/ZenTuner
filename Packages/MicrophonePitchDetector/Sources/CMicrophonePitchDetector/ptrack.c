@@ -18,6 +18,24 @@
 #define MINBIN 3
 #define THRSH 10
 
+float get_peakfr(float *spec, float height, int i)
+{
+    return ((spec[i-8] - spec[i+8]) * (2.0 * spec[i] - spec[i+8] - spec[i-8]) +
+            (spec[i-7] - spec[i+9]) * (2.0 * spec[i+1] - spec[i+9] - spec[i-7])) / (height + height);
+}
+
+float get_tmpfr1(float *spec, float h1, int i)
+{
+    return ((spec[i-12] - spec[i+4]) * (2.0 * spec[i-4] - spec[i+4] - spec[i-12]) +
+            (spec[i-11] - spec[i+5]) * (2.0 * spec[i-3] - spec[i+5] - spec[i-11])) / (2.0 * h1) - 1;
+}
+
+float get_tmpfr2(float *spec, float h2, int i)
+{
+    return ((spec[i-4] - spec[i+12]) * (2.0 * spec[i+4] - spec[i+12] - spec[i-4]) +
+            (spec[i-3] - spec[i+13]) * (2.0 * spec[i+5] - spec[i+13] - spec[i-3])) / (2.0 * h2) + 1;
+}
+
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)
 {
     for (int i = 4*MINBIN; i < (4*(n-2)) && *npeak < numpks; i += 4) {
@@ -33,12 +51,9 @@ void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float 
             continue;
         }
 
-        peakfr = ((spec[i-8] - spec[i+8]) * (2.0 * spec[i] - spec[i+8] - spec[i-8]) +
-                  (spec[i-7] - spec[i+9]) * (2.0 * spec[i+1] - spec[i+9] - spec[i-7])) / (height + height);
-        tmpfr1 =  ((spec[i-12] - spec[i+4]) * (2.0 * spec[i-4] - spec[i+4] - spec[i-12]) +
-                   (spec[i-11] - spec[i+5]) * (2.0 * spec[i-3] - spec[i+5] - spec[i-11])) / (2.0 * h1) - 1;
-        tmpfr2 = ((spec[i-4] - spec[i+12]) * (2.0 * spec[i+4] - spec[i+12] - spec[i-4]) +
-                  (spec[i-3] - spec[i+13]) * (2.0 * spec[i+5] - spec[i+13] - spec[i-3])) / (2.0 * h2) + 1;
+        peakfr = get_peakfr(spec, height, i);
+        tmpfr1 = get_tmpfr1(spec, h1, i);
+        tmpfr2 = get_tmpfr2(spec, h2, i);
 
         m = 0.333333333333 * (peakfr + tmpfr1 + tmpfr2);
         v = 0.5 * ((peakfr-m)*(peakfr-m) +

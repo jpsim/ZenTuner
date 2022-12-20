@@ -11,7 +11,7 @@ public final class PitchTracker {
         withUnsafeMutablePointer(to: &data, swift_zt_create)
         data!.pointee.sr = sampleRate
         withUnsafeMutablePointer(to: &ptrack, zt_ptrack_create)
-        zt_ptrack_init(data, ptrack, hopSize, peakCount)
+        zt_ptrack_init(data, ptrack, hopSize, peakCount, .pi)
     }
 
     deinit {

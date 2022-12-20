@@ -40,10 +40,6 @@
 
 #define NPARTIALONSET ((int)(sizeof(partialonset)/sizeof(ZTFLOAT)))
 
-#ifndef M_PI
-#define M_PI		3.14159265358979323846
-#endif
-
 static const ZTFLOAT partialonset[] =
 {
     0.0,
@@ -99,7 +95,7 @@ void zt_ptrack_destroy(zt_ptrack **p)
     free(*p);
 }
 
-void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks)
+void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks, float pi)
 {
     p->size = ihopsize;
 
@@ -142,8 +138,8 @@ void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks)
     for (i = 0, tmpb = (ZTFLOAT *)p->prev.ptr; i < winsize + 4 * FLTLEN; i++)
         tmpb[i] = 0.0;
     for (i = 0, tmpb = (ZTFLOAT *)p->sin.ptr; i < p->hopsize; i++) {
-        tmpb[2*i] =   (ZTFLOAT) cos((M_PI*i)/(winsize));
-        tmpb[2*i+1] = -(ZTFLOAT)sin((M_PI*i)/(winsize));
+        tmpb[2*i] =   (ZTFLOAT) cos((pi*i)/(winsize));
+        tmpb[2*i+1] = -(ZTFLOAT)sin((pi*i)/(winsize));
     }
 
     p->cnt = 0;

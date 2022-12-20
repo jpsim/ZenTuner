@@ -178,6 +178,16 @@ void ptrack_set_totals(zt_ptrack *p, float *totalpower, float *totalloudness, fl
     p->dbs[p->histcnt] = *totaldb + DBOFFSET;
 }
 
+float ptrack_get_maxbin(int n)
+{
+    int tmp = n, logn = -1;
+    while (tmp) {
+        tmp >>= 1;
+        logn++;
+    }
+    return BINPEROCT * (logn-2);
+}
+
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)
 {
     int i;
@@ -318,12 +328,7 @@ void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npe
 {
     HISTOPEAK histpeak;
 
-    int tmp = n, logn = -1;
-    while (tmp) {
-        tmp >>= 1;
-        logn++;
-    }
-    float maxbin = BINPEROCT * (logn-2);
+    float maxbin = ptrack_get_maxbin(n);
 
     int numpks = p->numpks;
     PEAK *peaklist = (PEAK *)p->peakarray.ptr;

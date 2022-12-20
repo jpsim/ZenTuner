@@ -195,6 +195,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
     ptrack_set_totals(&p, &totalpower, &totalloudness, &totaldb, n)
     if totaldb >= p.amplo {
         var npeak: Int32 = 0
-        ptrack(&p, n, totalpower, totalloudness, &npeak)
+        let maxbin = ptrack_get_maxbin(n)
+        ptrack(&p, n, totalpower, totalloudness, &npeak, maxbin)
     }
 }

@@ -70,7 +70,7 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
         powtwo += 1
     }
 
-    swift_zt_fft_init(p: &p, M: powtwo - 1)
+    p.fft = swift_zt_fft_init(M: powtwo - 1)
 
     if winsize != (1 << powtwo) {
         return

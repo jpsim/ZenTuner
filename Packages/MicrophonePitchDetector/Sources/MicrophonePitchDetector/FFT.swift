@@ -12,7 +12,7 @@ import CMicrophonePitchDetector
 
 // MARK: - Init
 
-func swift_zt_fft_init(p: UnsafeMutablePointer<zt_ptrack>, M: Int) {
+func swift_zt_fft_init(M: Int) -> zt_fft {
     let utbl = UnsafeMutablePointer<Float>.allocate(capacity: (pow2(M) / 4 + 1))
     swiftfftCosInit(M: M, Utbl: utbl)
 
@@ -21,9 +21,11 @@ func swift_zt_fft_init(p: UnsafeMutablePointer<zt_ptrack>, M: Int) {
 
     let BRLow = UnsafeMutablePointer<Int16>.allocate(capacity: pow2((M - 1) / 2 - 1))
     swiftfftBRInit(M: M - 1, BRLow: BRLow)
-    p.pointee.fft.BRLow = BRLow
-    p.pointee.fft.BRLowCpx = BRLowCpx
-    p.pointee.fft.utbl = utbl
+    return zt_fft(
+        utbl: utbl,
+        BRLow: BRLow,
+        BRLowCpx: BRLowCpx
+    )
 }
 
 // MARK: - FFT Tables

@@ -66,6 +66,91 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
+void ptrack_set_spec(zt_ptrack *p)
+{
+    float *spec = (float *)p->spec1.ptr;
+    float *spectmp = (float *)p->spec2.ptr;
+    float *sig = (float *)p->signal.ptr;
+    float *sinus  = (float *)p->sin.ptr;
+    float *prev  = (float *)p->prev.ptr;
+    int i, j, k, hop = p->hopsize, n = 2*hop;
+    int halfhop = hop>>1;
+
+    for (i = 0, k = 0; i < hop; i++, k += 2) {
+        spec[k]   = sig[i] * sinus[k];
+        spec[k+1] = sig[i] * sinus[k+1];
+    }
+
+    zt_fft_cpx(&p->fft, spec, hop);
+
+    for (i = 0, k = 2*FLTLEN; i < hop; i+=2, k += 4) {
+        spectmp[k]   = spec[i];
+        spectmp[k+1] = spec[i+1];
+    }
+
+    for (i = n - 2, k = 2*FLTLEN+2; i >= 0; i-=2, k += 4) {
+        spectmp[k]   = spec[i];
+        spectmp[k+1] = -spec[i+1];
+    }
+
+    for (i = (2*FLTLEN), k = (2*FLTLEN-2);i<FLTLEN*4; i+=2, k-=2) {
+        spectmp[k]   = spectmp[i];
+        spectmp[k+1] = -spectmp[i+1];
+    }
+
+    for (i = (2*FLTLEN+n-2), k =(2*FLTLEN+n); i>=0; i-=2, k+=2) {
+        spectmp[k]   = spectmp[i];
+        spectmp[k+1] = -spectmp[k+1];
+    }
+
+    for (i = j = 0, k = 2*FLTLEN; i < halfhop; i++, j+=8, k+=2) {
+        float re,  im;
+
+        re= COEF1 * ( prev[k-2] - prev[k+1]  + spectmp[k-2] - prev[k+1]) +
+            COEF2 * ( prev[k-3] - prev[k+2]  + spectmp[k-3]  - spectmp[ 2]) +
+            COEF3 * (-prev[k-6] +prev[k+5]  -spectmp[k-6] +spectmp[k+5]) +
+            COEF4 * (-prev[k-7] +prev[k+6]  -spectmp[k-7] +spectmp[k+6]) +
+            COEF5 * ( prev[k-10] -prev[k+9]  +spectmp[k-10] -spectmp[k+9]);
+
+        im= COEF1 * ( prev[k-1] +prev[k]  +spectmp[k-1] +spectmp[k]) +
+            COEF2 * (-prev[k-4] -prev[k+3]  -spectmp[k-4] -spectmp[k+3]) +
+            COEF3 * (-prev[k-5] -prev[k+4]  -spectmp[k-5] -spectmp[k+4]) +
+            COEF4 * ( prev[k-8] +prev[k+7]  +spectmp[k-8] +spectmp[k+7]) +
+            COEF5 * ( prev[k-9] +prev[k+8]  +spectmp[k-9] +spectmp[k+8]);
+
+        spec[j]   = 0.707106781186547524400844362104849 * (re + im);
+        spec[j+1] = 0.707106781186547524400844362104849 * (im - re);
+        spec[j+4] = prev[k] + spectmp[k+1];
+        spec[j+5] = prev[k+1] - spectmp[k];
+
+        j += 8;
+        k += 2;
+
+        re= COEF1 * ( prev[k-2] -prev[k+1]  -spectmp[k-2] +spectmp[k+1]) +
+            COEF2 * ( prev[k-3] -prev[k+2]  -spectmp[k-3] +spectmp[k+2]) +
+            COEF3 * (-prev[k-6] +prev[k+5]  +spectmp[k-6] -spectmp[k+5]) +
+            COEF4 * (-prev[k-7] +prev[k+6]  +spectmp[k-7] -spectmp[k+6]) +
+            COEF5 * ( prev[k-10] -prev[k+9]  -spectmp[k-10] +spectmp[k+9]);
+
+        im= COEF1 * ( prev[k-1] +prev[k]  -spectmp[k-1] -spectmp[k]) +
+            COEF2 * (-prev[k-4] -prev[k+3]  +spectmp[k-4] +spectmp[k+3]) +
+            COEF3 * (-prev[k-5] -prev[k+4]  +spectmp[k-5] +spectmp[k+4]) +
+            COEF4 * ( prev[k-8] +prev[k+7]  -spectmp[k-8] -spectmp[k+7]) +
+            COEF5 * ( prev[k-9] +prev[k+8]  -spectmp[k-9] -spectmp[k+8]);
+
+        spec[j]   = 0.707106781186547524400844362104849 * (re + im);
+        spec[j+1] = 0.707106781186547524400844362104849 * (im - re);
+        spec[j+4] = prev[k] - spectmp[k+1];
+        spec[j+5] = prev[k+1] + spectmp[k];
+
+    }
+
+
+    for (i = 0; i < n + 4*FLTLEN; i++) prev[i] = spectmp[i];
+
+    for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
+}
+
 void ptrack_set_totals(zt_ptrack *p, float *spec, float *totalpower, float *totalloudness, float *totaldb, int n, int count)
 {
     int i;
@@ -225,9 +310,6 @@ void ptrack(zt_data *sp, zt_ptrack *p)
 {
     float *spec = (float *)p->spec1.ptr;
     float *spectmp = (float *)p->spec2.ptr;
-    float *sig = (float *)p->signal.ptr;
-    float *sinus  = (float *)p->sin.ptr;
-    float *prev  = (float *)p->prev.ptr;
     int i, j, k, hop = p->hopsize, n = 2*hop, logn = -1, count, tmp;
     float maxbin,  *histogram = spectmp + BINGUARD;
     float hzperbin = (float) p->sr / (n + n);
@@ -248,79 +330,8 @@ void ptrack(zt_data *sp, zt_ptrack *p)
         logn++;
     }
     maxbin = BINPEROCT * (logn-2);
-    for (i = 0, k = 0; i < hop; i++, k += 2) {
-        spec[k]   = sig[i] * sinus[k];
-        spec[k+1] = sig[i] * sinus[k+1];
-    }
 
-    zt_fft_cpx(&p->fft, spec, hop);
-
-    for (i = 0, k = 2*FLTLEN; i < hop; i+=2, k += 4) {
-        spectmp[k]   = spec[i];
-        spectmp[k+1] = spec[i+1];
-    }
-
-    for (i = n - 2, k = 2*FLTLEN+2; i >= 0; i-=2, k += 4) {
-        spectmp[k]   = spec[i];
-        spectmp[k+1] = -spec[i+1];
-    }
-
-    for (i = (2*FLTLEN), k = (2*FLTLEN-2);i<FLTLEN*4; i+=2, k-=2) {
-        spectmp[k]   = spectmp[i];
-        spectmp[k+1] = -spectmp[i+1];
-    }
-
-    for (i = (2*FLTLEN+n-2), k =(2*FLTLEN+n); i>=0; i-=2, k+=2) {
-        spectmp[k]   = spectmp[i];
-        spectmp[k+1] = -spectmp[k+1];
-    }
-
-    for (i = j = 0, k = 2*FLTLEN; i < halfhop; i++, j+=8, k+=2) {
-        float re,  im;
-
-        re= COEF1 * ( prev[k-2] - prev[k+1]  + spectmp[k-2] - prev[k+1]) +
-            COEF2 * ( prev[k-3] - prev[k+2]  + spectmp[k-3]  - spectmp[ 2]) +
-            COEF3 * (-prev[k-6] +prev[k+5]  -spectmp[k-6] +spectmp[k+5]) +
-            COEF4 * (-prev[k-7] +prev[k+6]  -spectmp[k-7] +spectmp[k+6]) +
-            COEF5 * ( prev[k-10] -prev[k+9]  +spectmp[k-10] -spectmp[k+9]);
-
-        im= COEF1 * ( prev[k-1] +prev[k]  +spectmp[k-1] +spectmp[k]) +
-            COEF2 * (-prev[k-4] -prev[k+3]  -spectmp[k-4] -spectmp[k+3]) +
-            COEF3 * (-prev[k-5] -prev[k+4]  -spectmp[k-5] -spectmp[k+4]) +
-            COEF4 * ( prev[k-8] +prev[k+7]  +spectmp[k-8] +spectmp[k+7]) +
-            COEF5 * ( prev[k-9] +prev[k+8]  +spectmp[k-9] +spectmp[k+8]);
-
-        spec[j]   = 0.707106781186547524400844362104849 * (re + im);
-        spec[j+1] = 0.707106781186547524400844362104849 * (im - re);
-        spec[j+4] = prev[k] + spectmp[k+1];
-        spec[j+5] = prev[k+1] - spectmp[k];
-
-        j += 8;
-        k += 2;
-
-        re= COEF1 * ( prev[k-2] -prev[k+1]  -spectmp[k-2] +spectmp[k+1]) +
-            COEF2 * ( prev[k-3] -prev[k+2]  -spectmp[k-3] +spectmp[k+2]) +
-            COEF3 * (-prev[k-6] +prev[k+5]  +spectmp[k-6] -spectmp[k+5]) +
-            COEF4 * (-prev[k-7] +prev[k+6]  +spectmp[k-7] -spectmp[k+6]) +
-            COEF5 * ( prev[k-10] -prev[k+9]  -spectmp[k-10] +spectmp[k+9]);
-
-        im= COEF1 * ( prev[k-1] +prev[k]  -spectmp[k-1] -spectmp[k]) +
-            COEF2 * (-prev[k-4] -prev[k+3]  +spectmp[k-4] +spectmp[k+3]) +
-            COEF3 * (-prev[k-5] -prev[k+4]  +spectmp[k-5] +spectmp[k+4]) +
-            COEF4 * ( prev[k-8] +prev[k+7]  -spectmp[k-8] -spectmp[k+7]) +
-            COEF5 * ( prev[k-9] +prev[k+8]  -spectmp[k-9] -spectmp[k+8]);
-
-        spec[j]   = 0.707106781186547524400844362104849 * (re + im);
-        spec[j+1] = 0.707106781186547524400844362104849 * (im - re);
-        spec[j+4] = prev[k] - spectmp[k+1];
-        spec[j+5] = prev[k+1] + spectmp[k];
-
-    }
-
-
-    for (i = 0; i < n + 4*FLTLEN; i++) prev[i] = spectmp[i];
-
-    for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
+    ptrack_set_spec(p);
 
     float totalpower = 0, totalloudness = 0, totaldb = 0;
     ptrack_set_totals(p, spec, &totalpower, &totalloudness, &totaldb, n, count);

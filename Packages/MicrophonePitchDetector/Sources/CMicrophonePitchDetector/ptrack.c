@@ -308,44 +308,42 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
 
 void ptrack(zt_data *sp, zt_ptrack *p)
 {
-    float *spec = (float *)p->spec1.ptr;
-    float *spectmp = (float *)p->spec2.ptr;
-    int i, j, k, hop = p->hopsize, n = 2*hop, logn = -1, count, tmp;
-    float maxbin,  *histogram = spectmp + BINGUARD;
-    float hzperbin = (float) p->sr / (n + n);
-    int numpks = p->numpks;
-    int indx, halfhop = hop>>1;
-    float best;
-    float cumpow = 0, cumstrength = 0, freqnum = 0, freqden = 0;
-    int npartials = 0,  nbelow8 = 0;
-    float putfreq;
-
-    count = p->histcnt + 1;
+    int n = 2*p->hopsize;
+    int count = p->histcnt + 1;
     if (count == NPREV) count = 0;
     p->histcnt = count;
 
-    tmp = n;
-    while (tmp) {
-        tmp >>= 1;
-        logn++;
-    }
-    maxbin = BINPEROCT * (logn-2);
-
     ptrack_set_spec(p);
 
+    float *spec = (float *)p->spec1.ptr;
     float totalpower = 0, totalloudness = 0, totaldb = 0;
     ptrack_set_totals(p, spec, &totalpower, &totalloudness, &totaldb, n, count);
 
     if (totaldb >= p->amplo) {
         int npeak = 0;
 
-        PEAK *peaklist = (PEAK *)p->peakarray.ptr;
         HISTOPEAK histpeak;
+
+        int tmp = n, logn = -1;
+        while (tmp) {
+            tmp >>= 1;
+            logn++;
+        }
+        float maxbin = BINPEROCT * (logn-2);
+
+        int numpks = p->numpks;
+        PEAK *peaklist = (PEAK *)p->peakarray.ptr;
+        float *spectmp = (float *)p->spec2.ptr;
+        float *histogram = spectmp + BINGUARD;
 
         ptrack_pt2(&npeak, numpks, peaklist, totalpower, spec, n);
         ptrack_pt3(npeak, numpks, peaklist, maxbin, histogram, totalloudness);
         ptrack_pt4(&histpeak, maxbin, histogram);
+
+        float cumpow = 0, cumstrength = 0, freqnum = 0, freqden = 0;
+        int npartials = 0, nbelow8 = 0;
         ptrack_pt5(histpeak, npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
+        float hzperbin = (float) p->sr / (n + n);
         ptrack_pt6(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
     }
 }

@@ -10,8 +10,9 @@
  *
  */
 
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
 #include "CMicrophonePitchDetector.h"
 
 #define MINFREQINBINS 5
@@ -39,6 +40,18 @@
 #define FLTLEN 5
 
 #define NPARTIALONSET ((int)(sizeof(partialonset)/sizeof(ZTFLOAT)))
+
+void zt_auxdata_alloc(zt_auxdata *aux, size_t size)
+{
+    aux->ptr = malloc(size);
+    aux->size = size;
+    memset(aux->ptr, 0, size);
+}
+
+void zt_auxdata_free(zt_auxdata *aux)
+{
+    free(aux->ptr);
+}
 
 static const ZTFLOAT partialonset[] =
 {

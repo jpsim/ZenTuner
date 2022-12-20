@@ -22,9 +22,6 @@ typedef struct {
     unsigned long pos;
 } zt_data;
 
-void zt_auxdata_alloc(zt_auxdata *aux, size_t size);
-void zt_auxdata_free(zt_auxdata *aux);
-
 typedef struct {
     ZTFLOAT *utbl;
     int16_t *BRLow;

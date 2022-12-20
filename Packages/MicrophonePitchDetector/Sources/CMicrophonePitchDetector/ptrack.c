@@ -316,7 +316,6 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
 
 void ptrack(zt_ptrack *p, int n)
 {
-    ptrack_set_spec(p);
     float totalpower = 0, totalloudness = 0, totaldb = 0;
     ptrack_set_totals(p, &totalpower, &totalloudness, &totaldb, n);
 

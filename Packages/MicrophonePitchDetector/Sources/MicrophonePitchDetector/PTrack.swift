@@ -188,5 +188,6 @@ private extension zt_ptrack {
 private func ptrackSwift(p: inout zt_ptrack) {
     let n = 2 * p.hopsize
     ptrack_set_histcnt(&p, n)
+    ptrack_set_spec(&p)
     ptrack(&p, n)
 }

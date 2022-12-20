@@ -314,9 +314,8 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
     }
 }
 
-void ptrack(zt_ptrack *p)
+void ptrack(zt_ptrack *p, int n)
 {
-    int n = 2*p->hopsize;
     ptrack_set_histcnt(p, n);
     ptrack_set_spec(p);
     float totalpower = 0, totalloudness = 0, totaldb = 0;

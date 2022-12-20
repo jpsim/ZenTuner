@@ -144,7 +144,8 @@ func swift_zt_ptrack_compute(
     let scale: Float = 32768.0
 
     if pos == h {
-        ptrack(&p)
+        let n = 2 * p.hopsize
+        ptrack(&p, n)
         pos = 0
     }
 

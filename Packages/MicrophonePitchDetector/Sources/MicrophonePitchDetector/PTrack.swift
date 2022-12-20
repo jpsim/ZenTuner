@@ -288,15 +288,15 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
         Int32(n)
     )
 
-    ptrack_pt3(
-        npeak,
-        numpks,
-        peaklist,
-        maxbin,
-        histogram,
-        totalloudness,
-        &partialonset,
-        partialonset_count
+    swift_ptrack_pt3(
+        npeak: &npeak,
+        numpks: numpks,
+        peaklist: peaklist,
+        maxbin: maxbin,
+        histogram: histogram,
+        totalloudness: totalloudness,
+        partialonset: partialonset,
+        partialonset_count: Int(partialonset_count)
     )
 
     swift_ptrack_pt4(histpeak: &histpeak, maxbin: maxbin, histogram: histogram)
@@ -332,6 +332,34 @@ private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudne
         freqden: freqden,
         n: Int(n)
     )
+}
+
+private func swift_ptrack_pt3(npeak: inout Int32, numpks: Int32, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Float, partialonset: [Float], partialonset_count: Int) {
+    if npeak > numpks { npeak = numpks }
+    for i in 0..<Int(maxbin) { histogram[i] = 0 }
+    for i in 0..<Int(npeak) {
+        let pit = BPEROOVERLOG2 * logf(peaklist[i].pfreq) - 96.0
+        let binbandwidth = FACTORTOBINS * peaklist[i].pwidth / peaklist[i].pfreq
+        let putbandwidth = binbandwidth < 2.0 ? 2.0 : binbandwidth
+        let weightbandwidth = binbandwidth < 1.0 ? 1.0 : binbandwidth
+        let weightamp = 4.0 * peaklist[i].ploudness / totalloudness
+        for j in 0..<partialonset_count {
+            let bin = pit - partialonset[j]
+            if bin < maxbin {
+                let score = 30.0 * weightamp / (Float((j+7)) * weightbandwidth)
+                let firstbin = bin + 0.5 - 0.5 * putbandwidth
+                let lastbin = bin + 0.5 + 0.5 * putbandwidth
+                let ibw = lastbin - firstbin
+                if firstbin < -Float(BINGUARD) { break }
+                let para = 1.0 / (putbandwidth * putbandwidth)
+                var pphase: Float = firstbin - bin
+                for k in 0...Int(ibw) {
+                    histogram[k+Int(firstbin)] += score * (1.0 - para * (pphase + Float(k)) * (pphase + Float(k)))
+                    pphase += 1
+                }
+            }
+        }
+    }
 }
 
 private func swift_ptrack_pt4(histpeak: inout HISTOPEAK, maxbin: Float, histogram: UnsafeMutablePointer<Float>) {

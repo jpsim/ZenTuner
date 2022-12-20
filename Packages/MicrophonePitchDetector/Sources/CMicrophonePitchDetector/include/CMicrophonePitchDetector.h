@@ -51,6 +51,5 @@ typedef struct histopeak
 
 void ptrack_set_spec(zt_ptrack *p);
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n);
-void ptrack_pt3(int npeak, int numpks, PEAK *peaklist, float maxbin, float *histogram, float totalloudness, float partialonset[], int partialonset_count);
 
 #endif

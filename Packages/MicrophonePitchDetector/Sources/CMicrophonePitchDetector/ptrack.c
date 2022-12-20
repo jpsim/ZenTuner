@@ -35,14 +35,6 @@
 #define COEF5 ((float)(.5 * 0.002533))
 #define FLTLEN 5
 
-typedef struct histopeak
-{
-  float hpitch;
-  float hvalue;
-  float hloud;
-  int hindex;
-} HISTOPEAK;
-
 void ptrack_set_spec(zt_ptrack *p)
 {
     float *spec = (float *)p->spec1.ptr;

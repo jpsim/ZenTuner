@@ -41,6 +41,14 @@ typedef struct {
     zt_fft fft;
 } zt_ptrack;
 
+typedef struct histopeak
+{
+  float hpitch;
+  float hvalue;
+  float hloud;
+  int hindex;
+} HISTOPEAK;
+
 void ptrack_set_spec(zt_ptrack *p);
 void ptrack_set_totals(zt_ptrack *p, float *totalpower, float *totalloudness, float *totaldb, int n);
 float ptrack_get_maxbin(int n);

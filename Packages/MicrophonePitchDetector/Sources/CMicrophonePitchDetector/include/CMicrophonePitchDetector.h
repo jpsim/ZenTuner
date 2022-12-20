@@ -25,8 +25,6 @@ typedef struct {
 void zt_auxdata_alloc(zt_auxdata *aux, size_t size);
 void zt_auxdata_free(zt_auxdata *aux);
 
-void zt_destroy(zt_data **spp);
-
 typedef struct {
     ZTFLOAT *utbl;
     int16_t *BRLow;

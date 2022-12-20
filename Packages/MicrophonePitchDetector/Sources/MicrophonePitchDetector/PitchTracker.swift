@@ -16,7 +16,7 @@ public final class PitchTracker {
 
     deinit {
         withUnsafeMutablePointer(to: &ptrack, zt_ptrack_destroy)
-        withUnsafeMutablePointer(to: &data, zt_destroy)
+        withUnsafeMutablePointer(to: &data, swift_zt_destroy)
     }
 
     public func getPitch(from buffer: AVAudioPCMBuffer, amplitudeThreshold: Double = 0.1) -> Double? {
@@ -104,4 +104,10 @@ private func swift_zt_create(_ spp: UnsafeMutablePointer<UnsafeMutablePointer<zt
     sp.pointee.sr = 44100
     sp.pointee.len = 5 * UInt(sp.pointee.sr)
     sp.pointee.pos = 0
+}
+
+private func swift_zt_destroy(_ spp: UnsafeMutablePointer<UnsafeMutablePointer<zt_data>?>) {
+    guard let sp = spp.pointee else { return }
+    sp.pointee.out.deallocate()
+    spp.pointee?.deallocate()
 }

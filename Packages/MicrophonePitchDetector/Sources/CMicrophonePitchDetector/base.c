@@ -5,13 +5,6 @@
 #include <string.h>
 #include "CMicrophonePitchDetector.h"
 
-void zt_destroy(zt_data **spp)
-{
-    zt_data *sp = *spp;
-    free(sp->out);
-    free(*spp);
-}
-
 void zt_auxdata_alloc(zt_auxdata *aux, size_t size)
 {
     aux->ptr = malloc(size);

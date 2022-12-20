@@ -63,7 +63,7 @@ private let partialonset: [Float] = [
     192.0,
 ]
 
-func swift_zt_ptrack_init(p: inout zt_ptrack, sampleRate: Float) {
+func swift_zt_ptrack_init(p: inout zt_ptrack) {
     let winsize = Int(p.size*2)
     var powtwo = -1
     var tmp = winsize
@@ -104,13 +104,8 @@ func swift_zt_ptrack_init(p: inout zt_ptrack, sampleRate: Float) {
         sinPointer[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
     }
 
-    p.cnt = 0
-
     swift_zt_auxdata_alloc(aux: &p.peakarray, size: (Int(p.numpks)+1)*MemoryLayout<PEAK>.size)
 
-    p.cnt = 0
-    p.histcnt = 0
-    p.sr = sampleRate
     let value: Float = -144.0
     p.dbs = (
         value,

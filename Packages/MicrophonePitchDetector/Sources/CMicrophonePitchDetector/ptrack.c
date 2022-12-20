@@ -120,16 +120,6 @@ void ptrack_set_spec(zt_ptrack *p)
     for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
 }
 
-float ptrack_get_maxbin(int n)
-{
-    int tmp = n, logn = -1;
-    while (tmp) {
-        tmp >>= 1;
-        logn++;
-    }
-    return BINPEROCT * (logn-2);
-}
-
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)
 {
     int i;

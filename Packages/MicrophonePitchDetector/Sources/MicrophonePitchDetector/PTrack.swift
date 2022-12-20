@@ -225,7 +225,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
             totalpower,
             totalloudness,
             &npeak,
-            ptrack_get_maxbin(n),
+            swift_ptrack_get_maxbin(n: Int(n)),
             p.numpks,
             &partialonset,
             Int32(partialonset.count)
@@ -239,7 +239,7 @@ private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int32) {
     p.histcnt = count
 }
 
-func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Float, totalloudness: inout Float, totaldb: inout Float, n: Int) {
+private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Float, totalloudness: inout Float, totaldb: inout Float, n: Int) {
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     for i in stride(from: 4 * MINBIN, to: (n - 2) * 4, by: 4) {
         let re = spec[i] - 0.5 * (spec[i - 8] + spec[i + 8])
@@ -261,4 +261,13 @@ func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Float, totall
     }
 
     p.setDBS(atIndex: p.histcnt, to: totaldb + DBOFFSET)
+}
+
+private func swift_ptrack_get_maxbin(n: Int) -> Float {
+    var tmp = n, logn = -1
+    while (tmp > 0) {
+        tmp &>>= 1
+        logn += 1
+    }
+    return Float(BINPEROCT * (logn-2))
 }

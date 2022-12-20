@@ -13,8 +13,6 @@
 import CMicrophonePitchDetector
 
 private let MINFREQINBINS: Float = 5
-private let MAXWINSIZ = 8192
-private let MINWINSIZ = 128
 private let NPREV = 20
 private let MINBW: Float = 0.03
 private let BINPEROCT = 48

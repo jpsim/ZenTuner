@@ -469,7 +469,7 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
     swift_ptrack_set_spec_pt1(p: &p)
     ptrack_set_spec_pt2(&p)
     swift_ptrack_set_spec_pt3(p: &p)
-    ptrack_set_spec_pt4(&p)
+    swift_ptrack_set_spec_pt4(p: &p)
 }
 
 private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {

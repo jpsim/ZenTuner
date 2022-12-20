@@ -36,15 +36,13 @@ private let COEF4: Float = 0.5 * -0.022748
 private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
 
-private let NPARTIALONSET = Int(partialonset.count)
-
 private func swift_zt_auxdata_alloc(aux: inout zt_auxdata, size: Int) {
     aux.ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: 1)
     aux.size = size
     memset(aux.ptr, 0, size)
 }
 
-private let partialonset: [Float] = [
+private var partialonset: [Float] = [
     0.0,
     48.0,
     76.0782000346154967102,
@@ -202,7 +200,9 @@ private func ptrackSwift(p: inout zt_ptrack) {
             totalloudness,
             &npeak,
             ptrack_get_maxbin(n),
-            p.numpks
+            p.numpks,
+            &partialonset,
+            Int32(partialonset.count)
         )
     }
 }

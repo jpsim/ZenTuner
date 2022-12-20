@@ -35,28 +35,6 @@
 #define COEF5 ((float)(.5 * 0.002533))
 #define FLTLEN 5
 
-#define NPARTIALONSET ((int)(sizeof(partialonset)/sizeof(float)))
-
-static const float partialonset[] =
-{
-    0.0,
-    48.0,
-    76.0782000346154967102,
-    96.0,
-    111.45254855459339269887,
-    124.07820003461549671089,
-    134.75303625876499715823,
-    144.0,
-    152.15640006923099342109,
-    159.45254855459339269887,
-    166.05271769459026829915,
-    172.07820003461549671088,
-    177.62110647077242370064,
-    182.75303625876499715892,
-    187.53074858920888940907,
-    192.0,
-};
-
 typedef struct histopeak
 {
   float hpitch;
@@ -229,7 +207,7 @@ void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float 
     }
 }
 
-void ptrack_pt3(int npeak, int numpks, PEAK *peaklist, float maxbin, float *histogram, float totalloudness)
+void ptrack_pt3(int npeak, int numpks, PEAK *peaklist, float maxbin, float *histogram, float totalloudness, float partialonset[], int partialonset_count)
 {
     int i, j, k;
     if (npeak > numpks) npeak = numpks;
@@ -240,7 +218,7 @@ void ptrack_pt3(int npeak, int numpks, PEAK *peaklist, float maxbin, float *hist
         float putbandwidth = (binbandwidth < 2.0 ? 2.0 : binbandwidth);
         float weightbandwidth = (binbandwidth < 1.0 ? 1.0 : binbandwidth);
         float weightamp = 4.0 * peaklist[i].ploudness / totalloudness;
-        for (j = 0; j < NPARTIALONSET; j++) {
+        for (j = 0; j < partialonset_count; j++) {
             float bin = pit - partialonset[j];
             if (bin < maxbin) {
                 float para, pphase, score = 30.0 * weightamp /
@@ -316,7 +294,7 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
     }
 }
 
-void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npeak, float maxbin, int numpks)
+void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npeak, float maxbin, int numpks, float partialonset[], int partialonset_count)
 {
     HISTOPEAK histpeak;
 
@@ -326,7 +304,7 @@ void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npe
 
     float *spec = (float *)p->spec1.ptr;
     ptrack_pt2(npeak, numpks, peaklist, totalpower, spec, n);
-    ptrack_pt3(*npeak, numpks, peaklist, maxbin, histogram, totalloudness);
+    ptrack_pt3(*npeak, numpks, peaklist, maxbin, histogram, totalloudness, partialonset, partialonset_count);
     ptrack_pt4(&histpeak, maxbin, histogram);
 
     float cumpow = 0, cumstrength = 0, freqnum = 0, freqden = 0;

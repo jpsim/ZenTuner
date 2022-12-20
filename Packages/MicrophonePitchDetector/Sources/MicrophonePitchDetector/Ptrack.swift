@@ -80,15 +80,16 @@ func swift_zt_ptrack_init(p: inout zt_ptrack, sampleRate: Float) {
     }
 
     p.hopsize = Int32(p.size)
+    let hopsize = Int(p.hopsize)
 
-    swift_zt_auxdata_alloc(aux: &p.signal, size: Int(p.hopsize) * MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.prev, size: (Int(p.hopsize)*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.sin, size: (Int(p.hopsize)*2)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.signal, size: hopsize * MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.prev, size: (hopsize*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.sin, size: (hopsize*2)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
 
-    let signalPointer = p.signal.ptr.bindMemory(to: Float.self, capacity: Int(p.hopsize))
-    for i in 0..<Int(p.hopsize) {
+    let signalPointer = p.signal.ptr.bindMemory(to: Float.self, capacity: hopsize)
+    for i in 0..<hopsize {
         signalPointer[i] = 0.0
     }
 
@@ -97,8 +98,8 @@ func swift_zt_ptrack_init(p: inout zt_ptrack, sampleRate: Float) {
         prevPointer[i] = 0.0
     }
 
-    let sinPointer = p.sin.ptr.bindMemory(to: Float.self, capacity: Int(p.hopsize))
-    for i in 0..<Int(p.hopsize) {
+    let sinPointer = p.sin.ptr.bindMemory(to: Float.self, capacity: hopsize)
+    for i in 0..<hopsize {
         sinPointer[2*i] = cos((.pi*Float(i))/(Float(winsize)))
         sinPointer[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
     }

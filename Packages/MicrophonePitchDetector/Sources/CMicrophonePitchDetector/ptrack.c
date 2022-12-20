@@ -66,7 +66,26 @@ typedef struct histopeak
   int hindex;
 } HISTOPEAK;
 
-void ptrack_pt1(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)
+void ptrack_set_totals(zt_ptrack *p, float *spec, float *totalpower, float *totalloudness, float *totaldb, int n, int count)
+{
+    int i;
+    for (i = 4*MINBIN, *totalpower = 0; i < (n-2)*4; i += 4) {
+        float re = spec[i] - 0.5 * (spec[i-8] + spec[i+8]);
+        float im = spec[i+1] - 0.5 * (spec[i-7] + spec[i+9]);
+        spec[i+3] = (*totalpower += (spec[i+2] = re * re + im * im));
+    }
+
+    if (*totalpower > 1.0e-9) {
+        *totaldb = (float)DBSCAL * logf(*totalpower/n);
+        *totalloudness = (float)sqrtf((float)sqrtf(*totalpower));
+        if (*totaldb < 0) *totaldb = 0;
+    }
+    else *totaldb = *totalloudness = 0.0;
+
+    p->dbs[count] = *totaldb + DBOFFSET;
+}
+
+void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)
 {
     int i;
 
@@ -115,7 +134,7 @@ void ptrack_pt1(int *npeak, int numpks, PEAK *peaklist, float totalpower, float 
     }
 }
 
-void ptrack_pt2(int npeak, int numpks, PEAK *peaklist, float maxbin, float *histogram, float totalloudness)
+void ptrack_pt3(int npeak, int numpks, PEAK *peaklist, float maxbin, float *histogram, float totalloudness)
 {
     int i, j, k;
     if (npeak > numpks) npeak = numpks;
@@ -144,7 +163,7 @@ void ptrack_pt2(int npeak, int numpks, PEAK *peaklist, float maxbin, float *hist
     }
 }
 
-void ptrack_pt3(HISTOPEAK *histpeak, float maxbin, float *histogram)
+void ptrack_pt4(HISTOPEAK *histpeak, float maxbin, float *histogram)
 {
     int best, indx, j;
     for (best = 0, indx = -1, j=0; j < maxbin; j++) {
@@ -158,7 +177,7 @@ void ptrack_pt3(HISTOPEAK *histpeak, float maxbin, float *histogram)
     histpeak->hindex = indx;
 }
 
-void ptrack_pt4(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, int *nbelow8, float *cumpow, float *cumstrength, float *freqnum, float *freqden)
+void ptrack_pt5(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, int *nbelow8, float *cumpow, float *cumstrength, float *freqnum, float *freqden)
 {
     float putfreq = expf((1.0 / BPEROOVERLOG2) * (histpeak.hindex + 96.0));
 
@@ -184,7 +203,7 @@ void ptrack_pt4(HISTOPEAK histpeak, int npeak, PEAK *peaklist, int *npartials, i
     }
 }
 
-void ptrack_pt5(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, float hzperbin, int n)
+void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HISTOPEAK *histpeak, float cumpow, float cumstrength, float freqnum, float freqden, float hzperbin, int n)
 {
     if ((nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower) {
         histpeak->hvalue = 0;
@@ -209,10 +228,7 @@ void ptrack(zt_data *sp, zt_ptrack *p)
     float *sig = (float *)p->signal.ptr;
     float *sinus  = (float *)p->sin.ptr;
     float *prev  = (float *)p->prev.ptr;
-    PEAK  *peaklist = (PEAK *)p->peakarray.ptr;
-    HISTOPEAK histpeak;
-    int i, j, k, hop = p->hopsize, n = 2*hop, npeak = 0, logn = -1, count, tmp;
-    float totalpower = 0, totalloudness = 0, totaldb = 0;
+    int i, j, k, hop = p->hopsize, n = 2*hop, logn = -1, count, tmp;
     float maxbin,  *histogram = spectmp + BINGUARD;
     float hzperbin = (float) p->sr / (n + n);
     int numpks = p->numpks;
@@ -306,28 +322,19 @@ void ptrack(zt_data *sp, zt_ptrack *p)
 
     for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
 
-    for (i = 4*MINBIN, totalpower = 0; i < (n-2)*4; i += 4) {
-        float re = spec[i] - 0.5 * (spec[i-8] + spec[i+8]);
-        float im = spec[i+1] - 0.5 * (spec[i-7] + spec[i+9]);
-        spec[i+3] = (totalpower += (spec[i+2] = re * re + im * im));
-    }
-
-    if (totalpower > 1.0e-9) {
-        totaldb = (float)DBSCAL * logf(totalpower/n);
-        totalloudness = (float)sqrtf((float)sqrtf(totalpower));
-        if (totaldb < 0) totaldb = 0;
-    }
-    else totaldb = totalloudness = 0.0;
-
-    p->dbs[count] = totaldb + DBOFFSET;
+    float totalpower = 0, totalloudness = 0, totaldb = 0;
+    ptrack_set_totals(p, spec, &totalpower, &totalloudness, &totaldb, n, count);
 
     if (totaldb >= p->amplo) {
-        npeak = 0;
+        int npeak = 0;
 
-        ptrack_pt1(&npeak, numpks, peaklist, totalpower, spec, n);
-        ptrack_pt2(npeak, numpks, peaklist, maxbin, histogram, totalloudness);
-        ptrack_pt3(&histpeak, maxbin, histogram);
-        ptrack_pt4(histpeak, npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
-        ptrack_pt5(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
+        PEAK *peaklist = (PEAK *)p->peakarray.ptr;
+        HISTOPEAK histpeak;
+
+        ptrack_pt2(&npeak, numpks, peaklist, totalpower, spec, n);
+        ptrack_pt3(npeak, numpks, peaklist, maxbin, histogram, totalloudness);
+        ptrack_pt4(&histpeak, maxbin, histogram);
+        ptrack_pt5(histpeak, npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
+        ptrack_pt6(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, hzperbin, n);
     }
 }

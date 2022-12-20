@@ -16,46 +16,7 @@
 #include "CMicrophonePitchDetector.h"
 
 #define MINBIN 3
-
-#define THRSH 10.
-
-#define FLTLEN 5
-
-void ptrack_set_spec_pt2(zt_ptrack *p)
-{
-    float *spec = (float *)p->spec1.ptr;
-    float *spectmp = (float *)p->spec2.ptr;
-    int hop = p->hopsize;
-    int n = 2 * hop;
-
-    int k = 2 * FLTLEN;
-    for (int i = 0; i < hop; i += 2) {
-        spectmp[k]     = spec[i];
-        spectmp[k + 1] = spec[i + 1];
-        k += 4;
-    }
-
-    k = 2*FLTLEN+2;
-    for (int i = n - 2; i >= 0; i -= 2) {
-        spectmp[k]     = spec[i];
-        spectmp[k + 1] = -spec[i + 1];
-        k += 4;
-    }
-
-    k = 2*FLTLEN-2;
-    for (int i = 2*FLTLEN; i < FLTLEN*4; i += 2) {
-        spectmp[k]     = spectmp[i];
-        spectmp[k + 1] = -spectmp[i + 1];
-        k -= 2;
-    }
-
-    k = 2*FLTLEN+n;
-    for (int i = 2*FLTLEN+n-2; i >= 0; i -= 2) {
-        spectmp[k]     = spectmp[i];
-        spectmp[k + 1] = -spectmp[k + 1];
-        k += 2;
-    }
-}
+#define THRSH 10
 
 void ptrack_pt2(int *npeak, int numpks, PEAK *peaklist, float totalpower, float *spec, int n)
 {

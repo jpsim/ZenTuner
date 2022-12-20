@@ -156,6 +156,32 @@ func swift_zt_ptrack_compute(
 }
 
 private extension zt_ptrack {
+    mutating func setDBS(atIndex index: Int32, to value: Float) {
+        switch index {
+        case 0: dbs.0 = value
+        case 1: dbs.1 = value
+        case 2: dbs.2 = value
+        case 3: dbs.3 = value
+        case 4: dbs.4 = value
+        case 5: dbs.5 = value
+        case 6: dbs.6 = value
+        case 7: dbs.7 = value
+        case 8: dbs.8 = value
+        case 9: dbs.9 = value
+        case 10: dbs.10 = value
+        case 11: dbs.11 = value
+        case 12: dbs.12 = value
+        case 13: dbs.13 = value
+        case 14: dbs.14 = value
+        case 15: dbs.15 = value
+        case 16: dbs.16 = value
+        case 17: dbs.17 = value
+        case 18: dbs.18 = value
+        case 19: dbs.19 = value
+        default: fatalError("Illegal offset")
+        }
+    }
+
     func getDBS(atIndex index: Int32) -> Float {
         switch index {
         case 0: return dbs.0
@@ -190,7 +216,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
     var totalpower: Float = 0
     var totalloudness: Float = 0
     var totaldb: Float = 0
-    ptrack_set_totals(&p, &totalpower, &totalloudness, &totaldb, n)
+    swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: Int(n))
     if totaldb >= p.amplo {
         var npeak: Int32 = 0
         ptrack(
@@ -211,4 +237,28 @@ private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int32) {
     var count = p.histcnt + 1
     if (count == NPREV) { count = 0 }
     p.histcnt = count
+}
+
+func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Float, totalloudness: inout Float, totaldb: inout Float, n: Int) {
+    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
+    for i in stride(from: 4 * MINBIN, to: (n - 2) * 4, by: 4) {
+        let re = spec[i] - 0.5 * (spec[i - 8] + spec[i + 8])
+        let im = spec[i + 1] - 0.5 * (spec[i - 7] + spec[i + 9])
+        let power = re * re + im * im
+        spec[i + 2] = power
+        totalpower += power
+        spec[i + 3] = totalpower
+    }
+
+    if totalpower > 1.0e-9 {
+        totaldb = DBSCAL * logf(totalpower/Float(n))
+        totalloudness = sqrtf(sqrtf(totalpower))
+        if totaldb < 0 { totaldb = 0 }
+    }
+    else {
+        totaldb = 0.0
+        totalloudness = 0.0
+    }
+
+    p.setDBS(atIndex: p.histcnt, to: totaldb + DBOFFSET)
 }

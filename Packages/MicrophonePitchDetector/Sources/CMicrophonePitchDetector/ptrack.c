@@ -120,26 +120,6 @@ void ptrack_set_spec(zt_ptrack *p)
     for (i = 0; i < MINBIN; i++) spec[4*i + 2] = spec[4*i + 3] =0.0;
 }
 
-void ptrack_set_totals(zt_ptrack *p, float *totalpower, float *totalloudness, float *totaldb, int n)
-{
-    float *spec = (float *)p->spec1.ptr;
-    int i;
-    for (i = 4*MINBIN, *totalpower = 0; i < (n-2)*4; i += 4) {
-        float re = spec[i] - 0.5 * (spec[i-8] + spec[i+8]);
-        float im = spec[i+1] - 0.5 * (spec[i-7] + spec[i+9]);
-        spec[i+3] = (*totalpower += (spec[i+2] = re * re + im * im));
-    }
-
-    if (*totalpower > 1.0e-9) {
-        *totaldb = (float)DBSCAL * logf(*totalpower/n);
-        *totalloudness = (float)sqrtf((float)sqrtf(*totalpower));
-        if (*totaldb < 0) *totaldb = 0;
-    }
-    else *totaldb = *totalloudness = 0.0;
-
-    p->dbs[p->histcnt] = *totaldb + DBOFFSET;
-}
-
 float ptrack_get_maxbin(int n)
 {
     int tmp = n, logn = -1;

@@ -50,7 +50,6 @@ typedef struct histopeak
 } HISTOPEAK;
 
 void ptrack_set_spec(zt_ptrack *p);
-void ptrack_set_totals(zt_ptrack *p, float *totalpower, float *totalloudness, float *totaldb, int n);
 float ptrack_get_maxbin(int n);
 void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npeak, float maxbin, int numpks, float partialonset[], int partialonset_count);
 

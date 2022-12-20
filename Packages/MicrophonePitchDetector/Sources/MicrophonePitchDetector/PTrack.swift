@@ -160,11 +160,11 @@ private func ptrackSwift(p: inout zt_ptrack) {
     let n = 2 * p.hopsize
     swift_ptrack_set_histcnt(p: &p, n: n)
     swift_ptrack_set_spec(p: &p)
-    var totalpower: Float = 0
-    var totalloudness: Float = 0
-    var totaldb: Float = 0
+    var totalpower: Double = 0
+    var totalloudness: Double = 0
+    var totaldb: Double = 0
     swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: Int(n))
-    if totaldb >= Float(p.amplo) {
+    if totaldb >= p.amplo {
         var npeak = 0
         ptrack(
             p: &p,
@@ -186,20 +186,20 @@ private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int) {
     p.histcnt = count
 }
 
-private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Float, totalloudness: inout Float, totaldb: inout Float, n: Int) {
+private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Double, totalloudness: inout Double, totaldb: inout Double, n: Int) {
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     for i in stride(from: 4 * MINBIN, to: (n - 2) * 4, by: 4) {
         let re = spec[i] - 0.5 * (spec[i - 8] + spec[i + 8])
         let im = spec[i + 1] - 0.5 * (spec[i - 7] + spec[i + 9])
         let power = re * re + im * im
         spec[i + 2] = power
-        totalpower += power
-        spec[i + 3] = totalpower
+        totalpower += Double(power)
+        spec[i + 3] = Float(totalpower)
     }
 
     if totalpower > 1.0e-9 {
-        totaldb = DBSCAL * logf(totalpower/Float(n))
-        totalloudness = sqrtf(sqrtf(totalpower))
+        totaldb = Double(DBSCAL * logf(Float(totalpower)/Float(n)))
+        totalloudness = Double(sqrtf(sqrtf(Float(totalpower))))
         if totaldb < 0 { totaldb = 0 }
     }
     else {
@@ -207,7 +207,7 @@ private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Float
         totalloudness = 0.0
     }
 
-    p.dbs[Int(p.histcnt)] = totaldb + DBOFFSET
+    p.dbs[Int(p.histcnt)] = Float(totaldb) + DBOFFSET
 }
 
 private func swift_ptrack_get_maxbin(n: Int) -> Float {
@@ -226,7 +226,7 @@ private struct HISTOPEAK {
     var hindex: Int32 = 0
 }
 
-private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Float, totalloudness: Float, npeak: inout Int, maxbin: Float, numpks: Int, partialonset: inout [Float], partialonset_count: Int32) {
+private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, npeak: inout Int, maxbin: Float, numpks: Int, partialonset: inout [Float], partialonset_count: Int32) {
     var histpeak = HISTOPEAK()
     let peaklist = p.peakarray.ptr.assumingMemoryBound(to: PEAK.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
@@ -295,13 +295,13 @@ private struct PEAK {
     var ploudness: Float = 0
 }
 
-private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, totalpower: Float, spec: UnsafeMutablePointer<Float>, n: Int) {
+private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, totalpower: Double, spec: UnsafeMutablePointer<Float>, n: Int) {
     for i in stride(from: 4*MINBIN, to: 4*(n-2), by: 4) {
         if npeak >= numpks { break }
         let height = spec[i+2], h1 = spec[i-2], h2 = spec[i+6]
         var totalfreq, peakfr, tmpfr1, tmpfr2, m, `var`, stdev: Float
 
-        if height < h1 || height < h2 || h1 < 0.00001*totalpower || h2 < 0.00001*totalpower { continue }
+        if height < h1 || height < h2 || h1 < 0.00001*Float(totalpower) || h2 < 0.00001*Float(totalpower) { continue }
 
         peakfr = ((spec[i-8] - spec[i+8]) * (2.0 * spec[i] - spec[i+8] - spec[i-8]) +
                   (spec[i-7] - spec[i+9]) * (2.0 * spec[i+1] - spec[i+9] - spec[i-7])) / (height + height)
@@ -315,7 +315,7 @@ private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
                       (tmpfr1-m)*(tmpfr1-m) + (tmpfr2-m)*(tmpfr2-m))
 
         totalfreq = Float(i >> 2) + m
-        if (`var` * totalpower > THRSH * height || `var` < 1.0e-30) {
+        if (`var` * Float(totalpower) > THRSH * height || `var` < 1.0e-30) {
             continue
         }
 
@@ -330,7 +330,7 @@ private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
     }
 }
 
-private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Float, partialonset: [Float], partialonset_count: Int) {
+private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Double, partialonset: [Float], partialonset_count: Int) {
     if npeak > numpks { npeak = numpks }
     for i in 0..<Int(maxbin) { histogram[i] = 0 }
     for i in 0..<Int(npeak) {
@@ -338,7 +338,7 @@ private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
         let binbandwidth = FACTORTOBINS * peaklist[i].pwidth / peaklist[i].pfreq
         let putbandwidth = binbandwidth < 2.0 ? 2.0 : binbandwidth
         let weightbandwidth = binbandwidth < 1.0 ? 1.0 : binbandwidth
-        let weightamp = 4.0 * peaklist[i].ploudness / totalloudness
+        let weightamp = 4.0 * peaklist[i].ploudness / Float(totalloudness)
         for j in 0..<partialonset_count {
             let bin = pit - partialonset[j]
             if bin < maxbin {
@@ -396,8 +396,8 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
 }
 
 
-private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Float, histpeak: inout HISTOPEAK, cumpow: Float, cumstrength: Float, freqnum: Float, freqden: Float, n: Int) {
-    if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower {
+private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Float, cumstrength: Float, freqnum: Float, freqden: Float, n: Int) {
+    if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * Float(totalpower) {
         histpeak.hvalue = 0
     } else {
         var pitchpow = cumstrength * cumstrength

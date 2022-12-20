@@ -54,7 +54,7 @@ struct zt_ptrack {
     var histcnt = 0
     var hopsize = 0
     var sr = 0.0
-    var cps: Float = 0
+    var cps = 0.0
     var dbs: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var amplo = 0.0
     var fft: zt_fft = zt_fft()
@@ -150,7 +150,7 @@ func swift_zt_ptrack_compute(
     buf[Int(pos)] = `in`.pointee * scale
     pos += 1
 
-    freq = p.cps
+    freq = Float(p.cps)
     amp = exp(p.dbs[Int(p.histcnt)] / 20.0 * log(10.0))
 
     p.cnt = pos
@@ -410,7 +410,7 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
             let hzperbin = Float(p.sr) / Float(n + n)
             let hpitch = hzperbin * freqnum / freqden
             histpeak.hpitch = hpitch
-            p.cps = hpitch
+            p.cps = Double(hpitch)
             histpeak.hloud = DBSCAL * logf(pitchpow / Float(n))
         }
     }

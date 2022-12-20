@@ -23,7 +23,7 @@ private let PARTIALDEVIANCE: Float = 0.023
 private let DBSCAL: Float = 3.333
 private let DBOFFSET: Float = -92.3
 private let MINBIN = 3
-private let MINAMPS = 40
+private let MINAMPS = 40.0
 
 private let THRSH: Float = 10
 
@@ -56,7 +56,7 @@ struct zt_ptrack {
     var sr: Float = 0
     var cps: Float = 0
     var dbs: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    var amplo: Float = 0
+    var amplo = 0.0
     var fft: zt_fft = zt_fft()
 }
 
@@ -128,7 +128,7 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
     swift_zt_auxdata_alloc(aux: &p.peakarray, size: (Int(p.numpks)+1)*MemoryLayout<PEAK>.size)
 
     p.dbs = Array(repeating: -144.0, count: 20)
-    p.amplo = Float(MINAMPS)
+    p.amplo = MINAMPS
 }
 
 func swift_zt_ptrack_compute(
@@ -164,7 +164,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
     var totalloudness: Float = 0
     var totaldb: Float = 0
     swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: Int(n))
-    if totaldb >= p.amplo {
+    if totaldb >= Float(p.amplo) {
         var npeak = 0
         ptrack(
             p: &p,

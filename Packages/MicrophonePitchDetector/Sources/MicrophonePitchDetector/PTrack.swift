@@ -467,7 +467,7 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
 
 private func swift_ptrack_set_spec(p: inout zt_ptrack) {
     swift_ptrack_set_spec_pt1(p: &p)
-    ptrack_set_spec_pt2(&p)
+    swift_ptrack_set_spec_pt2(p: &p)
     swift_ptrack_set_spec_pt3(p: &p)
     swift_ptrack_set_spec_pt4(p: &p)
 }
@@ -488,33 +488,70 @@ private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {
 }
 
 private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {
+    // float *spec = (float *)p->spec1.ptr;
+    // float *spectmp = (float *)p->spec2.ptr;
+    // int hop = p->hopsize;
+    // int n = 2 * hop;
+
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
     let hop = p.hopsize
     let n = 2 * hop
 
+    // int k = 2 * FLTLEN;
+    // for (int i = 0; i < hop; i += 2) {
+    //     spectmp[k]     = spec[i];
+    //     spectmp[k + 1] = spec[i + 1];
+    //     k += 4;
+    // }
+
+    var k = 2 * FLTLEN
     for i in stride(from: 0, to: Int(hop), by: 2) {
-        let k = i * 2 + 2 * FLTLEN
         spectmp[k] = spec[i]
         spectmp[k + 1] = spec[i + 1]
+        k += 4
     }
 
+    // k = 2*FLTLEN+2;
+    // for (int i = n - 2; i >= 0; i -= 2) {
+    //     spectmp[k]     = spec[i];
+    //     spectmp[k + 1] = -spec[i + 1];
+    //     k += 4;
+    // }
+
+    k = 2*FLTLEN+2
     for i in stride(from: Int(n) - 2, to: -1, by: -2) {
-        let k = i * 2 + 2 * FLTLEN + 2
         spectmp[k] = spec[i]
         spectmp[k + 1] = -spec[i + 1]
+        k += 4
     }
 
+    // k = 2*FLTLEN-2;
+    // for (int i = 2*FLTLEN; i < FLTLEN*4; i += 2) {
+    //     spectmp[k]     = spectmp[i];
+    //     spectmp[k + 1] = -spectmp[i + 1];
+    //     k -= 2;
+    // }
+
+    k = 2*FLTLEN-2
     for i in stride(from: 2 * FLTLEN, to: FLTLEN * 4, by: 2) {
-        let k = i - 2
         spectmp[k] = spectmp[i]
         spectmp[k + 1] = -spectmp[i + 1]
+        k -= 2
     }
 
+    // k = 2*FLTLEN+n;
+    // for (int i = 2*FLTLEN+n-2; i >= 0; i -= 2) {
+    //     spectmp[k]     = spectmp[i];
+    //     spectmp[k + 1] = -spectmp[k + 1];
+    //     k += 2;
+    // }
+
+    k = 2*FLTLEN+Int(n)
     for i in stride(from: Int(n) - 2, to: -1, by: -2) {
-        let k = i * 2 + 2 * FLTLEN + Int(n)
         spectmp[k] = spectmp[i]
         spectmp[k + 1] = -spectmp[k + 1]
+        k += 2
     }
 }
 

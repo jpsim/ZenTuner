@@ -258,18 +258,18 @@ void ptrack_pt6(zt_ptrack *p, int nbelow8, int npartials, float totalpower, HIST
 void ptrack(zt_ptrack *p, int n, float totalpower, float totalloudness, int *npeak, float maxbin, int numpks, float partialonset[], int partialonset_count)
 {
     HISTOPEAK histpeak;
-
     PEAK *peaklist = (PEAK *)p->peakarray.ptr;
     float *spectmp = (float *)p->spec2.ptr;
     float *histogram = spectmp + BINGUARD;
-
     float *spec = (float *)p->spec1.ptr;
+
     ptrack_pt2(npeak, numpks, peaklist, totalpower, spec, n);
     ptrack_pt3(*npeak, numpks, peaklist, maxbin, histogram, totalloudness, partialonset, partialonset_count);
     ptrack_pt4(&histpeak, maxbin, histogram);
 
     float cumpow = 0, cumstrength = 0, freqnum = 0, freqden = 0;
     int npartials = 0, nbelow8 = 0;
+
     ptrack_pt5(histpeak, *npeak, peaklist, &npartials, &nbelow8, &cumpow, &cumstrength, &freqnum, &freqden);
     ptrack_pt6(p, nbelow8, npartials, totalpower, &histpeak, cumpow, cumstrength, freqnum, freqden, n);
 }

@@ -160,7 +160,7 @@ void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks)
     p->dbfs = 32768.0;
 }
 
-static void ptrack(zt_data *sp, zt_ptrack *p)
+void ptrack(zt_data *sp, zt_ptrack *p)
 {
     ZTFLOAT *spec = (ZTFLOAT *)p->spec1.ptr;
     ZTFLOAT *spectmp = (ZTFLOAT *)p->spec2.ptr;
@@ -400,23 +400,4 @@ static void ptrack(zt_data *sp, zt_ptrack *p)
             }
         }
     }
-}
-
-void zt_ptrack_compute(zt_data *sp, zt_ptrack *p, ZTFLOAT *in, ZTFLOAT *freq, ZTFLOAT *amp)
-{
-    ZTFLOAT *buf = (ZTFLOAT *)p->signal.ptr;
-    int pos = p->cnt, h = p->hopsize;
-    ZTFLOAT scale = p->dbfs;
-
-    if (pos == h) {
-        ptrack(sp,p);
-        pos = 0;
-    }
-    buf[pos] = *in * scale;
-    pos++;
-
-    *freq = p->cps;
-    *amp =  exp(p->dbs[p->histcnt] / 20.0 * log(10.0));
-
-    p->cnt = pos;
 }

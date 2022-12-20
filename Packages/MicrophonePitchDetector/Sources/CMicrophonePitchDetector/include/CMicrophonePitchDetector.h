@@ -59,6 +59,6 @@ typedef struct {
 void zt_ptrack_create(zt_ptrack **p);
 void zt_ptrack_destroy(zt_ptrack **p);
 void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks);
-void zt_ptrack_compute(zt_data *sp, zt_ptrack *p, ZTFLOAT *in, ZTFLOAT *freq, ZTFLOAT *amp);
+void ptrack(zt_data *sp, zt_ptrack *p);
 
 #endif

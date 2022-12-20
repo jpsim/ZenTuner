@@ -27,7 +27,7 @@ public final class PitchTracker {
 
         let frames = (0..<Int(buffer.frameLength)).map { floatData[0].advanced(by: $0) }
         for frame in frames {
-            zt_ptrack_compute(data, ptrack, frame, &fpitch, &famplitude)
+            swift_zt_ptrack_compute(data, ptrack, frame, &fpitch, &famplitude)
         }
 
         let pitch = Double(fpitch)
@@ -37,6 +37,59 @@ public final class PitchTracker {
             return pitch
         } else {
             return nil
+        }
+    }
+}
+
+private func swift_zt_ptrack_compute(
+    _ sp: UnsafeMutablePointer<zt_data>!,
+    _ p: UnsafeMutablePointer<zt_ptrack>!,
+    _ in: UnsafeMutablePointer<Float>!,
+    _ freq: UnsafeMutablePointer<Float>!,
+    _ amp: UnsafeMutablePointer<Float>!
+) {
+    let buf = p.pointee.signal.ptr.bindMemory(to: Float.self, capacity: 1)
+    var pos = p.pointee.cnt
+    let h = p.pointee.hopsize
+    let scale = p.pointee.dbfs
+
+    if pos == h {
+        ptrack(sp, p)
+        pos = 0
+    }
+    buf[Int(pos)] = `in`.pointee * scale
+    pos += 1
+
+    freq.pointee = p.pointee.cps
+    amp.pointee =  exp(p.pointee.getDBS(atIndex: p.pointee.histcnt) / 20.0 * log(10.0))
+
+    p.pointee.cnt = pos
+}
+
+private extension zt_ptrack {
+    func getDBS(atIndex index: Int32) -> Float {
+        switch index {
+        case 0: return dbs.0
+        case 1: return dbs.1
+        case 2: return dbs.2
+        case 3: return dbs.3
+        case 4: return dbs.4
+        case 5: return dbs.5
+        case 6: return dbs.6
+        case 7: return dbs.7
+        case 8: return dbs.8
+        case 9: return dbs.9
+        case 10: return dbs.10
+        case 11: return dbs.11
+        case 12: return dbs.12
+        case 13: return dbs.13
+        case 14: return dbs.14
+        case 15: return dbs.15
+        case 16: return dbs.16
+        case 17: return dbs.17
+        case 18: return dbs.18
+        case 19: return dbs.19
+        default: fatalError("Illegal offset")
         }
     }
 }

@@ -50,9 +50,9 @@ struct zt_ptrack {
     var spec2: zt_auxdata = zt_auxdata()
     var peakarray: zt_auxdata = zt_auxdata()
     var numpks = 0
-    var cnt: Int32 = 0
-    var histcnt: Int32 = 0
-    var hopsize: Int32 = 0
+    var cnt = 0
+    var histcnt = 0
+    var hopsize = 0
     var sr: Float = 0
     var cps: Float = 0
     var dbs: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -101,17 +101,16 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
         return
     }
 
-    p.hopsize = Int32(p.size)
-    let hopsize = Int(p.hopsize)
+    p.hopsize = Int(p.size)
 
-    swift_zt_auxdata_alloc(aux: &p.signal, size: hopsize * MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.prev, size: (hopsize*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.sin, size: (hopsize*2)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.signal, size: p.hopsize * MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.prev, size: (p.hopsize*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
+    swift_zt_auxdata_alloc(aux: &p.sin, size: (p.hopsize*2)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
 
-    let signalPointer = p.signal.ptr.bindMemory(to: Float.self, capacity: hopsize)
-    for i in 0..<hopsize {
+    let signalPointer = p.signal.ptr.bindMemory(to: Float.self, capacity: p.hopsize)
+    for i in 0..<p.hopsize {
         signalPointer[i] = 0.0
     }
 
@@ -120,8 +119,8 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
         prevPointer[i] = 0.0
     }
 
-    let sinPointer = p.sin.ptr.bindMemory(to: Float.self, capacity: hopsize)
-    for i in 0..<hopsize {
+    let sinPointer = p.sin.ptr.bindMemory(to: Float.self, capacity: p.hopsize)
+    for i in 0..<p.hopsize {
         sinPointer[2*i] = cos((.pi*Float(i))/(Float(winsize)))
         sinPointer[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
     }
@@ -166,7 +165,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
     var totaldb: Float = 0
     swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: Int(n))
     if totaldb >= p.amplo {
-        var npeak: Int32 = 0
+        var npeak = 0
         ptrack(
             p: &p,
             n: n,
@@ -181,7 +180,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
     }
 }
 
-private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int32) {
+private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int) {
     var count = p.histcnt + 1
     if (count == NPREV) { count = 0 }
     p.histcnt = count
@@ -227,7 +226,7 @@ private struct HISTOPEAK {
     var hindex: Int32 = 0
 }
 
-private func ptrack(p: inout zt_ptrack, n: Int32, totalpower: Float, totalloudness: Float, npeak: inout Int32, maxbin: Float, numpks: Int, partialonset: inout [Float], partialonset_count: Int32) {
+private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Float, totalloudness: Float, npeak: inout Int, maxbin: Float, numpks: Int, partialonset: inout [Float], partialonset_count: Int32) {
     var histpeak = HISTOPEAK()
     let peaklist = p.peakarray.ptr.assumingMemoryBound(to: PEAK.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
@@ -296,7 +295,7 @@ private struct PEAK {
     var ploudness: Float = 0
 }
 
-private func swift_ptrack_pt2(npeak: inout Int32, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, totalpower: Float, spec: UnsafeMutablePointer<Float>, n: Int) {
+private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, totalpower: Float, spec: UnsafeMutablePointer<Float>, n: Int) {
     for i in stride(from: 4*MINBIN, to: 4*(n-2), by: 4) {
         if npeak >= numpks { break }
         let height = spec[i+2], h1 = spec[i-2], h2 = spec[i+6]
@@ -331,8 +330,8 @@ private func swift_ptrack_pt2(npeak: inout Int32, numpks: Int, peaklist: UnsafeM
     }
 }
 
-private func swift_ptrack_pt3(npeak: inout Int32, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Float, partialonset: [Float], partialonset_count: Int) {
-    if npeak > numpks { npeak = Int32(numpks) }
+private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Float, partialonset: [Float], partialonset_count: Int) {
+    if npeak > numpks { npeak = numpks }
     for i in 0..<Int(maxbin) { histogram[i] = 0 }
     for i in 0..<Int(npeak) {
         let pit = BPEROOVERLOG2 * logf(peaklist[i].pfreq) - 96.0
@@ -436,7 +435,7 @@ private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {
         spec[Int(k) + 1] = sig[Int(i)] * sinus[Int(k) + 1]
     }
 
-    zt_fft_cpx(&p.fft, spec, hop)
+    zt_fft_cpx(&p.fft, spec, Int32(hop))
 }
 
 private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {

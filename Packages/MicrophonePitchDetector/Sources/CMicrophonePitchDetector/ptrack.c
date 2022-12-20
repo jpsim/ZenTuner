@@ -81,13 +81,12 @@ typedef struct peak
   ZTFLOAT ploudness;
 } PEAK;
 
-int zt_ptrack_create(zt_ptrack **p)
+void zt_ptrack_create(zt_ptrack **p)
 {
     *p = malloc(sizeof(zt_ptrack));
-    return ZT_OK;
 }
 
-int zt_ptrack_destroy(zt_ptrack **p)
+void zt_ptrack_destroy(zt_ptrack **p)
 {
     zt_ptrack *pp = *p;
     zt_auxdata_free(&pp->signal);
@@ -98,20 +97,18 @@ int zt_ptrack_destroy(zt_ptrack **p)
     zt_auxdata_free(&pp->peakarray);
     zt_fft_destroy(&pp->fft);
     free(*p);
-    return ZT_OK;
 }
 
-int zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks)
+void zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks)
 {
     p->size = ihopsize;
 
     int i, winsize = p->size*2, powtwo, tmp;
     ZTFLOAT *tmpb;
 
-
     if (winsize < MINWINSIZ || winsize > MAXWINSIZ) {
       fprintf(stderr, "Woops\n");
-      return ZT_NOT_OK;
+      return;
     }
 
     tmp = winsize;
@@ -125,11 +122,11 @@ int zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks)
 
     /* 3 days of debugging later... I found this off by one error */
     /* powtwo needs to be powtwo - 1 for fft_init */
-    zt_fft_init(&p->fft, powtwo - 1) ;
+    zt_fft_init(&p->fft, powtwo - 1);
 
     if (winsize != (1 << powtwo)) {
         fprintf(stderr, "Woops\n");
-        return ZT_NOT_OK;
+        return;
     }
 
     p->hopsize = p->size;
@@ -161,8 +158,6 @@ int zt_ptrack_init(zt_data *sp, zt_ptrack *p, int ihopsize, int ipeaks)
     p->amplo = MINAMPS;
     p->npartial = 7;
     p->dbfs = 32768.0;
-
-    return ZT_OK;
 }
 
 static void ptrack(zt_data *sp, zt_ptrack *p)
@@ -407,7 +402,7 @@ static void ptrack(zt_data *sp, zt_ptrack *p)
     }
 }
 
-int zt_ptrack_compute(zt_data *sp, zt_ptrack *p, ZTFLOAT *in, ZTFLOAT *freq, ZTFLOAT *amp)
+void zt_ptrack_compute(zt_data *sp, zt_ptrack *p, ZTFLOAT *in, ZTFLOAT *freq, ZTFLOAT *amp)
 {
     ZTFLOAT *buf = (ZTFLOAT *)p->signal.ptr;
     int pos = p->cnt, h = p->hopsize;
@@ -424,6 +419,4 @@ int zt_ptrack_compute(zt_data *sp, zt_ptrack *p, ZTFLOAT *in, ZTFLOAT *freq, ZTF
     *amp =  exp(p->dbs[p->histcnt] / 20.0 * log(10.0));
 
     p->cnt = pos;
-
-    return ZT_OK;
 }

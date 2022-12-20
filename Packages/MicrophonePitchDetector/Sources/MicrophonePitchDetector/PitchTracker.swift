@@ -5,15 +5,15 @@ final class PitchTracker {
     private var ptrack: UnsafeMutablePointer<zt_ptrack>?
 
     init(sampleRate: Int32, hopSize: Int32, peakCount: Int32) {
-        _ = withUnsafeMutablePointer(to: &data, zt_create)
+        withUnsafeMutablePointer(to: &data, zt_create)
         data!.pointee.sr = sampleRate
-        _ = withUnsafeMutablePointer(to: &ptrack, zt_ptrack_create)
+        withUnsafeMutablePointer(to: &ptrack, zt_ptrack_create)
         zt_ptrack_init(data, ptrack, hopSize, peakCount)
     }
 
     deinit {
-        _ = withUnsafeMutablePointer(to: &ptrack, zt_ptrack_destroy)
-        _ = withUnsafeMutablePointer(to: &data, zt_destroy)
+        withUnsafeMutablePointer(to: &ptrack, zt_ptrack_destroy)
+        withUnsafeMutablePointer(to: &data, zt_destroy)
     }
 
     func getPitch(frames: [UnsafeMutablePointer<Float>]) -> Float? {

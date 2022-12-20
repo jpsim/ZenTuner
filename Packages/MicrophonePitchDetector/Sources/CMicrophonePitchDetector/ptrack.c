@@ -16,7 +16,6 @@
 #include "CMicrophonePitchDetector.h"
 
 #define MINFREQINBINS 5
-#define NPREV 20
 #define MINBW 0.03
 #define BINPEROCT 48
 #define BPEROOVERLOG2 69.24936196

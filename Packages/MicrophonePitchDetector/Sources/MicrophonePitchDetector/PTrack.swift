@@ -42,9 +42,7 @@ final class zt_auxdata {
 }
 
 struct zt_ptrack {
-    var freq: Float = 0
-    var amp: Float = 0
-    var size: Float = 0
+    var size = 0.0
     var signal: zt_auxdata = zt_auxdata()
     var prev: zt_auxdata = zt_auxdata()
     var sin: zt_auxdata = zt_auxdata()

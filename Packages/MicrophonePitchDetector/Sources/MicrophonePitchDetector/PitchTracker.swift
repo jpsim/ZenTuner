@@ -6,7 +6,7 @@ public final class PitchTracker {
 
     public static var defaultBufferSize: UInt32 { 4_096 }
 
-    public init(sampleRate: Int32, hopSize: Float = Float(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
+    public init(sampleRate: Int32, hopSize: Double = Double(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
         ptrack = zt_ptrack()
         ptrack.size = hopSize
         ptrack.numpks = peakCount

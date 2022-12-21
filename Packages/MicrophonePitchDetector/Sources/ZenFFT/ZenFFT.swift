@@ -17,7 +17,7 @@ import Darwin
 private let SQRT_TWO = sqrtf(2)
 private let MCACHE = 11 - (MemoryLayout<Float>.size / 8)
 
-// MARK: - API
+// MARK: - Public API
 
 public final class ZenFFT {
     private let utbl: UnsafeMutablePointer<Float>

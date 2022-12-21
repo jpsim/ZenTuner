@@ -35,19 +35,13 @@ private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
 private let MAGIC: Float = 0.707106781186547524400844362104849
 
-// TODO: Remove this type
-final class zt_auxdata {
-    var size: Int = 0
-    var ptr: UnsafeMutableRawPointer!
-}
-
 struct zt_ptrack {
     var size = 0.0
     var signal = [Float]()
     var prev = [Float]()
     var sin = [Float]()
     var spec1 = [Float]()
-    var spec2 = zt_auxdata()
+    var spec2 = [Float]()
     fileprivate var peaklist = [PEAK]()
     var numpks = 0
     var cnt = 0
@@ -58,12 +52,6 @@ struct zt_ptrack {
     var dbs: [Float] = Array(repeating: 0, count: 20)
     var amplo = 0.0
     var fft = zt_fft()
-}
-
-private func swift_zt_auxdata_alloc(aux: inout zt_auxdata, size: Int) {
-    aux.ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: 1)
-    aux.size = size
-    memset(aux.ptr, 0, size)
 }
 
 private var partialonset: [Float] = [
@@ -103,12 +91,11 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
 
     p.hopsize = Int(p.size)
 
-    swift_zt_auxdata_alloc(aux: &p.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
-
     p.signal = Array(repeating: 0, count: p.hopsize)
     p.prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
     p.sin = Array(repeating: 0, count: p.hopsize*2)
     p.spec1 = Array(repeating: 0, count: winsize*4)
+    p.spec2 = Array(repeating: 0, count: winsize*4 + 4*FLTLEN)
 
     for i in 0..<p.hopsize {
         p.sin[2*i] = cos((.pi*Float(i))/(Float(winsize)))
@@ -214,8 +201,10 @@ private struct HISTOPEAK {
 
 private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, npeak: inout Int, maxbin: Float, numpks: Int, partialonset: inout [Float], partialonset_count: Int32) {
     var histpeak = HISTOPEAK()
-    let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
-    let histogram = spectmp.advanced(by: BINGUARD)
+    func getHist(spectmp: UnsafeMutablePointer<Float>) -> UnsafeMutablePointer<Float> {
+        return spectmp.advanced(by: BINGUARD)
+    }
+    let histogram = getHist(spectmp: &p.spec2)
 
     swift_ptrack_pt2(
         npeak: &npeak,
@@ -422,41 +411,39 @@ private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {
 }
 
 private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {
-    let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
     let hop = p.hopsize
     let n = 2 * hop
 
     var k = 2 * FLTLEN
     for i in stride(from: 0, to: Int(hop), by: 2) {
-        spectmp[k] = p.spec1[i]
-        spectmp[k + 1] = p.spec1[i + 1]
+        p.spec2[k] = p.spec1[i]
+        p.spec2[k + 1] = p.spec1[i + 1]
         k += 4
     }
 
     k = 2*FLTLEN+2
     for i in stride(from: Int(n) - 2, to: -1, by: -2) {
-        spectmp[k] = p.spec1[i]
-        spectmp[k + 1] = -p.spec1[i + 1]
+        p.spec2[k] = p.spec1[i]
+        p.spec2[k + 1] = -p.spec1[i + 1]
         k += 4
     }
 
     k = 2*FLTLEN-2
     for i in stride(from: 2 * FLTLEN, to: FLTLEN * 4, by: 2) {
-        spectmp[k] = spectmp[i]
-        spectmp[k + 1] = -spectmp[i + 1]
+        p.spec2[k] = p.spec2[i]
+        p.spec2[k + 1] = -p.spec2[i + 1]
         k -= 2
     }
 
     k = 2*FLTLEN+Int(n)
     for i in stride(from: Int(n) - 2, to: -1, by: -2) {
-        spectmp[k] = spectmp[i]
-        spectmp[k + 1] = -spectmp[k + 1]
+        p.spec2[k] = p.spec2[i]
+        p.spec2[k + 1] = -p.spec2[k + 1]
         k += 2
     }
 }
 
 private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
-    let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
     let prev = p.prev
     let hop = p.hopsize
     let halfhop = hop >> 1
@@ -467,42 +454,42 @@ private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
         var re: Float
         var im: Float
 
-        re = COEF1 * (prev[k - 2] - prev[k + 1] + spectmp[k - 2] - prev[k + 1]) +
-             COEF2 * (prev[k - 3] - prev[k + 2] + spectmp[k - 3] - spectmp[2]) +
-             COEF3 * (-prev[k - 6] + prev[k + 5] - spectmp[k - 6] + spectmp[k + 5]) +
-             COEF4 * (-prev[k - 7] + prev[k + 6] - spectmp[k - 7] + spectmp[k + 6]) +
-             COEF5 * (prev[k - 10] - prev[k + 9] + spectmp[k - 10] - spectmp[k + 9])
+        re = COEF1 * (prev[k - 2] - prev[k + 1] + p.spec2[k - 2] - prev[k + 1]) +
+             COEF2 * (prev[k - 3] - prev[k + 2] + p.spec2[k - 3] - p.spec2[2]) +
+             COEF3 * (-prev[k - 6] + prev[k + 5] - p.spec2[k - 6] + p.spec2[k + 5]) +
+             COEF4 * (-prev[k - 7] + prev[k + 6] - p.spec2[k - 7] + p.spec2[k + 6]) +
+             COEF5 * (prev[k - 10] - prev[k + 9] + p.spec2[k - 10] - p.spec2[k + 9])
 
-        im = COEF1 * (prev[k - 1] + prev[k] + spectmp[k - 1] + spectmp[k]) +
-             COEF2 * (-prev[k - 4] - prev[k + 3] - spectmp[k - 4] - spectmp[k + 3]) +
-             COEF3 * (-prev[k - 5] - prev[k + 4] - spectmp[k - 5] - spectmp[k + 4]) +
-             COEF4 * (prev[k - 8] + prev[k + 7] + spectmp[k - 8] + spectmp[k + 7]) +
-             COEF5 * (prev[k - 9] + prev[k + 8] + spectmp[k - 9] + spectmp[k + 8])
+        im = COEF1 * (prev[k - 1] + prev[k] + p.spec2[k - 1] + p.spec2[k]) +
+             COEF2 * (-prev[k - 4] - prev[k + 3] - p.spec2[k - 4] - p.spec2[k + 3]) +
+             COEF3 * (-prev[k - 5] - prev[k + 4] - p.spec2[k - 5] - p.spec2[k + 4]) +
+             COEF4 * (prev[k - 8] + prev[k + 7] + p.spec2[k - 8] + p.spec2[k + 7]) +
+             COEF5 * (prev[k - 9] + prev[k + 8] + p.spec2[k - 9] + p.spec2[k + 8])
 
         p.spec1[j]     = MAGIC * (re + im)
         p.spec1[j + 1] = MAGIC * (im - re)
-        p.spec1[j + 4] = prev[k] + spectmp[k + 1]
-        p.spec1[j + 5] = prev[k + 1] - spectmp[k]
+        p.spec1[j + 4] = prev[k] + p.spec2[k + 1]
+        p.spec1[j + 5] = prev[k + 1] - p.spec2[k]
 
         j += 8
         k += 2
 
-        re = COEF1 * ( prev[k-2] - prev[k+1]  - spectmp[k-2] + spectmp[k+1]) +
-             COEF2 * ( prev[k-3] - prev[k+2]  - spectmp[k-3] + spectmp[k+2]) +
-             COEF3 * (-prev[k-6] + prev[k+5]  + spectmp[k-6] - spectmp[k+5]) +
-             COEF4 * (-prev[k-7] + prev[k+6]  + spectmp[k-7] - spectmp[k+6]) +
-             COEF5 * ( prev[k-10] - prev[k+9] - spectmp[k-10] + spectmp[k+9])
+        re = COEF1 * ( prev[k-2] - prev[k+1]  - p.spec2[k-2] + p.spec2[k+1]) +
+             COEF2 * ( prev[k-3] - prev[k+2]  - p.spec2[k-3] + p.spec2[k+2]) +
+             COEF3 * (-prev[k-6] + prev[k+5]  + p.spec2[k-6] - p.spec2[k+5]) +
+             COEF4 * (-prev[k-7] + prev[k+6]  + p.spec2[k-7] - p.spec2[k+6]) +
+             COEF5 * ( prev[k-10] - prev[k+9] - p.spec2[k-10] + p.spec2[k+9])
 
-        im = COEF1 * ( prev[k-1] + prev[k]   - spectmp[k-1] - spectmp[k]) +
-             COEF2 * (-prev[k-4] - prev[k+3] + spectmp[k-4] + spectmp[k+3]) +
-             COEF3 * (-prev[k-5] - prev[k+4] + spectmp[k-5] + spectmp[k+4]) +
-             COEF4 * ( prev[k-8] + prev[k+7] - spectmp[k-8] - spectmp[k+7]) +
-             COEF5 * ( prev[k-9] + prev[k+8] - spectmp[k-9] - spectmp[k+8])
+        im = COEF1 * ( prev[k-1] + prev[k]   - p.spec2[k-1] - p.spec2[k]) +
+             COEF2 * (-prev[k-4] - prev[k+3] + p.spec2[k-4] + p.spec2[k+3]) +
+             COEF3 * (-prev[k-5] - prev[k+4] + p.spec2[k-5] + p.spec2[k+4]) +
+             COEF4 * ( prev[k-8] + prev[k+7] - p.spec2[k-8] - p.spec2[k+7]) +
+             COEF5 * ( prev[k-9] + prev[k+8] - p.spec2[k-9] - p.spec2[k+8])
 
         p.spec1[j]   = MAGIC * (re + im)
         p.spec1[j+1] = MAGIC * (im - re)
-        p.spec1[j+4] = prev[k] - spectmp[k+1]
-        p.spec1[j+5] = prev[k+1] + spectmp[k]
+        p.spec1[j+4] = prev[k] - p.spec2[k+1]
+        p.spec1[j+5] = prev[k+1] + p.spec2[k]
 
         j += 8
         k += 2
@@ -510,7 +497,7 @@ private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
 }
 
 private func swift_ptrack_set_spec_pt4(p: inout zt_ptrack) {
-    let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
+    let spectmp = p.spec2
     let hop = p.hopsize
     let n = Int(2 * hop)
 

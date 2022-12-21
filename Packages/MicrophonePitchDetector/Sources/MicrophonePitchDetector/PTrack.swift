@@ -2,7 +2,7 @@
  * PTrack
  *
  * This code has been extracted from the Csound opcode "ptrack".
- * It was rewritten in Swift by JP Simard for use in ZenTuner.
+ * It was rewritten in Swift by JP Simard for use in Zen Tuner.
  *
  * Original Author(s): Victor Lazzarini, Miller Puckette (Original Algorithm), Aurelius Prochazka
  * Year: 2007
@@ -138,7 +138,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
     var totalpower = 0.0
     var totalloudness = 0.0
     var totaldb = 0.0
-    swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: Int(n))
+    swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: n)
 
     guard totaldb >= p.amplo else {
         return
@@ -151,7 +151,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
         totalpower: totalpower,
         totalloudness: totalloudness,
         npeak: &npeak,
-        maxbin: swift_ptrack_get_maxbin(n: Int(n)),
+        maxbin: swift_ptrack_get_maxbin(n: n),
         numpks: p.numpks,
         partialonset: &partialonset,
         partialonset_count: Int32(partialonset.count)
@@ -216,7 +216,7 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
         peaklist: &p.peaklist,
         totalpower: totalpower,
         spec: &p.spec1,
-        n: Int(n)
+        n: n
     )
 
     swift_ptrack_pt3(
@@ -261,7 +261,7 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
         cumstrength: cumstrength,
         freqnum: freqnum,
         freqden: freqden,
-        n: Int(n)
+        n: n
     )
 }
 
@@ -426,7 +426,7 @@ private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {
     }
 
     k = 2*FLTLEN+2
-    for i in stride(from: Int(n) - 2, to: -1, by: -2) {
+    for i in stride(from: n - 2, to: -1, by: -2) {
         p.spec2[k] = p.spec1[i]
         p.spec2[k + 1] = -p.spec1[i + 1]
         k += 4
@@ -439,8 +439,8 @@ private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {
         k -= 2
     }
 
-    k = 2*FLTLEN+Int(n)
-    for i in stride(from: Int(n) - 2, to: -1, by: -2) {
+    k = 2*FLTLEN+n
+    for i in stride(from: n - 2, to: -1, by: -2) {
         p.spec2[k] = p.spec2[i]
         p.spec2[k + 1] = -p.spec2[k + 1]
         k += 2

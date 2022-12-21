@@ -138,20 +138,22 @@ private func ptrackSwift(p: inout zt_ptrack) {
     var totalloudness: Double = 0
     var totaldb: Double = 0
     swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: Int(n))
-    if totaldb >= p.amplo {
-        var npeak = 0
-        ptrack(
-            p: &p,
-            n: n,
-            totalpower: totalpower,
-            totalloudness: totalloudness,
-            npeak: &npeak,
-            maxbin: swift_ptrack_get_maxbin(n: Int(n)),
-            numpks: p.numpks,
-            partialonset: &partialonset,
-            partialonset_count: Int32(partialonset.count)
-        )
+    guard totaldb >= p.amplo else {
+        return
     }
+
+    var npeak = 0
+    ptrack(
+        p: &p,
+        n: n,
+        totalpower: totalpower,
+        totalloudness: totalloudness,
+        npeak: &npeak,
+        maxbin: swift_ptrack_get_maxbin(n: Int(n)),
+        numpks: p.numpks,
+        partialonset: &partialonset,
+        partialonset_count: Int32(partialonset.count)
+    )
 }
 
 private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int) {

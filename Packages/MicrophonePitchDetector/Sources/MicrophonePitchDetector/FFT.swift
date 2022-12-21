@@ -10,13 +10,14 @@
 
 import Darwin
 
+private let SQRT_TWO = sqrtf(2)
 private let MCACHE = 11 - (MemoryLayout<Float>.size / 8)
 
 // Since this file was ported from C with many variable names preserved, disable SwiftLint
 // swiftlint:disable identifier_name file_length function_body_length
 // swiftlint:disable function_parameter_count line_length shorthand_operator
 
-// MARK: - Init
+// MARK: - API
 
 final class ZTFFT {
     let utbl: UnsafeMutablePointer<Float>!
@@ -33,17 +34,15 @@ final class ZTFFT {
         BRLow = UnsafeMutablePointer<Int16>.allocate(capacity: pow2((M - 1) / 2 - 1))
         swiftfftBRInit(M: M - 1, BRLow: BRLow)
     }
-}
 
-// MARK: - Compute
-
-func zt_fft_cpx(fft: inout ZTFFT, buf: UnsafeMutablePointer<Float>?, FFTsize: Int, sqrttwo: Float) {
-    swift_ffts1(ioptr: buf, M: Int32(log2(Double(FFTsize))), Utbl: fft.utbl, BRLow: fft.BRLowCpx, sqrttwo: sqrttwo)
+    func compute(buf: UnsafeMutablePointer<Float>?, FFTsize: Int) {
+        swift_ffts1(ioptr: buf, M: Int32(log2(Double(FFTsize))), Utbl: utbl, BRLow: BRLowCpx)
+    }
 }
 
 // MARK: - Private Compute
 
-private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: UnsafeMutablePointer<Float>?, BRLow: UnsafeMutablePointer<Int16>?, sqrttwo: Float) {
+private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: UnsafeMutablePointer<Float>?, BRLow: UnsafeMutablePointer<Int16>?) {
     var StageCnt: Int32
     var NDiffU: Int32
 
@@ -55,7 +54,7 @@ private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: Un
         NDiffU *= 2
     }
     if (M - 1 - (StageCnt * 3)) == 2 {
-        swift_bfR4(ioptr!, Int(M), Int(NDiffU), sqrttwo)
+        swift_bfR4(ioptr!, Int(M), Int(NDiffU), SQRT_TWO)
         NDiffU *= 4
     }
     if M <= MCACHE {

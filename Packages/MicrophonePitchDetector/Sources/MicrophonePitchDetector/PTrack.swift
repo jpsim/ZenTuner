@@ -41,8 +41,7 @@ private let COEF3: Float = 0.5 * 0.095326
 private let COEF4: Float = 0.5 * -0.022748
 private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
-private let SQRT_TWO = sqrtf(2)
-private let HALF_SQRT_TWO = SQRT_TWO / 2
+private let HALF_SQRT_TWO = sqrtf(2) / 2
 
 struct zt_ptrack {
     fileprivate let size: Double
@@ -414,7 +413,7 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
         p.spec1[k + 1] = sig[i] * sinus[k + 1]
     }
 
-    zt_fft_cpx(fft: &p.fft, buf: &p.spec1, FFTsize: hop, sqrttwo: SQRT_TWO)
+    p.fft.compute(buf: &p.spec1, FFTsize: hop)
 
     var k = 2 * FLTLEN
     for i in stride(from: 0, to: hop, by: 2) {

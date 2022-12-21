@@ -46,7 +46,7 @@ struct zt_ptrack {
     var signal = [Float]()
     var prev = [Float]()
     var sin = [Float]()
-    var spec1 = zt_auxdata()
+    var spec1 = [Float]()
     var spec2 = zt_auxdata()
     fileprivate var peaklist = [PEAK]()
     var numpks = 0
@@ -104,11 +104,11 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
     p.hopsize = Int(p.size)
 
     swift_zt_auxdata_alloc(aux: &p.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
-    swift_zt_auxdata_alloc(aux: &p.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
 
     p.signal = Array(repeating: 0, count: p.hopsize)
     p.prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
     p.sin = Array(repeating: 0, count: p.hopsize*2)
+    p.spec1 = Array(repeating: 0, count: winsize*4)
 
     for i in 0..<p.hopsize {
         p.sin[2*i] = cos((.pi*Float(i))/(Float(winsize)))
@@ -174,14 +174,13 @@ private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int) {
 }
 
 private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Double, totalloudness: inout Double, totaldb: inout Double, n: Int) {
-    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     for i in stride(from: 4 * MINBIN, to: (n - 2) * 4, by: 4) {
-        let re = spec[i] - 0.5 * (spec[i - 8] + spec[i + 8])
-        let im = spec[i + 1] - 0.5 * (spec[i - 7] + spec[i + 9])
+        let re = p.spec1[i] - 0.5 * (p.spec1[i - 8] + p.spec1[i + 8])
+        let im = p.spec1[i + 1] - 0.5 * (p.spec1[i - 7] + p.spec1[i + 9])
         let power = re * re + im * im
-        spec[i + 2] = power
+        p.spec1[i + 2] = power
         totalpower += Double(power)
-        spec[i + 3] = Float(totalpower)
+        p.spec1[i + 3] = Float(totalpower)
     }
 
     if totalpower > 1.0e-9 {
@@ -217,14 +216,13 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
     var histpeak = HISTOPEAK()
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
     let histogram = spectmp.advanced(by: BINGUARD)
-    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
 
     swift_ptrack_pt2(
         npeak: &npeak,
         numpks: Int(numpks),
         peaklist: &p.peaklist,
         totalpower: totalpower,
-        spec: spec,
+        spec: &p.spec1,
         n: Int(n)
     )
 
@@ -410,37 +408,35 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
 }
 
 private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {
-    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     let sig = p.signal
     let sinus = p.sin
     let hop = p.hopsize
 
     for i in 0..<hop {
         let k = i * 2
-        spec[Int(k)] = sig[Int(i)] * sinus[Int(k)]
-        spec[Int(k) + 1] = sig[Int(i)] * sinus[Int(k) + 1]
+        p.spec1[Int(k)] = sig[Int(i)] * sinus[Int(k)]
+        p.spec1[Int(k) + 1] = sig[Int(i)] * sinus[Int(k) + 1]
     }
 
-    zt_fft_cpx(&p.fft, spec, Int32(hop))
+    zt_fft_cpx(&p.fft, &p.spec1, Int32(hop))
 }
 
 private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {
-    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
     let hop = p.hopsize
     let n = 2 * hop
 
     var k = 2 * FLTLEN
     for i in stride(from: 0, to: Int(hop), by: 2) {
-        spectmp[k] = spec[i]
-        spectmp[k + 1] = spec[i + 1]
+        spectmp[k] = p.spec1[i]
+        spectmp[k + 1] = p.spec1[i + 1]
         k += 4
     }
 
     k = 2*FLTLEN+2
     for i in stride(from: Int(n) - 2, to: -1, by: -2) {
-        spectmp[k] = spec[i]
-        spectmp[k + 1] = -spec[i + 1]
+        spectmp[k] = p.spec1[i]
+        spectmp[k + 1] = -p.spec1[i + 1]
         k += 4
     }
 
@@ -460,7 +456,6 @@ private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {
 }
 
 private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
-    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
     let prev = p.prev
     let hop = p.hopsize
@@ -484,10 +479,10 @@ private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
              COEF4 * (prev[k - 8] + prev[k + 7] + spectmp[k - 8] + spectmp[k + 7]) +
              COEF5 * (prev[k - 9] + prev[k + 8] + spectmp[k - 9] + spectmp[k + 8])
 
-        spec[j] = MAGIC * (re + im)
-        spec[j + 1] = MAGIC * (im - re)
-        spec[j + 4] = prev[k] + spectmp[k + 1]
-        spec[j + 5] = prev[k + 1] - spectmp[k]
+        p.spec1[j]     = MAGIC * (re + im)
+        p.spec1[j + 1] = MAGIC * (im - re)
+        p.spec1[j + 4] = prev[k] + spectmp[k + 1]
+        p.spec1[j + 5] = prev[k + 1] - spectmp[k]
 
         j += 8
         k += 2
@@ -504,10 +499,10 @@ private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
              COEF4 * ( prev[k-8] + prev[k+7] - spectmp[k-8] - spectmp[k+7]) +
              COEF5 * ( prev[k-9] + prev[k+8] - spectmp[k-9] - spectmp[k+8])
 
-        spec[j]   = MAGIC * (re + im)
-        spec[j+1] = MAGIC * (im - re)
-        spec[j+4] = prev[k] - spectmp[k+1]
-        spec[j+5] = prev[k+1] + spectmp[k]
+        p.spec1[j]   = MAGIC * (re + im)
+        p.spec1[j+1] = MAGIC * (im - re)
+        p.spec1[j+4] = prev[k] - spectmp[k+1]
+        p.spec1[j+5] = prev[k+1] + spectmp[k]
 
         j += 8
         k += 2
@@ -515,7 +510,6 @@ private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
 }
 
 private func swift_ptrack_set_spec_pt4(p: inout zt_ptrack) {
-    let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
     let hop = p.hopsize
     let n = Int(2 * hop)
@@ -525,7 +519,7 @@ private func swift_ptrack_set_spec_pt4(p: inout zt_ptrack) {
     }
 
     for i in 0..<MINBIN {
-        spec[4 * i + 2] = 0
-        spec[4 * i + 3] = 0
+        p.spec1[4 * i + 2] = 0
+        p.spec1[4 * i + 3] = 0
     }
 }

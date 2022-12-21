@@ -20,8 +20,8 @@ private let BPEROOVERLOG2: Float = 69.24936196
 private let FACTORTOBINS: Float = 4/0.0145453
 private let BINGUARD = 10
 private let PARTIALDEVIANCE = 0.023
-private let DBSCAL: Float = 3.333
-private let DBOFFSET: Float = -92.3
+private let DBSCAL = 3.333
+private let DBOFFSET = -92.3
 private let MINBIN = 3
 private let MINAMPS = 40.0
 
@@ -49,7 +49,7 @@ struct zt_ptrack {
     var hopsize = 0
     var sr = 0.0
     var cps = 0.0
-    var dbs: [Float] = Array(repeating: 0, count: 20)
+    var dbs = Array(repeating: 0.0, count: 20)
     var amplo = 0.0
     var fft = zt_fft()
 }
@@ -109,7 +109,7 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
 func swift_zt_ptrack_compute(
     _ p: inout zt_ptrack,
     _ in: UnsafeMutablePointer<Float>!,
-    _ freq: inout Float,
+    _ freq: inout Double,
     _ amp: inout Float
 ) {
     var pos = p.cnt
@@ -124,8 +124,8 @@ func swift_zt_ptrack_compute(
     p.signal[Int(pos)] = `in`.pointee * scale
     pos += 1
 
-    freq = Float(p.cps)
-    amp = exp(p.dbs[Int(p.histcnt)] / 20.0 * log(10.0))
+    freq = p.cps
+    amp = exp(Float(p.dbs[Int(p.histcnt)]) / 20.0 * log(10.0))
 
     p.cnt = pos
 }
@@ -171,7 +171,7 @@ private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Doubl
     }
 
     if totalpower > 1.0e-9 {
-        totaldb = Double(DBSCAL * logf(Float(totalpower)/Float(n)))
+        totaldb = DBSCAL * Double(logf(Float(totalpower)/Float(n)))
         totalloudness = Double(sqrtf(sqrtf(Float(totalpower))))
         if totaldb < 0 { totaldb = 0 }
     }
@@ -180,7 +180,7 @@ private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Doubl
         totalloudness = 0.0
     }
 
-    p.dbs[Int(p.histcnt)] = Float(totaldb) + DBOFFSET
+    p.dbs[Int(p.histcnt)] = totaldb + DBOFFSET
 }
 
 private func swift_ptrack_get_maxbin(n: Int) -> Float {
@@ -195,7 +195,7 @@ private func swift_ptrack_get_maxbin(n: Int) -> Float {
 private struct HISTOPEAK {
     var hpitch: Float = 0
     var hvalue: Float = 0
-    var hloud: Float = 0
+    var hloud: Double = 0
     var hindex: Int32 = 0
 }
 
@@ -384,7 +384,7 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
             let hpitch = hzperbin * freqnum / freqden
             histpeak.hpitch = Float(hpitch)
             p.cps = Double(hpitch)
-            histpeak.hloud = DBSCAL * logf(pitchpow / Float(n))
+            histpeak.hloud = DBSCAL * Double(logf(pitchpow / Float(n)))
         }
     }
 }

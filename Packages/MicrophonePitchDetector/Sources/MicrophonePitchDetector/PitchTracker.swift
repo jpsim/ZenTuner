@@ -2,12 +2,12 @@ import AVFoundation
 import ZenPTrack
 
 public final class PitchTracker {
-    private var ptrack: zt_ptrack
+    private var ptrack: ZenPTrack
 
     public static var defaultBufferSize: UInt32 { 4_096 }
 
     public init(sampleRate: Double, hopSize: Double = Double(PitchTracker.defaultBufferSize), peakCount: Int = 20) throws {
-        ptrack = try zt_ptrack(sampleRate: sampleRate, hopSize: hopSize, peakCount: peakCount)
+        ptrack = try ZenPTrack(sampleRate: sampleRate, hopSize: hopSize, peakCount: peakCount)
     }
 
     public func getPitch(from buffer: AVAudioPCMBuffer, amplitudeThreshold: Double = 0.1) -> Double? {

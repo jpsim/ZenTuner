@@ -44,7 +44,7 @@ private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
 private let HALF_SQRT_TWO = sqrtf(2) / 2
 
-public struct zt_ptrack {
+public struct ZenPTrack {
     fileprivate let size: Double
     fileprivate let numpks: Int
     fileprivate let sr: Double
@@ -133,7 +133,7 @@ private let partialonset = [
     192.0
 ]
 
-private func ptrackSwift(p: inout zt_ptrack) {
+private func ptrackSwift(p: inout ZenPTrack) {
     let n = 2 * p.hopsize
     swift_ptrack_set_histcnt(p: &p, n: n)
     swift_ptrack_set_spec(p: &p)
@@ -157,13 +157,13 @@ private func ptrackSwift(p: inout zt_ptrack) {
     )
 }
 
-private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int) {
+private func swift_ptrack_set_histcnt(p: inout ZenPTrack, n: Int) {
     var count = p.histcnt + 1
     if count == NPREV { count = 0 }
     p.histcnt = count
 }
 
-private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Double, totalloudness: inout Double, totaldb: inout Double, n: Int) {
+private func swift_ptrack_set_totals(p: inout ZenPTrack, totalpower: inout Double, totalloudness: inout Double, totaldb: inout Double, n: Int) {
     for i in stride(from: 4 * MINBIN, to: (n - 2) * 4, by: 4) {
         let re = p.spec1[i] - 0.5 * (p.spec1[i - 8] + p.spec1[i + 8])
         let im = p.spec1[i + 1] - 0.5 * (p.spec1[i - 7] + p.spec1[i + 9])
@@ -201,7 +201,7 @@ private struct HISTOPEAK {
     var hindex = 0
 }
 
-private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, maxbin: Double, numpks: Int) {
+private func ptrack(p: inout ZenPTrack, n: Int, totalpower: Double, totalloudness: Double, maxbin: Double, numpks: Int) {
     func getHist(spectmp: UnsafeMutablePointer<Float>) -> UnsafeMutablePointer<Float> {
         return spectmp.advanced(by: BINGUARD)
     }
@@ -376,7 +376,7 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
     }
 }
 
-private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Double, cumstrength: Double, freqnum: Double, freqden: Double, n: Int) {
+private func swift_ptrack_pt6(p: inout ZenPTrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Double, cumstrength: Double, freqnum: Double, freqden: Double, n: Int) {
     if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower {
         histpeak.hvalue = 0
         return
@@ -397,7 +397,7 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
     histpeak.hloud = DBSCAL * log(pitchpow / Double(n))
 }
 
-private func swift_ptrack_set_spec(p: inout zt_ptrack) {
+private func swift_ptrack_set_spec(p: inout ZenPTrack) {
     let sig = p.signal
     let sinus = p.sin
     let hop = p.hopsize

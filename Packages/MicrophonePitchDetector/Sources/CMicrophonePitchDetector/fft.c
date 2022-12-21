@@ -21,36 +21,10 @@
 void bitrevR2(float *ioptr, int M, int16_t *BRLow)
 {
     /*** bit reverse and first radix 2 stage of forward or inverse fft ***/
-    float f0r;
-    float f0i;
-    float f1r;
-    float f1i;
-    float f2r;
-    float f2i;
-    float f3r;
-    float f3i;
-    float f4r;
-    float f4i;
-    float f5r;
-    float f5i;
-    float f6r;
-    float f6i;
-    float f7r;
-    float f7i;
-    float t0r;
-    float t0i;
-    float t1r;
-    float t1i;
-    float *p0r;
-    float *p1r;
-    float *IOP;
-    float *iolimit;
-    int Colstart;
-    int iCol;
-    unsigned int posA;
-    unsigned int posAi;
-    unsigned int posB;
-    unsigned int posBi;
+    float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i, f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i, t0r, t0i, t1r, t1i;
+    float *p0r, *p1r, *IOP, *iolimit;
+    int Colstart, iCol;
+    unsigned int posA, posAi, posB, posBi;
 
     const unsigned int Nrems2 = POW2((M + 3) / 2);
     const unsigned int Nroot_1_ColInc = POW2(M) - Nrems2;

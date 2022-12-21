@@ -175,7 +175,7 @@ private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Doubl
         totalloudness = 0.0
     }
 
-    p.dbs[Int(p.histcnt)] = totaldb + DBOFFSET
+    p.dbs[p.histcnt] = totaldb + DBOFFSET
 }
 
 private func swift_ptrack_get_maxbin(n: Int) -> Double {
@@ -290,10 +290,10 @@ private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
         stdev = sqrtf(`var`)
         totalfreq = max(totalfreq, 4)
 
-        peaklist[Int(npeak)].pwidth = Double(stdev)
-        peaklist[Int(npeak)].ppow = Double(height)
-        peaklist[Int(npeak)].ploudness = sqrt(sqrt(Double(height)))
-        peaklist[Int(npeak)].pfreq = Double(totalfreq)
+        peaklist[npeak].pwidth = Double(stdev)
+        peaklist[npeak].ppow = Double(height)
+        peaklist[npeak].ploudness = sqrt(sqrt(Double(height)))
+        peaklist[npeak].pfreq = Double(totalfreq)
         npeak += 1
     }
 }

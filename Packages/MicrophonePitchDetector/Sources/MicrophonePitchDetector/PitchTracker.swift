@@ -1,4 +1,5 @@
 import AVFoundation
+import ZenPTrack
 
 public final class PitchTracker {
     private var ptrack: zt_ptrack

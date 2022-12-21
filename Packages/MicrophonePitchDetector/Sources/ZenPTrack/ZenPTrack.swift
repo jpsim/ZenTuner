@@ -44,7 +44,7 @@ private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
 private let HALF_SQRT_TWO = sqrtf(2) / 2
 
-struct zt_ptrack {
+public struct zt_ptrack {
     fileprivate let size: Double
     fileprivate let numpks: Int
     fileprivate let sr: Double
@@ -61,7 +61,7 @@ struct zt_ptrack {
     fileprivate var dbs = Array(repeating: -144.0, count: 20)
     fileprivate var fft: ZenFFT
 
-    init(sampleRate: Double, hopSize: Double, peakCount: Int) throws {
+    public init(sampleRate: Double, hopSize: Double, peakCount: Int) throws {
         size = hopSize
         numpks = peakCount
         sr = sampleRate
@@ -97,7 +97,7 @@ struct zt_ptrack {
         sin = tmpsin
     }
 
-    mutating func compute(buffer: UnsafeMutablePointer<Float>, freq: inout Double, amp: inout Double ) {
+    public mutating func compute(buffer: UnsafeMutablePointer<Float>, freq: inout Double, amp: inout Double ) {
         var pos = cnt
         if pos == hopsize {
             ptrackSwift(p: &self)

@@ -44,10 +44,10 @@ final class PitchTap {
         didReceiveAudio()
 
         if tracker == nil {
-            tracker = PitchTracker(sampleRate: Int32(buffer.format.sampleRate))
+            tracker = PitchTracker(sampleRate: buffer.format.sampleRate)
         }
 
-        if let pitch = tracker?.getPitch(from: buffer) {
+        if let pitch = tracker?.getPitch(frames: frames) {
             self.handler(pitch)
         }
     }

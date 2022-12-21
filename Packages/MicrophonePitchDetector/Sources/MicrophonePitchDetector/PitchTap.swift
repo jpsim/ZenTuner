@@ -6,7 +6,7 @@ import AVFoundation
 final class PitchTap {
     // MARK: - Properties
 
-    private var bufferSize: UInt32 { 4_096 }
+    private var bufferSize: UInt32 { PitchTracker.defaultBufferSize }
     private let input: Node
     private var tracker: PitchTracker?
     private let handler: (Float) -> Void
@@ -41,24 +41,13 @@ final class PitchTap {
 
     private func analyzePitch(buffer: AVAudioPCMBuffer) {
         buffer.frameLength = bufferSize
-        guard let floatData = buffer.floatChannelData else { return }
-
         didReceiveAudio()
 
-        let tracker: PitchTracker
-        if let existingTracker = self.tracker {
-            tracker = existingTracker
-        } else {
-            tracker = PitchTracker(
-                sampleRate: Int32(buffer.format.sampleRate),
-                hopSize: Int32(bufferSize),
-                peakCount: 20
-            )
-            self.tracker = tracker
+        if tracker == nil {
+            tracker = PitchTracker(sampleRate: Int32(buffer.format.sampleRate))
         }
 
-        let frames = (0..<Int(bufferSize)).map { floatData[0].advanced(by: $0) }
-        if let pitch = tracker.getPitch(frames: frames) {
+        if let pitch = tracker?.getPitch(from: buffer) {
             self.handler(pitch)
         }
     }

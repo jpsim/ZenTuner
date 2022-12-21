@@ -96,6 +96,7 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
     p.sin = Array(repeating: 0, count: p.hopsize*2)
     p.spec1 = Array(repeating: 0, count: winsize*4)
     p.spec2 = Array(repeating: 0, count: winsize*4 + 4*FLTLEN)
+    p.peaklist = Array(repeating: PEAK(), count: p.numpks+1)
 
     for i in 0..<p.hopsize {
         p.sin[2*i] = cos((.pi*Float(i))/(Float(winsize)))

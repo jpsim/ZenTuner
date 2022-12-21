@@ -21,15 +21,9 @@
 void bfR2(float *ioptr, int M, int NDiffU)
 {
     /*** 2nd radix 2 stage ***/
-    unsigned int pos;
-    unsigned int posi;
-    unsigned int pinc;
-    unsigned int pnext;
-    unsigned int NSameU;
-    unsigned int SameUCnt;
+    unsigned int pos, posi, pinc, pnext, NSameU, SameUCnt;
 
-    float *pstrt;
-    float *p0r, *p1r, *p2r, *p3r;
+    float *pstrt, *p0r, *p1r, *p2r, *p3r;
 
     float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
     float f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;

@@ -11,6 +11,8 @@
 import CMicrophonePitchDetector
 import Darwin
 
+private let MCACHE: Int = 11 - (MemoryLayout<Float>.size / 8)
+
 // Since this file was ported from C with many variable names preserved, disable SwiftLint
 // swiftlint:disable identifier_name
 
@@ -47,8 +49,33 @@ final class ZTFFT {
 }
 
 func zt_fft_cpx(fft: inout ZTFFT, buf: UnsafeMutablePointer<Float>?, FFTsize: Int, sqrttwo: Float) {
-    ffts1(buf, Int32(log2(Double(FFTsize))), fft.utbl, fft.BRLowCpx, sqrttwo)
+    swift_ffts1(ioptr: buf, M: Int32(log2(Double(FFTsize))), Utbl: fft.utbl, BRLow: fft.BRLowCpx, sqrttwo: sqrttwo)
 }
+
+// MARK: - Private Compute
+
+private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: UnsafeMutablePointer<Float>?, BRLow: UnsafeMutablePointer<Int16>?, sqrttwo: Float) {
+    var StageCnt: Int32
+    var NDiffU: Int32
+
+    bitrevR2(ioptr, M, BRLow)
+    StageCnt = (M - 1) / 3
+    NDiffU = 2
+    if (M - 1 - (StageCnt * 3)) == 1 {
+        bfR2(ioptr, M, NDiffU)
+        NDiffU *= 2
+    }
+    if (M - 1 - (StageCnt * 3)) == 2 {
+        bfR4(ioptr, M, NDiffU, sqrttwo)
+        NDiffU *= 4
+    }
+    if M <= MCACHE {
+        bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt)
+    } else {
+        fftrecurs(ioptr, M, Utbl, 1, NDiffU, StageCnt)
+    }
+}
+
 
 // MARK: - FFT Tables
 

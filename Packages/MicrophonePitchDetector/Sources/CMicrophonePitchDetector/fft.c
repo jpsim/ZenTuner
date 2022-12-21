@@ -21,7 +21,7 @@
 * parts of ffts1 *
 *****************/
 
-static void bitrevR2(float *ioptr, int M, int16_t *BRLow)
+void bitrevR2(float *ioptr, int M, int16_t *BRLow)
 {
     /*** bit reverse and first radix 2 stage of forward or inverse fft ***/
     float f0r;
@@ -158,7 +158,7 @@ static void bitrevR2(float *ioptr, int M, int16_t *BRLow)
     }
 }
 
-static void bfR2(float *ioptr, int M, int NDiffU)
+void bfR2(float *ioptr, int M, int NDiffU)
 {
     /*** 2nd radix 2 stage ***/
     unsigned int pos;
@@ -265,7 +265,7 @@ static void bfR2(float *ioptr, int M, int NDiffU)
     }
 }
 
-static void bfR4(float *ioptr, int M, int NDiffU, float sqrttwo)
+void bfR4(float *ioptr, int M, int NDiffU, float sqrttwo)
 {
     /*** 1 radix 4 stage ***/
     unsigned int pos;
@@ -472,8 +472,8 @@ static void bfR4(float *ioptr, int M, int NDiffU, float sqrttwo)
     *(p0r + posi) = f4i;
 }
 
-static void bfstages(float *ioptr, int M, float *Utbl, int Ustride,
-                     int NDiffU, int StageCnt)
+void bfstages(float *ioptr, int M, float *Utbl, int Ustride,
+              int NDiffU, int StageCnt)
 {
     /***   RADIX 8 Stages   ***/
     unsigned int pos;
@@ -792,8 +792,8 @@ static void bfstages(float *ioptr, int M, float *Utbl, int Ustride,
     }
 }
 
-static void fftrecurs(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU,
-                      int StageCnt)
+void fftrecurs(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU,
+               int StageCnt)
 {
     /* recursive bfstages calls to maximize on chip cache efficiency */
     int i1;
@@ -807,35 +807,4 @@ static void fftrecurs(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU,
       }
       bfstages(ioptr, M, Utbl, Ustride, POW2(M - 3), 1);  /*  RADIX 8 Stage */
     }
-}
-
-void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow, float sqrttwo)
-{
-    /* Compute in-place complex fft on the rows of the input array  */
-    /* INPUTS                                                       */
-    /*   *ioptr = input data array                                  */
-    /*   M = log2 of fft size (ex M=10 for 1024 point fft)          */
-    /*   *Utbl = cosine table                                       */
-    /*   *BRLow = bit reversed counter table                        */
-    /* OUTPUTS                                                      */
-    /*   *ioptr = output data array                                 */
-
-    int StageCnt;
-    int NDiffU;
-
-    bitrevR2(ioptr, M, BRLow);  /* bit reverse and first radix 2 stage */
-    StageCnt = (M - 1) / 3;     /* number of radix 8 stages           */
-    NDiffU = 2;                 /* one radix 2 stage already complete */
-    if ((M - 1 - (StageCnt * 3)) == 1) {
-      bfR2(ioptr, M, NDiffU); /* 1 radix 2 stage */
-      NDiffU *= 2;
-    }
-    if ((M - 1 - (StageCnt * 3)) == 2) {
-      bfR4(ioptr, M, NDiffU, sqrttwo); /* 1 radix 4 stage */
-      NDiffU *= 4;
-    }
-    if (M <= (int) MCACHE)
-      bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt);  /* RADIX 8 Stages */
-    else
-      fftrecurs(ioptr, M, Utbl, 1, NDiffU, StageCnt); /* RADIX 8 Stages */
 }

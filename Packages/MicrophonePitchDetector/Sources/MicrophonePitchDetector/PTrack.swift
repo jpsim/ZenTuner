@@ -110,7 +110,7 @@ func swift_zt_ptrack_compute(
     _ p: inout zt_ptrack,
     _ in: UnsafeMutablePointer<Float>!,
     _ freq: inout Double,
-    _ amp: inout Float
+    _ amp: inout Double
 ) {
     var pos = p.cnt
     let h = p.hopsize
@@ -125,7 +125,7 @@ func swift_zt_ptrack_compute(
     pos += 1
 
     freq = p.cps
-    amp = exp(Float(p.dbs[Int(p.histcnt)]) / 20.0 * log(10.0))
+    amp = Double(exp(Float(p.dbs[Int(p.histcnt)]) / 20.0 * log(10.0)))
 
     p.cnt = pos
 }

@@ -43,12 +43,12 @@ final class zt_auxdata {
 
 struct zt_ptrack {
     var size = 0.0
-    var signal: zt_auxdata = zt_auxdata()
-    var prev: zt_auxdata = zt_auxdata()
-    var sin: zt_auxdata = zt_auxdata()
-    var spec1: zt_auxdata = zt_auxdata()
-    var spec2: zt_auxdata = zt_auxdata()
-    var peakarray: zt_auxdata = zt_auxdata()
+    var signal = zt_auxdata()
+    var prev = zt_auxdata()
+    var sin = zt_auxdata()
+    var spec1 = zt_auxdata()
+    var spec2 = zt_auxdata()
+    var peakarray = zt_auxdata()
     var numpks = 0
     var cnt = 0
     var histcnt = 0
@@ -57,7 +57,7 @@ struct zt_ptrack {
     var cps = 0.0
     var dbs: [Float] = Array(repeating: 0, count: 20)
     var amplo = 0.0
-    var fft: zt_fft = zt_fft()
+    var fft = zt_fft()
 }
 
 private func swift_zt_auxdata_alloc(aux: inout zt_auxdata, size: Int) {

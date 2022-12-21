@@ -120,11 +120,11 @@ func swift_zt_ptrack_compute(
         pos = 0
     }
 
-    p.signal[Int(pos)] = `in`.pointee * scale
+    p.signal[pos] = `in`.pointee * scale
     pos += 1
 
     freq = p.cps
-    amp = Double(exp(Float(p.dbs[Int(p.histcnt)]) / 20.0 * log(10.0)))
+    amp = exp(p.dbs[p.histcnt] / 20.0 * log(10.0))
 
     p.cnt = pos
 }

@@ -193,7 +193,7 @@ private func swift_ptrack_get_maxbin(n: Int) -> Double {
 }
 
 private struct HISTOPEAK {
-    var hpitch: Float = 0
+    var hpitch: Double = 0
     var hvalue: Float = 0
     var hloud: Double = 0
     var hindex: Int32 = 0
@@ -380,8 +380,8 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
         } else {
             let hzperbin = p.sr / Double(n + n)
             let hpitch = hzperbin * freqnum / freqden
-            histpeak.hpitch = Float(hpitch)
-            p.cps = Double(hpitch)
+            histpeak.hpitch = hpitch
+            p.cps = hpitch
             histpeak.hloud = DBSCAL * Double(logf(pitchpow / Float(n)))
         }
     }

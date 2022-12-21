@@ -24,7 +24,7 @@ public struct PitchRecording: Codable, Equatable {
             throw PitchRecordingError.couldNotCreateAudioPCMBuffer
         }
 
-        let tracker = PitchTracker(sampleRate: buffer.format.sampleRate)
+        let tracker = try PitchTracker(sampleRate: buffer.format.sampleRate)
 
         var iteration = 0
         var pitchRecording = PitchRecording()

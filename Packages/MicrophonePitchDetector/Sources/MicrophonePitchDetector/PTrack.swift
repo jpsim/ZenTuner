@@ -12,6 +12,10 @@
 
 import Darwin
 
+enum PTrackError: Error {
+    case invalidWindowSize
+}
+
 // Since this file was ported from C with many variable names preserved, disable SwiftLint
 // swiftlint:disable file_length function_body_length function_parameter_count
 // swiftlint:disable identifier_name line_length type_name
@@ -41,14 +45,14 @@ private let SQRT_TWO = sqrtf(2)
 private let HALF_SQRT_TWO = SQRT_TWO / 2
 
 struct zt_ptrack {
-    var size = 0.0
-    var numpks = 0
-    var sr = 0.0
-    fileprivate var signal = [Float]()
-    fileprivate var prev = [Float]()
-    fileprivate var sin = [Float]()
-    fileprivate var spec1 = [Float]()
-    fileprivate var spec2 = [Float]()
+    fileprivate var size: Double
+    fileprivate var numpks: Int
+    fileprivate var sr: Double
+    fileprivate var signal: [Float]
+    fileprivate var prev: [Float]
+    fileprivate var sin: [Float]
+    fileprivate var spec1: [Float]
+    fileprivate var spec2: [Float]
     fileprivate var peaklist = [PEAK]()
     fileprivate var cnt = 0
     fileprivate var histcnt = 0
@@ -56,7 +60,44 @@ struct zt_ptrack {
     fileprivate var cps = 0.0
     fileprivate var dbs = Array(repeating: -144.0, count: 20)
     fileprivate var amplo = 0.0
-    fileprivate var fft: ZTFFT!
+    fileprivate var fft: ZTFFT
+
+    init(sampleRate: Double, hopSize: Double, peakCount: Int) throws {
+        size = hopSize
+        numpks = peakCount
+        sr = sampleRate
+
+        let winsize = Int(size * 2)
+        var powtwo = -1
+        var tmp = winsize
+
+        while tmp > 0 {
+            tmp >>= 1
+            powtwo += 1
+        }
+
+        fft = ZTFFT(M: powtwo - 1)
+
+        if winsize != (1 << powtwo) {
+            throw PTrackError.invalidWindowSize
+        }
+
+        hopsize = Int(size)
+
+        signal = Array(repeating: 0, count: hopsize)
+        prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
+        sin = Array(repeating: 0, count: hopsize * 2)
+        spec1 = Array(repeating: 0, count: winsize * 4)
+        spec2 = Array(repeating: 0, count: winsize * 4 + 4 * FLTLEN)
+        peaklist = Array(repeating: PEAK(), count: numpks + 1)
+
+        for i in 0..<hopsize {
+            sin[2 * i] = cos((.pi * Float(i)) / (Float(winsize)))
+            sin[2 * i + 1] = -Darwin.sin((.pi * Float(i)) / (Float(winsize)))
+        }
+
+        amplo = MINAMPS
+    }
 }
 
 private let partialonset = [
@@ -77,39 +118,6 @@ private let partialonset = [
     187.53074858920888940907,
     192.0
 ]
-
-func swift_zt_ptrack_init(p: inout zt_ptrack) {
-    let winsize = Int(p.size * 2)
-    var powtwo = -1
-    var tmp = winsize
-
-    while tmp > 0 {
-        tmp >>= 1
-        powtwo += 1
-    }
-
-    p.fft = ZTFFT(M: powtwo - 1)
-
-    if winsize != (1 << powtwo) {
-        return
-    }
-
-    p.hopsize = Int(p.size)
-
-    p.signal = Array(repeating: 0, count: p.hopsize)
-    p.prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
-    p.sin = Array(repeating: 0, count: p.hopsize * 2)
-    p.spec1 = Array(repeating: 0, count: winsize * 4)
-    p.spec2 = Array(repeating: 0, count: winsize * 4 + 4 * FLTLEN)
-    p.peaklist = Array(repeating: PEAK(), count: p.numpks + 1)
-
-    for i in 0..<p.hopsize {
-        p.sin[2 * i] = cos((.pi * Float(i)) / (Float(winsize)))
-        p.sin[2 * i + 1] = -sin((.pi * Float(i)) / (Float(winsize)))
-    }
-
-    p.amplo = MINAMPS
-}
 
 func swift_zt_ptrack_compute(
     _ p: inout zt_ptrack,

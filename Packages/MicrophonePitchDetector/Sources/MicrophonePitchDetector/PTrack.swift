@@ -226,7 +226,7 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
 
     swift_ptrack_pt4(histpeak: &histpeak, maxbin: maxbin, histogram: histogram)
 
-    var cumpow: Float = 0
+    var cumpow: Double = 0
     var cumstrength: Float = 0
     var freqnum: Double = 0
     var freqden: Double = 0
@@ -341,7 +341,7 @@ private func swift_ptrack_pt4(histpeak: inout HISTOPEAK, maxbin: Double, histogr
     histpeak.hindex = indx
 }
 
-private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeMutablePointer<PEAK>, npartials: inout Int32, nbelow8: inout Int32, cumpow: inout Float, cumstrength: inout Float, freqnum: inout Double, freqden: inout Double) {
+private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeMutablePointer<PEAK>, npartials: inout Int32, nbelow8: inout Int32, cumpow: inout Double, cumstrength: inout Float, freqnum: inout Double, freqden: inout Double) {
     let putfreq = exp((1.0 / BPEROOVERLOG2) * (Double(histpeak.hindex) + 96.0))
 
     for j in 0..<npeak {
@@ -356,7 +356,7 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
             var weight: Double
             npartials += 1
             if pnum < 8 { nbelow8 += 1 }
-            cumpow += Float(peaklist[j].ppow)
+            cumpow += peaklist[j].ppow
             cumstrength += Float(sqrt(sqrt(peaklist[j].ppow)))
             stdev = Double(peaklist[j].pwidth) > MINBW ? Double(peaklist[j].pwidth) : MINBW
             weight = 1.0 / (stdev * fipnum) * (stdev * fipnum)
@@ -367,8 +367,8 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
 }
 
 
-private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Float, cumstrength: Float, freqnum: Double, freqden: Double, n: Int) {
-    if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * Float(totalpower) {
+private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Double, cumstrength: Float, freqnum: Double, freqden: Double, n: Int) {
+    if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower {
         histpeak.hvalue = 0
     } else {
         var pitchpow = cumstrength * cumstrength

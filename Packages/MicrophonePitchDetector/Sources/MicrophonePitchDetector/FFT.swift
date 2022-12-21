@@ -58,7 +58,7 @@ private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: Un
     var StageCnt: Int32
     var NDiffU: Int32
 
-    bitrevR2(ioptr, M, BRLow)
+    swift_bitrevR2(ioptr!, M, BRLow!)
     StageCnt = (M - 1) / 3
     NDiffU = 2
     if (M - 1 - (StageCnt * 3)) == 1 {
@@ -85,6 +85,25 @@ private func swift_fftrecurs(ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl:
         }
         swift_bfstages(ioptr, M, Utbl, Ustride, Int32(pow(2.0, Double(M - 3))), 1)
     }
+}
+
+private func swift_bitrevR2(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ BRLow: UnsafeMutablePointer<Int16>) {
+    var f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i, f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i, t0r, t0i, t1r, t1i: Float
+    var p0r, p1r, IOP, iolimit: UnsafeMutablePointer<Float>
+    var Colstart, iCol: Int
+    var posA, posAi, posB, posBi: UInt
+
+    let Nrems2: UInt = UInt(pow2((Int(M) + 3) / 2))
+    let Nroot_1_ColInc: UInt = UInt(pow2(Int(M))) - Nrems2
+    let Nroot_1: UInt = UInt(pow2(Int(M) / 2 - 1) - 1)
+    let ColstartShift: UInt = UInt((M + 1) / 2 + 1)
+
+    posA = UInt(pow2(Int(M)))               /* 1/2 of POW2(M) complexes */
+    posAi = posA + 1
+    posB = posA + 2
+    posBi = posB + 1
+
+    iolimit = ioptr + UnsafeMutablePointer<Float>.Stride(Nrems2)
 }
 
 func swift_bfstages(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: UnsafeMutablePointer<Float>, _ Ustride: Int32, _ NDiffU: Int32, _ StageCnt: Int32) {

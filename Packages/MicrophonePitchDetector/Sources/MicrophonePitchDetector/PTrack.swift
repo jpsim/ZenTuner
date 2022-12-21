@@ -112,15 +112,12 @@ func swift_zt_ptrack_compute(
     _ amp: inout Double
 ) {
     var pos = p.cnt
-    let h = p.hopsize
-    let scale: Float = 32768.0
-
-    if pos == h {
+    if pos == p.hopsize {
         ptrackSwift(p: &p)
         pos = 0
     }
 
-    p.signal[pos] = `in`.pointee * scale
+    p.signal[pos] = `in`.pointee * 32768.0
     pos += 1
 
     freq = p.cps
@@ -143,13 +140,11 @@ private func ptrackSwift(p: inout zt_ptrack) {
         return
     }
 
-    var npeak = 0
     ptrack(
         p: &p,
         n: n,
         totalpower: totalpower,
         totalloudness: totalloudness,
-        npeak: &npeak,
         maxbin: swift_ptrack_get_maxbin(n: n),
         numpks: p.numpks
     )
@@ -199,12 +194,13 @@ private struct HISTOPEAK {
     var hindex: Int32 = 0
 }
 
-private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, npeak: inout Int, maxbin: Double, numpks: Int) {
-    var histpeak = HISTOPEAK()
+private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, maxbin: Double, numpks: Int) {
     func getHist(spectmp: UnsafeMutablePointer<Float>) -> UnsafeMutablePointer<Float> {
         return spectmp.advanced(by: BINGUARD)
     }
+
     let histogram = getHist(spectmp: &p.spec2)
+    var npeak = 0
 
     swift_ptrack_pt2(
         npeak: &npeak,
@@ -223,6 +219,8 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
         histogram: histogram,
         totalloudness: totalloudness
     )
+
+    var histpeak = HISTOPEAK()
 
     swift_ptrack_pt4(histpeak: &histpeak, maxbin: maxbin, histogram: histogram)
 

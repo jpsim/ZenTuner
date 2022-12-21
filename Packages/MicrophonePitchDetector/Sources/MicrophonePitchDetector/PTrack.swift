@@ -95,6 +95,22 @@ struct zt_ptrack {
 
         sin = tmpsin
     }
+
+    mutating func compute(buffer: UnsafeMutablePointer<Float>, freq: inout Double, amp: inout Double ) {
+        var pos = cnt
+        if pos == hopsize {
+            ptrackSwift(p: &self)
+            pos = 0
+        }
+
+        signal[pos] = buffer.pointee * 32768.0
+        pos += 1
+
+        freq = cps
+        amp = exp(dbs[histcnt] / 20.0 * log(10.0))
+
+        cnt = pos
+    }
 }
 
 private let partialonset = [
@@ -115,27 +131,6 @@ private let partialonset = [
     187.53074858920888940907,
     192.0
 ]
-
-func swift_zt_ptrack_compute(
-    _ p: inout zt_ptrack,
-    _ in: UnsafeMutablePointer<Float>,
-    _ freq: inout Double,
-    _ amp: inout Double
-) {
-    var pos = p.cnt
-    if pos == p.hopsize {
-        ptrackSwift(p: &p)
-        pos = 0
-    }
-
-    p.signal[pos] = `in`.pointee * 32768.0
-    pos += 1
-
-    freq = p.cps
-    amp = exp(p.dbs[p.histcnt] / 20.0 * log(10.0))
-
-    p.cnt = pos
-}
 
 private func ptrackSwift(p: inout zt_ptrack) {
     let n = 2 * p.hopsize

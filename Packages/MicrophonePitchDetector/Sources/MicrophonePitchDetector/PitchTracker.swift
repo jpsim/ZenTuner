@@ -17,7 +17,7 @@ public final class PitchTracker {
 
         let frames = (0..<Int(buffer.frameLength)).map { floatData[0].advanced(by: $0) }
         for frame in frames {
-            swift_zt_ptrack_compute(&ptrack, frame, &pitch, &amplitude)
+            ptrack.compute(buffer: frame, freq: &pitch, amp: &amplitude)
         }
 
         if Double(amplitude) > amplitudeThreshold, pitch > 0 {

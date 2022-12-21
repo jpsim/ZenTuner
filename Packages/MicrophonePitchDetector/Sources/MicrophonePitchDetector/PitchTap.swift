@@ -47,7 +47,7 @@ final class PitchTap {
             tracker = PitchTracker(sampleRate: buffer.format.sampleRate)
         }
 
-        if let pitch = tracker?.getPitch(frames: frames) {
+        if let pitch = tracker?.getPitch(from: buffer) {
             self.handler(pitch)
         }
     }

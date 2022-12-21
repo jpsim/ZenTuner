@@ -1,14 +1,17 @@
+/*
+ * FFT library
+ * based on public domain code by John Green <green_jt@vsdec.npt.nuwc.navy.mil>
+ * original version is available at
+ *   http://hyperarchive.lcs.mit.edu/
+ *         /HyperArchive/Archive/dev/src/ffts-for-risc-2-c.hqx
+ * ported to Csound by Istvan Varga, 2005
+ * ported to Swift by JP Simard, 2022
+ */
+
 import CMicrophonePitchDetector
 
-/*
-    FFT library
-    based on public domain code by John Green <green_jt@vsdec.npt.nuwc.navy.mil>
-    original version is available at
-      http://hyperarchive.lcs.mit.edu/
-            /HyperArchive/Archive/dev/src/ffts-for-risc-2-c.hqx
-    ported to Csound by Istvan Varga, 2005
-    ported to Swift by JP Simard, 2022
-*/
+// Since this file was ported from C with many variable names preserved, disable SwiftLint
+// swiftlint:disable identifier_name
 
 // MARK: - Init
 
@@ -33,10 +36,10 @@ func swift_zt_fft_init(M: Int) -> zt_fft {
 private func swiftfftCosInit(M: Int, Utbl: UnsafeMutablePointer<Float>) {
     let fftN = pow2(M)
     Utbl[0] = 1.0
-    for i in 1..<fftN/4 {
+    for i in 1..<fftN / 4 {
         Utbl[i] = cos(2.0 * Float.pi * Float(i) / Float(fftN))
     }
-    Utbl[fftN/4] = 0.0
+    Utbl[fftN / 4] = 0.0
 }
 
 private func swiftfftBRInit(M: Int, BRLow: UnsafeMutablePointer<Int16>) {
@@ -54,7 +57,6 @@ private func swiftfftBRInit(M: Int, BRLow: UnsafeMutablePointer<Int16>) {
         BRLow[i] = Int16(bitsum)
     }
 }
-
 
 private func pow2(_ n: Int) -> Int {
     1 << n

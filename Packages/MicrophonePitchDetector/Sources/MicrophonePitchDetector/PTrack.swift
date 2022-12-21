@@ -12,12 +12,15 @@
 
 import CMicrophonePitchDetector
 
+// Since this file was ported from C with many variable names preserved, disable SwiftLint
+// swiftlint:disable all
+
 private let MINFREQINBINS = 5.0
 private let NPREV = 20
 private let MINBW = 0.03
 private let BINPEROCT = 48
 private let BPEROOVERLOG2 = 69.24936196
-private let FACTORTOBINS = 4/0.0145453
+private let FACTORTOBINS = 4 / 0.0145453
 private let BINGUARD = 10
 private let PARTIALDEVIANCE = 0.023
 private let DBSCAL = 3.333
@@ -70,11 +73,11 @@ private let partialonset = [
     177.62110647077242370064,
     182.75303625876499715892,
     187.53074858920888940907,
-    192.0,
+    192.0
 ]
 
 func swift_zt_ptrack_init(p: inout zt_ptrack) {
-    let winsize = Int(p.size*2)
+    let winsize = Int(p.size * 2)
     var powtwo = -1
     var tmp = winsize
 
@@ -93,14 +96,14 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
 
     p.signal = Array(repeating: 0, count: p.hopsize)
     p.prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
-    p.sin = Array(repeating: 0, count: p.hopsize*2)
-    p.spec1 = Array(repeating: 0, count: winsize*4)
-    p.spec2 = Array(repeating: 0, count: winsize*4 + 4*FLTLEN)
-    p.peaklist = Array(repeating: PEAK(), count: p.numpks+1)
+    p.sin = Array(repeating: 0, count: p.hopsize * 2)
+    p.spec1 = Array(repeating: 0, count: winsize * 4)
+    p.spec2 = Array(repeating: 0, count: winsize * 4 + 4 * FLTLEN)
+    p.peaklist = Array(repeating: PEAK(), count: p.numpks + 1)
 
     for i in 0..<p.hopsize {
-        p.sin[2*i] = cos((.pi*Float(i))/(Float(winsize)))
-        p.sin[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
+        p.sin[2 * i] = cos((.pi * Float(i)) / (Float(winsize)))
+        p.sin[2 * i + 1] = -sin((.pi * Float(i)) / (Float(winsize)))
     }
 
     p.amplo = MINAMPS
@@ -153,7 +156,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
 
 private func swift_ptrack_set_histcnt(p: inout zt_ptrack, n: Int) {
     var count = p.histcnt + 1
-    if (count == NPREV) { count = 0 }
+    if count == NPREV { count = 0 }
     p.histcnt = count
 }
 
@@ -168,7 +171,7 @@ private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Doubl
     }
 
     if totalpower > 1.0e-9 {
-        totaldb = DBSCAL * log(totalpower/Double(n))
+        totaldb = DBSCAL * log(totalpower / Double(n))
         totalloudness = sqrt(sqrt(totalpower))
         totaldb = max(totaldb, 0)
     } else {
@@ -181,11 +184,11 @@ private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Doubl
 
 private func swift_ptrack_get_maxbin(n: Int) -> Double {
     var tmp = n, logn = -1
-    while (tmp > 0) {
+    while tmp > 0 {
         tmp &>>= 1
         logn += 1
     }
-    return Double(BINPEROCT * (logn-2))
+    return Double(BINPEROCT * (logn - 2))
 }
 
 private struct HISTOPEAK {
@@ -266,25 +269,25 @@ private struct PEAK {
 }
 
 private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, totalpower: Double, spec: UnsafeMutablePointer<Float>, n: Int) {
-    for i in stride(from: 4*MINBIN, to: 4*(n-2), by: 4) {
+    for i in stride(from: 4 * MINBIN, to: 4 * (n - 2), by: 4) {
         if npeak >= numpks { break }
-        let height = spec[i+2], h1 = spec[i-2], h2 = spec[i+6]
+        let height = spec[i + 2], h1 = spec[i - 2], h2 = spec[i + 6]
         var totalfreq, peakfr, tmpfr1, tmpfr2, m, `var`, stdev: Float
 
-        if height < h1 || height < h2 || h1 < 0.00001*Float(totalpower) || h2 < 0.00001*Float(totalpower) { continue }
+        if height < h1 || height < h2 || h1 < 0.00001 * Float(totalpower) || h2 < 0.00001 * Float(totalpower) { continue }
 
-        peakfr = ((spec[i-8] - spec[i+8]) * (2.0 * spec[i] - spec[i+8] - spec[i-8]) +
-                  (spec[i-7] - spec[i+9]) * (2.0 * spec[i+1] - spec[i+9] - spec[i-7])) / (height + height)
-        tmpfr1 = ((spec[i-12] - spec[i+4]) * (2.0 * spec[i-4] - spec[i+4] - spec[i-12]) +
-                  (spec[i-11] - spec[i+5]) * (2.0 * spec[i-3] - spec[i+5] - spec[i-11])) / (2.0 * h1) - 1
-        tmpfr2 = ((spec[i-4] - spec[i+12]) * (2.0 * spec[i+4] - spec[i+12] - spec[i-4]) +
-                  (spec[i-3] - spec[i+13]) * (2.0 * spec[i+5] - spec[i+13] - spec[i-3])) / (2.0 * h2) + 1
+        peakfr = ((spec[i - 8] - spec[i + 8]) * (2.0 * spec[i] - spec[i + 8] - spec[i - 8]) +
+                  (spec[i - 7] - spec[i + 9]) * (2.0 * spec[i + 1] - spec[i + 9] - spec[i - 7])) / (height + height)
+        tmpfr1 = ((spec[i - 12] - spec[i + 4]) * (2.0 * spec[i - 4] - spec[i + 4] - spec[i - 12]) +
+                  (spec[i - 11] - spec[i + 5]) * (2.0 * spec[i - 3] - spec[i + 5] - spec[i - 11])) / (2.0 * h1) - 1
+        tmpfr2 = ((spec[i - 4] - spec[i + 12]) * (2.0 * spec[i + 4] - spec[i + 12] - spec[i - 4]) +
+                  (spec[i - 3] - spec[i + 13]) * (2.0 * spec[i + 5] - spec[i + 13] - spec[i - 3])) / (2.0 * h2) + 1
 
         m = (peakfr + tmpfr1 + tmpfr2) / 3
-        `var` = ((peakfr-m)*(peakfr-m) + (tmpfr1-m)*(tmpfr1-m) + (tmpfr2-m)*(tmpfr2-m)) / 2
+        `var` = ((peakfr - m) * (peakfr - m) + (tmpfr1 - m) * (tmpfr1 - m) + (tmpfr2 - m) * (tmpfr2 - m)) / 2
 
         totalfreq = Float(i >> 2) + m
-        if (`var` * Float(totalpower) > THRSH * height || `var` < 1.0e-30) {
+        if `var` * Float(totalpower) > THRSH * height || `var` < 1.0e-30 {
             continue
         }
 
@@ -311,7 +314,7 @@ private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
         for j in 0..<partialonset.count {
             let bin = pit - partialonset[j]
             if bin < maxbin {
-                let score = 30.0 * weightamp / (Double(j+7) * weightbandwidth)
+                let score = 30.0 * weightamp / (Double(j + 7) * weightbandwidth)
                 let firstbin = bin + 0.5 - 0.5 * putbandwidth
                 let lastbin = bin + 0.5 + 0.5 * putbandwidth
                 let ibw = lastbin - firstbin
@@ -319,7 +322,7 @@ private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
                 let para = 1.0 / (putbandwidth * putbandwidth)
                 var pphase = firstbin - bin
                 for k in 0...Int(ibw) {
-                    histogram[k+Int(firstbin)] += Float(score * (1.0 - para * (pphase + Double(k)) * (pphase + Double(k))))
+                    histogram[k + Int(firstbin)] += Float(score * (1.0 - para * (pphase + Double(k)) * (pphase + Double(k))))
                     pphase += 1
                 }
             }
@@ -368,7 +371,6 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
     }
 }
 
-
 private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Double, cumstrength: Double, freqnum: Double, freqden: Double, n: Int) {
     if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower {
         histpeak.hvalue = 0
@@ -411,21 +413,21 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
         k += 4
     }
 
-    k = 2*FLTLEN+2
+    k = 2 * FLTLEN + 2
     for i in stride(from: n - 2, to: -1, by: -2) {
         p.spec2[k] = p.spec1[i]
         p.spec2[k + 1] = -p.spec1[i + 1]
         k += 4
     }
 
-    k = 2*FLTLEN-2
+    k = 2 * FLTLEN - 2
     for i in stride(from: 2 * FLTLEN, to: FLTLEN * 4, by: 2) {
         p.spec2[k] = p.spec2[i]
         p.spec2[k + 1] = -p.spec2[i + 1]
         k -= 2
     }
 
-    k = 2*FLTLEN+n
+    k = 2 * FLTLEN + n
     for i in stride(from: n - 2, to: -1, by: -2) {
         p.spec2[k] = p.spec2[i]
         p.spec2[k + 1] = -p.spec2[k + 1]
@@ -441,17 +443,17 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
         var re: Float
         var im: Float
 
-        re = COEF1 * (prev[k - 2] - prev[k + 1] + p.spec2[k - 2] - prev[k + 1]) +
-             COEF2 * (prev[k - 3] - prev[k + 2] + p.spec2[k - 3] - p.spec2[2]) +
+        re = COEF1 * ( prev[k - 2] - prev[k + 1] + p.spec2[k - 2] - prev[k + 1]) +
+             COEF2 * ( prev[k - 3] - prev[k + 2] + p.spec2[k - 3] - p.spec2[2]) +
              COEF3 * (-prev[k - 6] + prev[k + 5] - p.spec2[k - 6] + p.spec2[k + 5]) +
              COEF4 * (-prev[k - 7] + prev[k + 6] - p.spec2[k - 7] + p.spec2[k + 6]) +
-             COEF5 * (prev[k - 10] - prev[k + 9] + p.spec2[k - 10] - p.spec2[k + 9])
+             COEF5 * ( prev[k - 10] - prev[k + 9] + p.spec2[k - 10] - p.spec2[k + 9])
 
-        im = COEF1 * (prev[k - 1] + prev[k] + p.spec2[k - 1] + p.spec2[k]) +
+        im = COEF1 * ( prev[k - 1] + prev[k] + p.spec2[k - 1] + p.spec2[k]) +
              COEF2 * (-prev[k - 4] - prev[k + 3] - p.spec2[k - 4] - p.spec2[k + 3]) +
              COEF3 * (-prev[k - 5] - prev[k + 4] - p.spec2[k - 5] - p.spec2[k + 4]) +
-             COEF4 * (prev[k - 8] + prev[k + 7] + p.spec2[k - 8] + p.spec2[k + 7]) +
-             COEF5 * (prev[k - 9] + prev[k + 8] + p.spec2[k - 9] + p.spec2[k + 8])
+             COEF4 * ( prev[k - 8] + prev[k + 7] + p.spec2[k - 8] + p.spec2[k + 7]) +
+             COEF5 * ( prev[k - 9] + prev[k + 8] + p.spec2[k - 9] + p.spec2[k + 8])
 
         p.spec1[j]     = MAGIC * (re + im)
         p.spec1[j + 1] = MAGIC * (im - re)
@@ -461,22 +463,22 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
         j += 8
         k += 2
 
-        re = COEF1 * ( prev[k-2] - prev[k+1]  - p.spec2[k-2] + p.spec2[k+1]) +
-             COEF2 * ( prev[k-3] - prev[k+2]  - p.spec2[k-3] + p.spec2[k+2]) +
-             COEF3 * (-prev[k-6] + prev[k+5]  + p.spec2[k-6] - p.spec2[k+5]) +
-             COEF4 * (-prev[k-7] + prev[k+6]  + p.spec2[k-7] - p.spec2[k+6]) +
-             COEF5 * ( prev[k-10] - prev[k+9] - p.spec2[k-10] + p.spec2[k+9])
+        re = COEF1 * ( prev[k - 2] - prev[k + 1] - p.spec2[k - 2] + p.spec2[k + 1]) +
+             COEF2 * ( prev[k - 3] - prev[k + 2] - p.spec2[k - 3] + p.spec2[k + 2]) +
+             COEF3 * (-prev[k - 6] + prev[k + 5] + p.spec2[k - 6] - p.spec2[k + 5]) +
+             COEF4 * (-prev[k - 7] + prev[k + 6] + p.spec2[k - 7] - p.spec2[k + 6]) +
+             COEF5 * ( prev[k - 10] - prev[k + 9] - p.spec2[k - 10] + p.spec2[k + 9])
 
-        im = COEF1 * ( prev[k-1] + prev[k]   - p.spec2[k-1] - p.spec2[k]) +
-             COEF2 * (-prev[k-4] - prev[k+3] + p.spec2[k-4] + p.spec2[k+3]) +
-             COEF3 * (-prev[k-5] - prev[k+4] + p.spec2[k-5] + p.spec2[k+4]) +
-             COEF4 * ( prev[k-8] + prev[k+7] - p.spec2[k-8] - p.spec2[k+7]) +
-             COEF5 * ( prev[k-9] + prev[k+8] - p.spec2[k-9] - p.spec2[k+8])
+        im = COEF1 * ( prev[k - 1] + prev[k] - p.spec2[k - 1] - p.spec2[k]) +
+             COEF2 * (-prev[k - 4] - prev[k + 3] + p.spec2[k - 4] + p.spec2[k + 3]) +
+             COEF3 * (-prev[k - 5] - prev[k + 4] + p.spec2[k - 5] + p.spec2[k + 4]) +
+             COEF4 * ( prev[k - 8] + prev[k + 7] - p.spec2[k - 8] - p.spec2[k + 7]) +
+             COEF5 * ( prev[k - 9] + prev[k + 8] - p.spec2[k - 9] - p.spec2[k + 8])
 
-        p.spec1[j]   = MAGIC * (re + im)
-        p.spec1[j+1] = MAGIC * (im - re)
-        p.spec1[j+4] = prev[k] - p.spec2[k+1]
-        p.spec1[j+5] = prev[k+1] + p.spec2[k]
+        p.spec1[j]     = MAGIC * (re + im)
+        p.spec1[j + 1] = MAGIC * (im - re)
+        p.spec1[j + 4] = prev[k] - p.spec2[k + 1]
+        p.spec1[j + 5] = prev[k + 1] + p.spec2[k]
 
         j += 8
         k += 2

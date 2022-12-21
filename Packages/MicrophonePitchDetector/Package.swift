@@ -27,7 +27,7 @@ let package = Package(
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
             ],
             exclude: [
-                "Resources",
+                "Resources"
                 "__Snapshots__"
             ]
         )

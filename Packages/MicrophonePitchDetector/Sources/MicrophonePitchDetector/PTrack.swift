@@ -45,18 +45,18 @@ private let SQRT_TWO = sqrtf(2)
 private let HALF_SQRT_TWO = SQRT_TWO / 2
 
 struct zt_ptrack {
-    fileprivate var size: Double
-    fileprivate var numpks: Int
-    fileprivate var sr: Double
+    fileprivate let size: Double
+    fileprivate let numpks: Int
+    fileprivate let sr: Double
+    fileprivate let sin: [Float]
+    fileprivate let hopsize: Int
     fileprivate var signal: [Float]
     fileprivate var prev: [Float]
-    fileprivate var sin: [Float]
     fileprivate var spec1: [Float]
     fileprivate var spec2: [Float]
     fileprivate var peaklist = [PEAK]()
     fileprivate var cnt = 0
     fileprivate var histcnt = 0
-    fileprivate var hopsize = 0
     fileprivate var cps = 0.0
     fileprivate var dbs = Array(repeating: -144.0, count: 20)
     fileprivate var fft: ZTFFT
@@ -85,15 +85,17 @@ struct zt_ptrack {
 
         signal = Array(repeating: 0, count: hopsize)
         prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
-        sin = Array(repeating: 0, count: hopsize * 2)
         spec1 = Array(repeating: 0, count: winsize * 4)
         spec2 = Array(repeating: 0, count: winsize * 4 + 4 * FLTLEN)
         peaklist = Array(repeating: PEAK(), count: numpks + 1)
 
+        var tmpsin: [Float] = Array(repeating: 0, count: hopsize * 2)
         for i in 0..<hopsize {
-            sin[2 * i] = cos((.pi * Float(i)) / (Float(winsize)))
-            sin[2 * i + 1] = -Darwin.sin((.pi * Float(i)) / (Float(winsize)))
+            tmpsin[2 * i] = cos((.pi * Float(i)) / (Float(winsize)))
+            tmpsin[2 * i + 1] = -Darwin.sin((.pi * Float(i)) / (Float(winsize)))
         }
+
+        sin = tmpsin
     }
 }
 

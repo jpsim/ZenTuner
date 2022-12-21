@@ -13,7 +13,8 @@
 import Darwin
 
 // Since this file was ported from C with many variable names preserved, disable SwiftLint
-// swiftlint:disable all
+// swiftlint:disable file_length function_body_length function_parameter_count
+// swiftlint:disable identifier_name line_length type_name
 
 private let MINFREQINBINS = 5.0
 private let NPREV = 20

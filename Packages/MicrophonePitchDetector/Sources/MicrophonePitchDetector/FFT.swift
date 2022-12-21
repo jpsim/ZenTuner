@@ -10,10 +10,11 @@
 
 import Darwin
 
-private let MCACHE: Int = 11 - (MemoryLayout<Float>.size / 8)
+private let MCACHE = 11 - (MemoryLayout<Float>.size / 8)
 
 // Since this file was ported from C with many variable names preserved, disable SwiftLint
-// swiftlint:disable identifier_name
+// swiftlint:disable identifier_name file_length function_body_length
+// swiftlint:disable function_parameter_count line_length shorthand_operator
 
 // MARK: - Init
 
@@ -384,10 +385,10 @@ private func swift_bitrevR2(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ 
     var iCol: UInt
     var posA, posAi, posB, posBi: Int
 
-    let Nrems2: UInt = UInt(pow2((Int(M) + 3) / 2))
-    let Nroot_1_ColInc: UInt = UInt(pow2(Int(M))) - Nrems2
-    let Nroot_1: UInt = UInt(pow2(Int(M) / 2 - 1) - 1)
-    let ColstartShift: UInt = UInt((M + 1) / 2 + 1)
+    let Nrems2 = UInt(pow2((Int(M) + 3) / 2))
+    let Nroot_1_ColInc = UInt(pow2(Int(M))) - Nrems2
+    let Nroot_1 = UInt(pow2(Int(M) / 2 - 1) - 1)
+    let ColstartShift = UInt((M + 1) / 2 + 1)
 
     posA = pow2(Int(M))               /* 1/2 of POW2(M) complexes */
     posAi = posA + 1
@@ -558,7 +559,6 @@ func swift_bfstages(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: Un
            f7   - w0-   t1      - iw1-  f7      - iw3-  f7
          */
 
-
         DiffUCnt = UInt(NDiffU)
         while DiffUCnt > 0 {
             f0r = p0r.pointee
@@ -710,7 +710,7 @@ func swift_bfstages(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: Un
             f1r = f1r * Two - f3r
             f1i = f1i * Two - f3i
 
-            if (DiffUCnt == NDiffU / 2) {
+            if DiffUCnt == NDiffU / 2 {
                 Uinc4 = -Uinc4
             }
 
@@ -748,7 +748,7 @@ func swift_bfstages(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: Un
             w1r = u1r.pointee
             w1i = u1i.pointee
 
-            if (DiffUCnt <= NDiffU / 2) {
+            if DiffUCnt <= NDiffU / 2 {
                 w0r = -w0r
             }
 

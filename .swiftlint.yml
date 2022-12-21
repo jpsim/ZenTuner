@@ -89,6 +89,7 @@ identifier_name:
 file_name:
   excluded:
     - Alignment.swift
+    - FFT.swift
     - PTrack.swift
 
 large_tuple:

@@ -75,7 +75,7 @@ struct zt_ptrack {
             powtwo += 1
         }
 
-        fft = ZTFFT(M: powtwo - 1)
+        fft = ZTFFT(M: powtwo - 1, size: hopsize)
 
         if winsize != (1 << powtwo) {
             throw PTrackError.invalidWindowSize
@@ -413,7 +413,7 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
         p.spec1[k + 1] = sig[i] * sinus[k + 1]
     }
 
-    p.fft.compute(buf: &p.spec1, FFTsize: hop)
+    p.fft.compute(buf: &p.spec1)
 
     var k = 2 * FLTLEN
     for i in stride(from: 0, to: hop, by: 2) {

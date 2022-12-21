@@ -23,8 +23,11 @@ final class ZTFFT {
     let utbl: UnsafeMutablePointer<Float>!
     let BRLow: UnsafeMutablePointer<Int16>!
     let BRLowCpx: UnsafeMutablePointer<Int16>!
+    let innerM: Int32
 
-    init(M: Int) {
+    init(M: Int, size: Int) {
+        innerM = Int32(log2(Double(size)))
+
         utbl = UnsafeMutablePointer<Float>.allocate(capacity: (pow2(M) / 4 + 1))
         swiftfftCosInit(M: M, Utbl: utbl)
 
@@ -35,8 +38,8 @@ final class ZTFFT {
         swiftfftBRInit(M: M - 1, BRLow: BRLow)
     }
 
-    func compute(buf: UnsafeMutablePointer<Float>?, FFTsize: Int) {
-        swift_ffts1(ioptr: buf, M: Int32(log2(Double(FFTsize))), Utbl: utbl, BRLow: BRLowCpx)
+    func compute(buf: UnsafeMutablePointer<Float>?) {
+        swift_ffts1(ioptr: buf, M: innerM, Utbl: utbl, BRLow: BRLowCpx)
     }
 }
 

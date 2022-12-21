@@ -279,9 +279,8 @@ private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
         tmpfr2 = ((spec[i-4] - spec[i+12]) * (2.0 * spec[i+4] - spec[i+12] - spec[i-4]) +
                   (spec[i-3] - spec[i+13]) * (2.0 * spec[i+5] - spec[i+13] - spec[i-3])) / (2.0 * h2) + 1
 
-        m = 0.333333333333 * (peakfr + tmpfr1 + tmpfr2)
-        `var` = 0.5 * ((peakfr-m)*(peakfr-m) +
-                      (tmpfr1-m)*(tmpfr1-m) + (tmpfr2-m)*(tmpfr2-m))
+        m = (peakfr + tmpfr1 + tmpfr2) / 3
+        `var` = ((peakfr-m)*(peakfr-m) + (tmpfr1-m)*(tmpfr1-m) + (tmpfr2-m)*(tmpfr2-m)) / 2
 
         totalfreq = Float(i >> 2) + m
         if (`var` * Float(totalpower) > THRSH * height || `var` < 1.0e-30) {

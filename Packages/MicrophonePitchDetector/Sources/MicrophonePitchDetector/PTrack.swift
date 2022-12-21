@@ -174,9 +174,8 @@ private func swift_ptrack_set_totals(p: inout zt_ptrack, totalpower: inout Doubl
     if totalpower > 1.0e-9 {
         totaldb = DBSCAL * Double(logf(Float(totalpower)/Float(n)))
         totalloudness = Double(sqrtf(sqrtf(Float(totalpower))))
-        if totaldb < 0 { totaldb = 0 }
-    }
-    else {
+        totaldb = max(totaldb, 0)
+    } else {
         totaldb = 0.0
         totalloudness = 0.0
     }

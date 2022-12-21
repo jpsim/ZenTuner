@@ -791,20 +791,3 @@ void bfstages(float *ioptr, int M, float *Utbl, int Ustride,
       posi = pos + 1;
     }
 }
-
-void fftrecurs(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU,
-               int StageCnt)
-{
-    /* recursive bfstages calls to maximize on chip cache efficiency */
-    int i1;
-
-    if (M <= (int) MCACHE)              /* fits on chip ? */
-      bfstages(ioptr, M, Utbl, Ustride, NDiffU, StageCnt); /* RADIX 8 Stages */
-    else {
-      for (i1 = 0; i1 < 8; i1++) {
-        fftrecurs(&ioptr[i1 * POW2(M - 3) * 2], M - 3, Utbl, 8 * Ustride,
-                  NDiffU, StageCnt - 1);  /*  RADIX 8 Stages      */
-      }
-      bfstages(ioptr, M, Utbl, Ustride, POW2(M - 3), 1);  /*  RADIX 8 Stage */
-    }
-}

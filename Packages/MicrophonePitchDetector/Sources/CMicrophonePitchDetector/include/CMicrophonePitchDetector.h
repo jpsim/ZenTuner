@@ -9,6 +9,5 @@ void bitrevR2(float *ioptr, int M, int16_t *BRLow);
 void bfR2(float *ioptr, int M, int NDiffU);
 void bfR4(float *ioptr, int M, int NDiffU, float sqrttwo);
 void bfstages(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU, int StageCnt);
-void fftrecurs(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU, int StageCnt);
 
 #endif

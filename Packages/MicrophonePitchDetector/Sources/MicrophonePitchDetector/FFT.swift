@@ -72,7 +72,18 @@ private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: Un
     if M <= MCACHE {
         bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt)
     } else {
-        fftrecurs(ioptr, M, Utbl, 1, NDiffU, StageCnt)
+        swift_fftrecurs(ioptr: ioptr!, M: M, Utbl: Utbl!, Ustride: 1, NDiffU: NDiffU, StageCnt: StageCnt)
+    }
+}
+
+private func swift_fftrecurs(ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl: UnsafeMutablePointer<Float>, Ustride: Int32, NDiffU: Int32, StageCnt: Int32) {
+    if M <= MCACHE {
+        bfstages(ioptr, M, Utbl, Ustride, NDiffU, StageCnt)
+    } else {
+        for i1 in 0..<8 {
+            swift_fftrecurs(ioptr: ioptr + i1 * Int(pow(2.0, Double(M - 3))) * 2, M: M - 3, Utbl: Utbl, Ustride: 8 * Ustride, NDiffU: NDiffU, StageCnt: StageCnt - 1)
+        }
+        bfstages(ioptr, M, Utbl, Ustride, Int32(pow(2.0, Double(M - 3))), 1)
     }
 }
 

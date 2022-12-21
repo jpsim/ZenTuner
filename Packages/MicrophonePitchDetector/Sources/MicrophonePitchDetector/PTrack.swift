@@ -369,20 +369,22 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
 private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, totalpower: Double, histpeak: inout HISTOPEAK, cumpow: Double, cumstrength: Double, freqnum: Double, freqden: Double, n: Int) {
     if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower {
         histpeak.hvalue = 0
-    } else {
-        let freqinbins = freqnum / freqden
-
-        if freqinbins < MINFREQINBINS {
-            histpeak.hvalue = 0
-        } else {
-            let hzperbin = p.sr / Double(n + n)
-            let hpitch = hzperbin * freqnum / freqden
-            histpeak.hpitch = hpitch
-            p.cps = hpitch
-            let pitchpow = pow(cumstrength, 4)
-            histpeak.hloud = DBSCAL * log(pitchpow / Double(n))
-        }
+        return
     }
+
+    let freqinbins = freqnum / freqden
+
+    if freqinbins < MINFREQINBINS {
+        histpeak.hvalue = 0
+        return
+    }
+
+    let hzperbin = p.sr / Double(n + n)
+    let hpitch = hzperbin * freqnum / freqden
+    histpeak.hpitch = hpitch
+    p.cps = hpitch
+    let pitchpow = pow(cumstrength, 4)
+    histpeak.hloud = DBSCAL * log(pitchpow / Double(n))
 }
 
 private func swift_ptrack_set_spec(p: inout zt_ptrack) {

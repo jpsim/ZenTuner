@@ -43,7 +43,7 @@ final class zt_auxdata {
 
 struct zt_ptrack {
     var size = 0.0
-    var signal = zt_auxdata()
+    var signal = [Float]()
     var prev = zt_auxdata()
     var sin = zt_auxdata()
     var spec1 = zt_auxdata()
@@ -103,16 +103,12 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
 
     p.hopsize = Int(p.size)
 
-    swift_zt_auxdata_alloc(aux: &p.signal, size: p.hopsize * MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.prev, size: (p.hopsize*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.sin, size: (p.hopsize*2)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
 
-    let signalPointer = p.signal.ptr.bindMemory(to: Float.self, capacity: p.hopsize)
-    for i in 0..<p.hopsize {
-        signalPointer[i] = 0.0
-    }
+    p.signal = Array(repeating: 0, count: p.hopsize)
 
     let prevPointer = p.prev.ptr.bindMemory(to: Float.self, capacity: winsize + 4 * FLTLEN)
     for i in 0..<winsize + 4 * FLTLEN {
@@ -135,7 +131,6 @@ func swift_zt_ptrack_compute(
     _ freq: inout Float,
     _ amp: inout Float
 ) {
-    let buf = p.signal.ptr.bindMemory(to: Float.self, capacity: 1)
     var pos = p.cnt
     let h = p.hopsize
     let scale: Float = 32768.0
@@ -145,7 +140,7 @@ func swift_zt_ptrack_compute(
         pos = 0
     }
 
-    buf[Int(pos)] = `in`.pointee * scale
+    p.signal[Int(pos)] = `in`.pointee * scale
     pos += 1
 
     freq = Float(p.cps)
@@ -422,7 +417,7 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
 
 private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
-    let sig = p.signal.ptr.assumingMemoryBound(to: Float.self)
+    let sig = p.signal
     let sinus = p.sin.ptr.assumingMemoryBound(to: Float.self)
     let hop = p.hopsize
 

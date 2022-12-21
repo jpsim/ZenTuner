@@ -134,9 +134,9 @@ private func ptrackSwift(p: inout zt_ptrack) {
     let n = 2 * p.hopsize
     swift_ptrack_set_histcnt(p: &p, n: n)
     swift_ptrack_set_spec(p: &p)
-    var totalpower: Double = 0
-    var totalloudness: Double = 0
-    var totaldb: Double = 0
+    var totalpower = 0.0
+    var totalloudness = 0.0
+    var totaldb = 0.0
     swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: Int(n))
     guard totaldb >= p.amplo else {
         return

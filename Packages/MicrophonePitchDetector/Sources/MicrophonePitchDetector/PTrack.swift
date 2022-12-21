@@ -188,10 +188,10 @@ private func swift_ptrack_get_maxbin(n: Int) -> Double {
 }
 
 private struct HISTOPEAK {
-    var hpitch: Double = 0
-    var hvalue: Float = 0
-    var hloud: Double = 0
-    var hindex: Int32 = 0
+    var hvalue: Float = 0.0
+    var hpitch = 0.0
+    var hloud = 0.0
+    var hindex = 0
 }
 
 private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, maxbin: Double, numpks: Int) {
@@ -301,7 +301,7 @@ private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
 private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Double, histogram: UnsafeMutablePointer<Float>, totalloudness: Double) {
     if npeak > numpks { npeak = numpks }
     for i in 0..<Int(maxbin) { histogram[i] = 0 }
-    for i in 0..<Int(npeak) {
+    for i in 0..<npeak {
         let pit = BPEROOVERLOG2 * log(peaklist[i].pfreq) - 96.0
         let binbandwidth = FACTORTOBINS * peaklist[i].pwidth / peaklist[i].pfreq
         let putbandwidth = binbandwidth < 2.0 ? 2.0 : binbandwidth
@@ -328,9 +328,9 @@ private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
 
 private func swift_ptrack_pt4(histpeak: inout HISTOPEAK, maxbin: Double, histogram: UnsafeMutablePointer<Float>) {
     var best: Float = 0
-    var indx: Int32 = -1
+    var indx = -1
     for j in 0..<Int(maxbin) where histogram[j] > best {
-        indx = Int32(j)
+        indx = j
         best = histogram[j]
     }
 
@@ -344,10 +344,12 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
     for j in 0..<npeak {
         let fpnum = Double(peaklist[j].pfreq / putfreq)
         let pnum = Int(fpnum + 0.5)
-        let fipnum = Double(pnum)
-        var deviation: Double
+
         if pnum > 16 || pnum < 1 { continue }
-        deviation = 1.0 - fpnum / fipnum
+
+        let fipnum = Double(pnum)
+        let deviation = 1.0 - fpnum / fipnum
+
         if deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE {
             var stdev: Double
             var weight: Double
@@ -355,10 +357,10 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
             if pnum < 8 { nbelow8 += 1 }
             cumpow += peaklist[j].ppow
             cumstrength += sqrt(sqrt(peaklist[j].ppow))
-            stdev = Double(peaklist[j].pwidth) > MINBW ? Double(peaklist[j].pwidth) : MINBW
+            stdev = peaklist[j].pwidth > MINBW ? peaklist[j].pwidth : MINBW
             weight = 1.0 / (stdev * fipnum) * (stdev * fipnum)
             freqden += weight
-            freqnum += weight * Double(peaklist[j].pfreq) / fipnum
+            freqnum += weight * peaklist[j].pfreq / fipnum
         }
     }
 }

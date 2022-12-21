@@ -37,21 +37,21 @@ private let MAGIC = sqrtf(2) / 2
 
 struct zt_ptrack {
     var size = 0.0
-    var signal = [Float]()
-    var prev = [Float]()
-    var sin = [Float]()
-    var spec1 = [Float]()
-    var spec2 = [Float]()
-    fileprivate var peaklist = [PEAK]()
     var numpks = 0
-    var cnt = 0
-    var histcnt = 0
-    var hopsize = 0
     var sr = 0.0
-    var cps = 0.0
-    var dbs = Array(repeating: 0.0, count: 20)
-    var amplo = 0.0
-    var fft = zt_fft()
+    fileprivate var signal = [Float]()
+    fileprivate var prev = [Float]()
+    fileprivate var sin = [Float]()
+    fileprivate var spec1 = [Float]()
+    fileprivate var spec2 = [Float]()
+    fileprivate var peaklist = [PEAK]()
+    fileprivate var cnt = 0
+    fileprivate var histcnt = 0
+    fileprivate var hopsize = 0
+    fileprivate var cps = 0.0
+    fileprivate var dbs = Array(repeating: 0.0, count: 20)
+    fileprivate var amplo = 0.0
+    fileprivate var fft = zt_fft()
 }
 
 private let partialonset: [Float] = [

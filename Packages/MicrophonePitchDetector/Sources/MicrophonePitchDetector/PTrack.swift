@@ -49,7 +49,7 @@ struct zt_ptrack {
     fileprivate var histcnt = 0
     fileprivate var hopsize = 0
     fileprivate var cps = 0.0
-    fileprivate var dbs = Array(repeating: 0.0, count: 20)
+    fileprivate var dbs = Array(repeating: -144.0, count: 20)
     fileprivate var amplo = 0.0
     fileprivate var fft = zt_fft()
 }
@@ -102,7 +102,6 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
         p.sin[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
     }
 
-    p.dbs = Array(repeating: -144.0, count: 20)
     p.amplo = MINAMPS
 }
 

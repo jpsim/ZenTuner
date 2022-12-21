@@ -20,10 +20,10 @@ private let MCACHE = 11 - (MemoryLayout<Float>.size / 8)
 // MARK: - API
 
 final class ZTFFT {
-    let utbl: UnsafeMutablePointer<Float>!
-    let BRLow: UnsafeMutablePointer<Int16>!
-    let BRLowCpx: UnsafeMutablePointer<Int16>!
-    let innerM: Int32
+    private let utbl: UnsafeMutablePointer<Float>
+    private let BRLow: UnsafeMutablePointer<Int16>
+    private let BRLowCpx: UnsafeMutablePointer<Int16>
+    private let innerM: Int32
 
     init(M: Int, size: Int) {
         innerM = Int32(log2(Double(size)))
@@ -38,32 +38,32 @@ final class ZTFFT {
         swiftfftBRInit(M: M - 1, BRLow: BRLow)
     }
 
-    func compute(buf: UnsafeMutablePointer<Float>?) {
+    func compute(buf: UnsafeMutablePointer<Float>) {
         swift_ffts1(ioptr: buf, M: innerM, Utbl: utbl, BRLow: BRLowCpx)
     }
 }
 
 // MARK: - Private Compute
 
-private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: UnsafeMutablePointer<Float>?, BRLow: UnsafeMutablePointer<Int16>?) {
+private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl: UnsafeMutablePointer<Float>, BRLow: UnsafeMutablePointer<Int16>) {
     var StageCnt: Int32
     var NDiffU: Int32
 
-    swift_bitrevR2(ioptr!, M, BRLow!)
+    swift_bitrevR2(ioptr, M, BRLow)
     StageCnt = (M - 1) / 3
     NDiffU = 2
     if (M - 1 - (StageCnt * 3)) == 1 {
-        swift_bfR2(ioptr!, M, NDiffU)
+        swift_bfR2(ioptr, M, NDiffU)
         NDiffU *= 2
     }
     if (M - 1 - (StageCnt * 3)) == 2 {
-        swift_bfR4(ioptr!, Int(M), Int(NDiffU), SQRT_TWO)
+        swift_bfR4(ioptr, Int(M), Int(NDiffU), SQRT_TWO)
         NDiffU *= 4
     }
     if M <= MCACHE {
-        swift_bfstages(ioptr!, M, Utbl!, 1, NDiffU, StageCnt)
+        swift_bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt)
     } else {
-        swift_fftrecurs(ioptr: ioptr!, M: M, Utbl: Utbl!, Ustride: 1, NDiffU: NDiffU, StageCnt: StageCnt)
+        swift_fftrecurs(ioptr: ioptr, M: M, Utbl: Utbl, Ustride: 1, NDiffU: NDiffU, StageCnt: StageCnt)
     }
 }
 

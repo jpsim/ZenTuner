@@ -1,0 +1,106 @@
+{
+  "entries" : [
+    {
+      "iteration" : 0
+    },
+    {
+      "iteration" : 1
+    },
+    {
+      "iteration" : 2,
+      "pitch" : "30.672"
+    },
+    {
+      "iteration" : 3,
+      "pitch" : "30.749"
+    },
+    {
+      "iteration" : 4,
+      "pitch" : "30.893"
+    },
+    {
+      "iteration" : 5,
+      "pitch" : "30.837"
+    },
+    {
+      "iteration" : 6,
+      "pitch" : "30.776"
+    },
+    {
+      "iteration" : 7,
+      "pitch" : "30.894"
+    },
+    {
+      "iteration" : 8,
+      "pitch" : "30.839"
+    },
+    {
+      "iteration" : 9,
+      "pitch" : "30.880"
+    },
+    {
+      "iteration" : 10,
+      "pitch" : "30.727"
+    },
+    {
+      "iteration" : 11,
+      "pitch" : "30.908"
+    },
+    {
+      "iteration" : 12,
+      "pitch" : "30.739"
+    },
+    {
+      "iteration" : 13,
+      "pitch" : "30.847"
+    },
+    {
+      "iteration" : 14,
+      "pitch" : "30.878"
+    },
+    {
+      "iteration" : 15,
+      "pitch" : "30.801"
+    },
+    {
+      "iteration" : 16,
+      "pitch" : "30.861"
+    },
+    {
+      "iteration" : 17,
+      "pitch" : "30.785"
+    },
+    {
+      "iteration" : 18,
+      "pitch" : "30.868"
+    },
+    {
+      "iteration" : 19,
+      "pitch" : "30.686"
+    },
+    {
+      "iteration" : 20,
+      "pitch" : "30.861"
+    },
+    {
+      "iteration" : 21,
+      "pitch" : "30.844"
+    },
+    {
+      "iteration" : 22,
+      "pitch" : "30.969"
+    },
+    {
+      "iteration" : 23,
+      "pitch" : "30.874"
+    },
+    {
+      "iteration" : 24,
+      "pitch" : "30.781"
+    },
+    {
+      "iteration" : 25,
+      "pitch" : "30.890"
+    }
+  ]
+}

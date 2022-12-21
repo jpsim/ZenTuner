@@ -231,11 +231,11 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
     var freqnum = 0.0
     var freqden = 0.0
     var npartials = 0
-    var nbelow8: Int32 = 0
+    var nbelow8 = 0
 
     swift_ptrack_pt5(
         histpeak: histpeak,
-        npeak: Int(npeak),
+        npeak: npeak,
         peaklist: &p.peaklist,
         npartials: &npartials,
         nbelow8: &nbelow8,
@@ -247,8 +247,8 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
 
     swift_ptrack_pt6(
         p: &p,
-        nbelow8: Int(nbelow8),
-        npartials: Int(npartials),
+        nbelow8: nbelow8,
+        npartials: npartials,
         totalpower: totalpower,
         histpeak: &histpeak,
         cumpow: cumpow,
@@ -341,7 +341,7 @@ private func swift_ptrack_pt4(histpeak: inout HISTOPEAK, maxbin: Double, histogr
     histpeak.hindex = indx
 }
 
-private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeMutablePointer<PEAK>, npartials: inout Int, nbelow8: inout Int32, cumpow: inout Double, cumstrength: inout Double, freqnum: inout Double, freqden: inout Double) {
+private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeMutablePointer<PEAK>, npartials: inout Int, nbelow8: inout Int, cumpow: inout Double, cumstrength: inout Double, freqnum: inout Double, freqden: inout Double) {
     let putfreq = exp((1.0 / BPEROOVERLOG2) * (Double(histpeak.hindex) + 96.0))
 
     for j in 0..<npeak {

@@ -342,7 +342,7 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
     let putfreq = exp((1.0 / BPEROOVERLOG2) * (Double(histpeak.hindex) + 96.0))
 
     for j in 0..<npeak {
-        let fpnum = Double(peaklist[j].pfreq / putfreq)
+        let fpnum = peaklist[j].pfreq / putfreq
         let pnum = Int(fpnum + 0.5)
 
         if pnum > 16 || pnum < 1 { continue }

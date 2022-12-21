@@ -10,7 +10,7 @@
  *
  */
 
-import CMicrophonePitchDetector
+import Darwin
 
 // Since this file was ported from C with many variable names preserved, disable SwiftLint
 // swiftlint:disable all

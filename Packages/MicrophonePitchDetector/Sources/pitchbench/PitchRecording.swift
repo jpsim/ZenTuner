@@ -18,7 +18,7 @@ struct PitchRecording: Codable, Equatable {
             frameCapacity: bufferSize
         )!
 
-        let tracker = PitchTracker(sampleRate: Int32(buffer.format.sampleRate))
+        let tracker = PitchTracker(sampleRate: buffer.format.sampleRate)
 
         var iteration = 0
         var pitchRecording = PitchRecording()

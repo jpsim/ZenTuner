@@ -1,5 +1,4 @@
 import AVFoundation
-import CMicrophonePitchDetector
 
 public final class PitchTracker {
     private var ptrack = zt_ptrack()

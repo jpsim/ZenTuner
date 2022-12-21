@@ -8,7 +8,6 @@
  * ported to Swift by JP Simard, 2022
  */
 
-import CMicrophonePitchDetector
 import Darwin
 
 private let MCACHE: Int = 11 - (MemoryLayout<Float>.size / 8)

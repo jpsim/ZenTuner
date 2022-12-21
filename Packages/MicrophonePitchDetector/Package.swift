@@ -16,10 +16,9 @@ let package = Package(
         )
     ],
     targets: [
-        .executableTarget(name: "pitchbench", dependencies: ["MicrophonePitchDetector"]),
+        .executableTarget(name: "pitchbench", dependencies: ["PitchRecording"]),
         .target(name: "PitchRecording", dependencies: ["MicrophonePitchDetector"]),
-        .target(name: "MicrophonePitchDetector", dependencies: ["CMicrophonePitchDetector"]),
-        .target(name: "CMicrophonePitchDetector"),
+        .target(name: "MicrophonePitchDetector"),
         .testTarget(
             name: "MicrophonePitchDetectorTests",
             dependencies: [
@@ -27,7 +26,7 @@ let package = Package(
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
             ],
             exclude: [
-                "Resources"
+                "Resources",
                 "__Snapshots__"
             ]
         )

@@ -54,7 +54,7 @@ struct zt_ptrack {
     var fft = zt_fft()
 }
 
-private var partialonset: [Float] = [
+private let partialonset: [Float] = [
     0.0,
     48.0,
     76.0782000346154967102,
@@ -153,8 +153,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
         npeak: &npeak,
         maxbin: swift_ptrack_get_maxbin(n: n),
         numpks: p.numpks,
-        partialonset: &partialonset,
-        partialonset_count: Int32(partialonset.count)
+        partialonset: partialonset
     )
 }
 
@@ -203,7 +202,7 @@ private struct HISTOPEAK {
     var hindex: Int32 = 0
 }
 
-private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, npeak: inout Int, maxbin: Float, numpks: Int, partialonset: inout [Float], partialonset_count: Int32) {
+private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, npeak: inout Int, maxbin: Float, numpks: Int, partialonset: [Float]) {
     var histpeak = HISTOPEAK()
     func getHist(spectmp: UnsafeMutablePointer<Float>) -> UnsafeMutablePointer<Float> {
         return spectmp.advanced(by: BINGUARD)
@@ -226,8 +225,7 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
         maxbin: maxbin,
         histogram: histogram,
         totalloudness: totalloudness,
-        partialonset: partialonset,
-        partialonset_count: Int(partialonset_count)
+        partialonset: partialonset
     )
 
     swift_ptrack_pt4(histpeak: &histpeak, maxbin: maxbin, histogram: histogram)
@@ -307,7 +305,7 @@ private func swift_ptrack_pt2(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
     }
 }
 
-private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Double, partialonset: [Float], partialonset_count: Int) {
+private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMutablePointer<PEAK>, maxbin: Float, histogram: UnsafeMutablePointer<Float>, totalloudness: Double, partialonset: [Float]) {
     if npeak > numpks { npeak = numpks }
     for i in 0..<Int(maxbin) { histogram[i] = 0 }
     for i in 0..<Int(npeak) {
@@ -316,7 +314,7 @@ private func swift_ptrack_pt3(npeak: inout Int, numpks: Int, peaklist: UnsafeMut
         let putbandwidth = binbandwidth < 2.0 ? 2.0 : binbandwidth
         let weightbandwidth = binbandwidth < 1.0 ? 1.0 : binbandwidth
         let weightamp = 4.0 * peaklist[i].ploudness / Float(totalloudness)
-        for j in 0..<partialonset_count {
+        for j in 0..<partialonset.count {
             let bin = pit - partialonset[j]
             if bin < maxbin {
                 let score = 30.0 * weightamp / (Float((j+7)) * weightbandwidth)

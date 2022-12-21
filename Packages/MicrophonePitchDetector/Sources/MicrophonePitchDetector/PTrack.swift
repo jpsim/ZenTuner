@@ -370,9 +370,7 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
     if (nbelow8 < 4 || npartials < 7) && cumpow < 0.01 * totalpower {
         histpeak.hvalue = 0
     } else {
-        var pitchpow = cumstrength * cumstrength
         let freqinbins = freqnum / freqden
-        pitchpow = pitchpow * pitchpow
 
         if freqinbins < MINFREQINBINS {
             histpeak.hvalue = 0
@@ -381,6 +379,7 @@ private func swift_ptrack_pt6(p: inout zt_ptrack, nbelow8: Int, npartials: Int, 
             let hpitch = hzperbin * freqnum / freqden
             histpeak.hpitch = hpitch
             p.cps = hpitch
+            let pitchpow = pow(cumstrength, 4)
             histpeak.hloud = DBSCAL * log(pitchpow / Double(n))
         }
     }

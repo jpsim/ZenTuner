@@ -70,7 +70,7 @@ private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: Un
         NDiffU *= 4
     }
     if M <= MCACHE {
-        bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt)
+        swift_bfstages(ioptr!, M, Utbl!, 1, NDiffU, StageCnt)
     } else {
         swift_fftrecurs(ioptr: ioptr!, M: M, Utbl: Utbl!, Ustride: 1, NDiffU: NDiffU, StageCnt: StageCnt)
     }
@@ -78,15 +78,341 @@ private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: Un
 
 private func swift_fftrecurs(ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl: UnsafeMutablePointer<Float>, Ustride: Int32, NDiffU: Int32, StageCnt: Int32) {
     if M <= MCACHE {
-        bfstages(ioptr, M, Utbl, Ustride, NDiffU, StageCnt)
+        swift_bfstages(ioptr, M, Utbl, Ustride, NDiffU, StageCnt)
     } else {
         for i1 in 0..<8 {
             swift_fftrecurs(ioptr: ioptr + i1 * Int(pow(2.0, Double(M - 3))) * 2, M: M - 3, Utbl: Utbl, Ustride: 8 * Ustride, NDiffU: NDiffU, StageCnt: StageCnt - 1)
         }
-        bfstages(ioptr, M, Utbl, Ustride, Int32(pow(2.0, Double(M - 3))), 1)
+        swift_bfstages(ioptr, M, Utbl, Ustride, Int32(pow(2.0, Double(M - 3))), 1)
     }
 }
 
+func swift_bfstages(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: UnsafeMutablePointer<Float>, _ Ustride: Int32, _ NDiffU: Int32, _ StageCnt: Int32) {
+    var NDiffU = NDiffU
+    var pos: UInt
+    var posi: UInt
+    var pinc: UInt
+    var pnext: UInt
+    var NSameU: UInt
+    var Uinc: Int
+    var Uinc2: Int
+    var Uinc4: Int
+    var DiffUCnt: UInt
+    var SameUCnt: UInt
+    var U2toU3: UInt
+
+    var pstrt: UnsafeMutablePointer<Float>
+    var p0r, p1r, p2r, p3r: UnsafeMutablePointer<Float>
+    var u0r, u0i, u1r, u1i, u2r, u2i: UnsafeMutablePointer<Float>
+
+    var w0r, w0i, w1r, w1i, w2r, w2i, w3r, w3i: Float
+    var f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i: Float
+    var f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i: Float
+    var t0r, t0i, t1r, t1i: Float
+    let Two: Float = 2.0
+
+    pinc = UInt(NDiffU * 2)
+    pnext = pinc * 8
+    pos = pinc * 4
+    posi = pos + 1
+    NSameU = UInt(pow(2.0, Double(M))) / 8 / UInt(NDiffU)
+    Uinc = Int(NSameU) * Int(Ustride)
+    Uinc2 = Uinc * 2
+    Uinc4 = Uinc * 4
+    U2toU3 = (UInt(pow(2.0, Double(M))) / 8) * UInt(Ustride)
+    for _ in 0..<StageCnt {
+        u0r = Utbl
+        u0i = Utbl + Int(pow(2.0, Double(M - 2))) * Int(Ustride)
+        u1r = u0r
+        u1i = u0i
+        u2r = u0r
+        u2i = u0i
+
+        w0r = u0r.pointee
+        w0i = u0i.pointee
+        w1r = u1r.pointee
+        w1i = u1i.pointee
+        w2r = u2r.pointee
+        w2i = u2i.pointee
+        w3r = (u2r + UnsafeMutablePointer<Float>.Stride(U2toU3)).pointee
+        w3i = (u2i - UnsafeMutablePointer<Float>.Stride(U2toU3)).pointee
+
+        pstrt = ioptr
+
+        p0r = pstrt
+        p1r = pstrt + UnsafeMutablePointer<Float>.Stride(pinc)
+        p2r = p1r + UnsafeMutablePointer<Float>.Stride(pinc)
+        p3r = p2r + UnsafeMutablePointer<Float>.Stride(pinc)
+
+        /* Butterflys           */
+        /*
+           f0   -       -       t0      -       -       f0      -       -       f0
+           f1   - w0-   f1      -       -       f1      -       -       f1
+           f2   -       -       f2      - w1-   f2      -       -       f4
+           f3   - w0-   t1      - iw1-  f3      -       -       f5
+
+           f4   -       -       t0      -       -       f4      - w2-   t0
+           f5   - w0-   f5      -       -       f5      - w3-   t1
+           f6   -       -       f6      - w1-   f6      - iw2-  f6
+           f7   - w0-   t1      - iw1-  f7      - iw3-  f7
+         */
+
+
+        DiffUCnt = UInt(NDiffU)
+        while DiffUCnt > 0 {
+            f0r = p0r.pointee
+            f0i = p0r.advanced(by: 1).pointee
+            f1r = p1r.pointee
+            f1i = p1r.advanced(by: 1).pointee
+            SameUCnt = NSameU - 1
+            while SameUCnt > 0 {
+                f2r = p2r.pointee
+                f2i = p2r.advanced(by: 1).pointee
+                f3r = p3r.pointee
+                f3i = p3r.advanced(by: 1).pointee
+
+                t0r = f0r + f1r * w0r + f1i * w0i
+                t0i = f0i - f1r * w0i + f1i * w0r
+                f1r = f0r * Two - t0r
+                f1i = f0i * Two - t0i
+
+                f4r = p0r.advanced(by: Int(pos)).pointee
+                f4i = p0r.advanced(by: Int(posi)).pointee
+                f5r = p1r.advanced(by: Int(pos)).pointee
+                f5i = p1r.advanced(by: Int(posi)).pointee
+
+                f6r = p2r.advanced(by: Int(pos)).pointee
+                f6i = p2r.advanced(by: Int(posi)).pointee
+                f7r = p3r.advanced(by: Int(pos)).pointee
+                f7i = p3r.advanced(by: Int(posi)).pointee
+
+                t1r = f2r - f3r * w0r - f3i * w0i
+                t1i = f2i + f3r * w0i - f3i * w0r
+                f2r = f2r * Two - t1r
+                f2i = f2i * Two - t1i
+
+                f0r = t0r + f2r * w1r + f2i * w1i
+                f0i = t0i - f2r * w1i + f2i * w1r
+                f2r = t0r * Two - f0r
+                f2i = t0i * Two - f0i
+
+                f3r = f1r + t1r * w1i - t1i * w1r
+                f3i = f1i + t1r * w1r + t1i * w1i
+                f1r = f1r * Two - f3r
+                f1i = f1i * Two - f3i
+
+                t0r = f4r + f5r * w0r + f5i * w0i
+                t0i = f4i - f5r * w0i + f5i * w0r
+                f5r = f4r * Two - t0r
+                f5i = f4i * Two - t0i
+
+                t1r = f6r - f7r * w0r - f7i * w0i
+                t1i = f6i + f7r * w0i - f7i * w0r
+                f6r = f6r * Two - t1r
+                f6i = f6i * Two - t1i
+
+                f4r = t0r + f6r * w1r + f6i * w1i
+                f4i = t0i - f6r * w1i + f6i * w1r
+                f6r = t0r * Two - f4r
+                f6i = t0i * Two - f4i
+
+                f7r = f5r + t1r * w1i - t1i * w1r
+                f7i = f5i + t1r * w1r + t1i * w1i
+                f5r = f5r * Two - f7r
+                f5i = f5i * Two - f7i
+
+                t0r = f0r - f4r * w2r - f4i * w2i
+                t0i = f0i + f4r * w2i - f4i * w2r
+                f0r = f0r * Two - t0r
+                f0i = f0i * Two - t0i
+
+                t1r = f1r - f5r * w3r - f5i * w3i
+                t1i = f1i + f5r * w3i - f5i * w3r
+                f1r = f1r * Two - t1r
+                f1i = f1i * Two - t1i
+
+                p0r.advanced(by: Int(pos)).pointee = t0r
+                p1r.advanced(by: Int(pos)).pointee = t1r
+                p0r.advanced(by: Int(posi)).pointee = t0i
+                p1r.advanced(by: Int(posi)).pointee = t1i
+                p0r.pointee = f0r
+                p1r.pointee = f1r
+                p0r.advanced(by: 1).pointee = f0i
+                p1r.advanced(by: 1).pointee = f1i
+
+                p0r += UnsafeMutablePointer<Float>.Stride(pnext)
+                f0r = p0r.pointee
+                f0i = (p0r + 1).pointee
+
+                p1r += UnsafeMutablePointer<Float>.Stride(pnext)
+
+                f1r = p1r.pointee
+                f1i = (p1r + 1).pointee
+
+                f4r = f2r - f6r * w2i + f6i * w2r
+                f4i = f2i - f6r * w2r - f6i * w2i
+                f6r = f2r * Two - f4r
+                f6i = f2i * Two - f4i
+
+                f5r = f3r - f7r * w3i + f7i * w3r
+                f5i = f3i - f7r * w3r - f7i * w3i
+                f7r = f3r * Two - f5r
+                f7i = f3i * Two - f5i
+
+                p2r.pointee = f4r
+                p3r.pointee = f5r
+                (p2r + 1).pointee = f4i
+                (p3r + 1).pointee = f5i
+                p2r.advanced(by: Int(pos)).pointee = f6r
+                p3r.advanced(by: Int(pos)).pointee = f7r
+                p2r.advanced(by: Int(posi)).pointee = f6i
+                p3r.advanced(by: Int(posi)).pointee = f7i
+
+                p2r += UnsafeMutablePointer<Float>.Stride(pnext)
+                p3r += UnsafeMutablePointer<Float>.Stride(pnext)
+
+                SameUCnt -= 1
+            }
+
+            f2r = p2r.pointee
+            f2i = (p2r + 1).pointee
+            f3r = p3r.pointee
+            f3i = (p3r + 1).pointee
+
+            t0r = f0r + f1r * w0r + f1i * w0i
+            t0i = f0i - f1r * w0i + f1i * w0r
+            f1r = f0r * Two - t0r
+            f1i = f0i * Two - t0i
+
+            f4r = p0r.advanced(by: Int(pos)).pointee
+            f4i = p0r.advanced(by: Int(posi)).pointee
+            f5r = p1r.advanced(by: Int(pos)).pointee
+            f5i = p1r.advanced(by: Int(posi)).pointee
+
+            f6r = p2r.advanced(by: Int(pos)).pointee
+            f6i = p2r.advanced(by: Int(posi)).pointee
+            f7r = p3r.advanced(by: Int(pos)).pointee
+            f7i = p3r.advanced(by: Int(posi)).pointee
+
+            t1r = f2r - f3r * w0r - f3i * w0i
+            t1i = f2i + f3r * w0i - f3i * w0r
+            f2r = f2r * Two - t1r
+            f2i = f2i * Two - t1i
+
+            f0r = t0r + f2r * w1r + f2i * w1i
+            f0i = t0i - f2r * w1i + f2i * w1r
+            f2r = t0r * Two - f0r
+            f2i = t0i * Two - f0i
+
+            f3r = f1r + t1r * w1i - t1i * w1r
+            f3i = f1i + t1r * w1r + t1i * w1i
+            f1r = f1r * Two - f3r
+            f1i = f1i * Two - f3i
+
+            if (DiffUCnt == NDiffU / 2) {
+                Uinc4 = -Uinc4
+            }
+
+            u0r += Uinc4
+            u0i -= Uinc4
+            u1r += Uinc2
+            u1i -= Uinc2
+            u2r += Uinc
+            u2i -= Uinc
+
+            pstrt += 2
+
+            t0r = f4r + f5r * w0r + f5i * w0i
+            t0i = f4i - f5r * w0i + f5i * w0r
+            f5r = f4r * Two - t0r
+            f5i = f4i * Two - t0i
+
+            t1r = f6r - f7r * w0r - f7i * w0i
+            t1i = f6i + f7r * w0i - f7i * w0r
+            f6r = f6r * Two - t1r
+            f6i = f6i * Two - t1i
+
+            f4r = t0r + f6r * w1r + f6i * w1i
+            f4i = t0i - f6r * w1i + f6i * w1r
+            f6r = t0r * Two - f4r
+            f6i = t0i * Two - f4i
+
+            f7r = f5r + t1r * w1i - t1i * w1r
+            f7i = f5i + t1r * w1r + t1i * w1i
+            f5r = f5r * Two - f7r
+            f5i = f5i * Two - f7i
+
+            w0r = u0r.pointee
+            w0i = u0i.pointee
+            w1r = u1r.pointee
+            w1i = u1i.pointee
+
+            if (DiffUCnt <= NDiffU / 2) {
+                w0r = -w0r
+            }
+
+            t0r = f0r - f4r * w2r - f4i * w2i
+            t0i = f0i + f4r * w2i - f4i * w2r
+            f0r = f0r * Two - t0r
+            f0i = f0i * Two - t0i
+
+            f4r = f2r - f6r * w2i + f6i * w2r
+            f4i = f2i - f6r * w2r - f6i * w2i
+            f6r = f2r * Two - f4r
+            f6i = f2i * Two - f4i
+
+            p0r.advanced(by: Int(pos)).pointee = t0r
+            p2r.pointee = f4r
+            p0r.advanced(by: Int(posi)).pointee = t0i
+            p2r.advanced(by: 1).pointee = f4i
+            w2r = u2r.pointee
+            w2i = u2i.pointee
+            p0r.pointee = f0r
+            p2r.advanced(by: Int(pos)).pointee = f6r
+            p0r.advanced(by: 1).pointee = f0i
+            p2r.advanced(by: Int(posi)).pointee = f6i
+
+            p0r = pstrt
+            p2r = pstrt.advanced(by: Int(pinc + pinc))
+
+            t1r = f1r - f5r * w3r - f5i * w3i
+            t1i = f1i + f5r * w3i - f5i * w3r
+            f1r = f1r * Two - t1r
+            f1i = f1i * Two - t1i
+
+            f5r = f3r - f7r * w3i + f7i * w3r
+            f5i = f3i - f7r * w3r - f7i * w3i
+            f7r = f3r * Two - f5r
+            f7i = f3i * Two - f5i
+
+            p1r.advanced(by: Int(pos)).pointee = t1r
+            p3r.pointee = f5r
+            p1r.advanced(by: Int(posi)).pointee = t1i
+            p3r.advanced(by: 1).pointee = f5i
+            w3r = (u2r + UnsafeMutablePointer<Float>.Stride(U2toU3)).pointee
+            w3i = (u2i - UnsafeMutablePointer<Float>.Stride(U2toU3)).pointee
+            p1r.pointee = f1r
+            p3r.advanced(by: Int(pos)).pointee = f7r
+            p1r.advanced(by: 1).pointee = f1i
+            p3r.advanced(by: Int(posi)).pointee = f7i
+
+            p1r = pstrt.advanced(by: Int(pinc))
+            p3r = p2r.advanced(by: Int(pinc))
+
+            DiffUCnt -= 1
+        }
+
+        NSameU /= 8
+        Uinc /= 8
+        Uinc2 /= 8
+        Uinc4 = Uinc * 4
+        NDiffU *= 8
+        pinc *= 8
+        pnext *= 8
+        pos *= 8
+        posi = pos + 1
+    }
+}
 
 // MARK: - FFT Tables
 

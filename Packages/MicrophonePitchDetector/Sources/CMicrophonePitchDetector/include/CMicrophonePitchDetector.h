@@ -11,6 +11,6 @@ typedef struct {
     int16_t *BRLowCpx;
 } zt_fft;
 
-void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize, float sqrttwo);
+void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow, float sqrttwo);
 
 #endif

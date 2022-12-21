@@ -405,7 +405,7 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
         p.spec1[k + 1] = sig[i] * sinus[k + 1]
     }
 
-    zt_fft_cpx(&p.fft, &p.spec1, Int32(hop), SQRT_TWO)
+    zt_fft_cpx(fft: &p.fft, buf: &p.spec1, FFTsize: hop, sqrttwo: SQRT_TWO)
 
     var k = 2 * FLTLEN
     for i in stride(from: 0, to: hop, by: 2) {

@@ -9,6 +9,7 @@
  */
 
 import CMicrophonePitchDetector
+import Darwin
 
 // Since this file was ported from C with many variable names preserved, disable SwiftLint
 // swiftlint:disable identifier_name
@@ -29,6 +30,12 @@ func swift_zt_fft_init(M: Int) -> zt_fft {
         BRLow: BRLow,
         BRLowCpx: BRLowCpx
     )
+}
+
+// MARK: - Compute
+
+func zt_fft_cpx(fft: inout zt_fft, buf: UnsafeMutablePointer<Float>?, FFTsize: Int, sqrttwo: Float) {
+    ffts1(buf, Int32(log2(Double(FFTsize))), fft.utbl, fft.BRLowCpx, sqrttwo)
 }
 
 // MARK: - FFT Tables

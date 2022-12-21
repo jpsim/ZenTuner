@@ -809,7 +809,7 @@ static void fftrecurs(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU,
     }
 }
 
-static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow, float sqrttwo)
+void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow, float sqrttwo)
 {
     /* Compute in-place complex fft on the rows of the input array  */
     /* INPUTS                                                       */
@@ -838,9 +838,4 @@ static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow, float sqrttw
       bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt);  /* RADIX 8 Stages */
     else
       fftrecurs(ioptr, M, Utbl, 1, NDiffU, StageCnt); /* RADIX 8 Stages */
-}
-
-void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize, float sqrttwo)
-{
-    ffts1(buf, log2(FFTsize), fft->utbl, fft->BRLowCpx, sqrttwo);
 }

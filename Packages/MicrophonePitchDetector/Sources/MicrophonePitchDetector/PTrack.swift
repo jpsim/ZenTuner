@@ -55,7 +55,7 @@ struct zt_ptrack {
     var hopsize = 0
     var sr = 0.0
     var cps = 0.0
-    var dbs: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    var dbs: [Float] = Array(repeating: 0, count: 20)
     var amplo = 0.0
     var fft: zt_fft = zt_fft()
 }

@@ -56,7 +56,7 @@ struct zt_ptrack {
     fileprivate var cps = 0.0
     fileprivate var dbs = Array(repeating: -144.0, count: 20)
     fileprivate var amplo = 0.0
-    fileprivate var fft = ZTFFT()
+    fileprivate var fft: ZTFFT!
 }
 
 private let partialonset = [
@@ -88,7 +88,7 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
         powtwo += 1
     }
 
-    p.fft = swift_zt_fft_init(M: powtwo - 1)
+    p.fft = ZTFFT(M: powtwo - 1)
 
     if winsize != (1 << powtwo) {
         return

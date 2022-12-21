@@ -18,35 +18,24 @@ private let MCACHE = 11 - (MemoryLayout<Float>.size / 8)
 
 // MARK: - Init
 
-func swift_zt_fft_init(M: Int) -> ZTFFT {
-    let utbl = UnsafeMutablePointer<Float>.allocate(capacity: (pow2(M) / 4 + 1))
-    swiftfftCosInit(M: M, Utbl: utbl)
-
-    let BRLowCpx = UnsafeMutablePointer<Int16>.allocate(capacity: pow2(M / 2 - 1))
-    swiftfftBRInit(M: M, BRLow: BRLowCpx)
-
-    let BRLow = UnsafeMutablePointer<Int16>.allocate(capacity: pow2((M - 1) / 2 - 1))
-    swiftfftBRInit(M: M - 1, BRLow: BRLow)
-    return ZTFFT(
-        utbl: utbl,
-        BRLow: BRLow,
-        BRLowCpx: BRLowCpx
-    )
-}
-
-// MARK: - Compute
-
 final class ZTFFT {
     let utbl: UnsafeMutablePointer<Float>!
     let BRLow: UnsafeMutablePointer<Int16>!
     let BRLowCpx: UnsafeMutablePointer<Int16>!
 
-    init(utbl: UnsafeMutablePointer<Float>? = nil, BRLow: UnsafeMutablePointer<Int16>? = nil, BRLowCpx: UnsafeMutablePointer<Int16>? = nil) {
-        self.utbl = utbl
-        self.BRLow = BRLow
-        self.BRLowCpx = BRLowCpx
+    init(M: Int) {
+        utbl = UnsafeMutablePointer<Float>.allocate(capacity: (pow2(M) / 4 + 1))
+        swiftfftCosInit(M: M, Utbl: utbl)
+
+        BRLowCpx = UnsafeMutablePointer<Int16>.allocate(capacity: pow2(M / 2 - 1))
+        swiftfftBRInit(M: M, BRLow: BRLowCpx)
+
+        BRLow = UnsafeMutablePointer<Int16>.allocate(capacity: pow2((M - 1) / 2 - 1))
+        swiftfftBRInit(M: M - 1, BRLow: BRLow)
     }
 }
+
+// MARK: - Compute
 
 func zt_fft_cpx(fft: inout ZTFFT, buf: UnsafeMutablePointer<Float>?, FFTsize: Int, sqrttwo: Float) {
     swift_ffts1(ioptr: buf, M: Int32(log2(Double(FFTsize))), Utbl: fft.utbl, BRLow: fft.BRLowCpx, sqrttwo: sqrttwo)

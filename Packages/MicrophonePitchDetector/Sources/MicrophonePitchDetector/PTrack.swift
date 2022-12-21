@@ -44,7 +44,7 @@ final class zt_auxdata {
 struct zt_ptrack {
     var size = 0.0
     var signal = [Float]()
-    var prev = zt_auxdata()
+    var prev = [Float]()
     var sin = zt_auxdata()
     var spec1 = zt_auxdata()
     var spec2 = zt_auxdata()
@@ -103,17 +103,12 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
 
     p.hopsize = Int(p.size)
 
-    swift_zt_auxdata_alloc(aux: &p.prev, size: (p.hopsize*2 + 4*FLTLEN)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.sin, size: (p.hopsize*2)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
 
     p.signal = Array(repeating: 0, count: p.hopsize)
-
-    let prevPointer = p.prev.ptr.bindMemory(to: Float.self, capacity: winsize + 4 * FLTLEN)
-    for i in 0..<winsize + 4 * FLTLEN {
-        prevPointer[i] = 0.0
-    }
+    p.prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
 
     let sinPointer = p.sin.ptr.bindMemory(to: Float.self, capacity: p.hopsize)
     for i in 0..<p.hopsize {
@@ -468,7 +463,7 @@ private func swift_ptrack_set_spec_pt2(p: inout zt_ptrack) {
 private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
-    let prev = p.prev.ptr.assumingMemoryBound(to: Float.self)
+    let prev = p.prev
     let hop = p.hopsize
     let halfhop = hop >> 1
     var j = 0
@@ -523,12 +518,11 @@ private func swift_ptrack_set_spec_pt3(p: inout zt_ptrack) {
 private func swift_ptrack_set_spec_pt4(p: inout zt_ptrack) {
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
-    let prev = p.prev.ptr.assumingMemoryBound(to: Float.self)
     let hop = p.hopsize
     let n = Int(2 * hop)
 
     for i in 0..<n + 4 * FLTLEN {
-        prev[i] = spectmp[i]
+        p.prev[i] = spectmp[i]
     }
 
     for i in 0..<MINBIN {

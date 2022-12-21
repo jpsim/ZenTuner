@@ -11,6 +11,7 @@
  */
 
 import Darwin
+import ZenFFT
 
 enum PTrackError: Error {
     case invalidWindowSize
@@ -58,7 +59,7 @@ struct zt_ptrack {
     fileprivate var histcnt = 0
     fileprivate var cps = 0.0
     fileprivate var dbs = Array(repeating: -144.0, count: 20)
-    fileprivate var fft: ZTFFT
+    fileprivate var fft: ZenFFT
 
     init(sampleRate: Double, hopSize: Double, peakCount: Int) throws {
         size = hopSize
@@ -75,7 +76,7 @@ struct zt_ptrack {
             powtwo += 1
         }
 
-        fft = ZTFFT(M: powtwo - 1, size: hopsize)
+        fft = ZenFFT(M: powtwo - 1, size: hopsize)
 
         if winsize != (1 << powtwo) {
             throw PTrackError.invalidWindowSize

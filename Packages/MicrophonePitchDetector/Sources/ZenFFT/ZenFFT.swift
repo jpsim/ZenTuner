@@ -10,22 +10,22 @@
 
 import Darwin
 
-private let SQRT_TWO = sqrtf(2)
-private let MCACHE = 11 - (MemoryLayout<Float>.size / 8)
-
 // Since this file was ported from C with many variable names preserved, disable SwiftLint
 // swiftlint:disable identifier_name file_length function_body_length
 // swiftlint:disable function_parameter_count line_length shorthand_operator
 
+private let SQRT_TWO = sqrtf(2)
+private let MCACHE = 11 - (MemoryLayout<Float>.size / 8)
+
 // MARK: - API
 
-final class ZTFFT {
+public final class ZenFFT {
     private let utbl: UnsafeMutablePointer<Float>
     private let BRLow: UnsafeMutablePointer<Int16>
     private let BRLowCpx: UnsafeMutablePointer<Int16>
     private let innerM: Int32
 
-    init(M: Int, size: Int) {
+    public init(M: Int, size: Int) {
         innerM = Int32(log2(Double(size)))
 
         utbl = UnsafeMutablePointer<Float>.allocate(capacity: (pow2(M) / 4 + 1))
@@ -38,7 +38,7 @@ final class ZTFFT {
         swiftfftBRInit(M: M - 1, BRLow: BRLow)
     }
 
-    func compute(buf: UnsafeMutablePointer<Float>) {
+    public func compute(buf: UnsafeMutablePointer<Float>) {
         swift_ffts1(ioptr: buf, M: innerM, Utbl: utbl, BRLow: BRLowCpx)
     }
 }

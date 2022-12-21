@@ -18,7 +18,8 @@ let package = Package(
     targets: [
         .executableTarget(name: "pitchbench", dependencies: ["PitchRecording"]),
         .target(name: "PitchRecording", dependencies: ["MicrophonePitchDetector"]),
-        .target(name: "MicrophonePitchDetector"),
+        .target(name: "MicrophonePitchDetector", dependencies: ["ZenFFT"]),
+        .target(name: "ZenFFT"),
         .testTarget(
             name: "MicrophonePitchDetectorTests",
             dependencies: [

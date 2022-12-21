@@ -62,7 +62,7 @@ private func swift_ffts1(ioptr: UnsafeMutablePointer<Float>?, M: Int32, Utbl: Un
     StageCnt = (M - 1) / 3
     NDiffU = 2
     if (M - 1 - (StageCnt * 3)) == 1 {
-        bfR2(ioptr, M, NDiffU)
+        swift_bfR2(ioptr!, M, NDiffU)
         NDiffU *= 2
     }
     if (M - 1 - (StageCnt * 3)) == 2 {
@@ -84,6 +84,97 @@ private func swift_fftrecurs(ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl:
             swift_fftrecurs(ioptr: ioptr + i1 * Int(pow(2.0, Double(M - 3))) * 2, M: M - 3, Utbl: Utbl, Ustride: 8 * Ustride, NDiffU: NDiffU, StageCnt: StageCnt - 1)
         }
         swift_bfstages(ioptr, M, Utbl, Ustride, Int32(pow(2.0, Double(M - 3))), 1)
+    }
+}
+
+private func swift_bfR2(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ NDiffU: Int32) {
+    let pos = 2
+    let posi = pos + 1
+    let pinc = NDiffU * 2
+    let pnext = pinc * 4
+    let NSameU = Int(pow(2.0, Double(M))) / 4 / Int(NDiffU)
+    let pstrt = ioptr
+    var p0r = pstrt
+    var p1r = pstrt + Int(pinc)
+    var p2r = p1r + Int(pinc)
+    var p3r = p2r + Int(pinc)
+
+    /* Butterflys           */
+    /*
+       f0   -       -       f4
+       f1   -  1 -  f5
+       f2   -       -       f6
+       f3   -  1 -  f7
+     */
+    /* Butterflys           */
+    /*
+       f0   -       -       f4
+       f1   -  1 -  f5
+       f2   -       -       f6
+       f3   -  1 -  f7
+     */
+
+    for _ in 0..<NSameU {
+        var f0r = p0r[0]
+        var f1r = p1r[0]
+        var f0i = p0r[1]
+        var f1i = p1r[1]
+        var f2r = p2r[0]
+        var f3r = p3r[0]
+        var f2i = p2r[1]
+        var f3i = p3r[1]
+
+        var f4r = f0r + f1r
+        var f4i = f0i + f1i
+        var f5r = f0r - f1r
+        var f5i = f0i - f1i
+
+        var f6r = f2r + f3r
+        var f6i = f2i + f3i
+        var f7r = f2r - f3r
+        var f7i = f2i - f3i
+
+        p0r[0] = f4r
+        p0r[1] = f4i
+        p1r[0] = f5r
+        p1r[1] = f5i
+        p2r[0] = f6r
+        p2r[1] = f6i
+        p3r[0] = f7r
+        p3r[1] = f7i
+
+        f0r = p0r[pos]
+        f1i = p1r[posi]
+        f0i = p0r[posi]
+        f1r = p1r[pos]
+        f2r = p2r[pos]
+        f3i = p3r[posi]
+        f2i = p2r[posi]
+        f3r = p3r[pos]
+
+        f4r = f0r + f1i
+        f4i = f0i - f1r
+        f5r = f0r - f1i
+        f5i = f0i + f1r
+
+        f6r = f2r + f3i
+        f6i = f2i - f3r
+        f7r = f2r - f3i
+        f7i = f2i + f3r
+
+        p0r[pos] = f4r
+        p0r[posi] = f4i
+        p1r[pos] = f5r
+        p1r[posi] = f5i
+        p2r[pos] = f6r
+        p2r[posi] = f6i
+        p3r[pos] = f7r
+        p3r[posi] = f7i
+
+        p0r += Int(pnext);
+        p1r += Int(pnext);
+        p2r += Int(pnext);
+        p3r += Int(pnext);
     }
 }
 

@@ -118,7 +118,7 @@ private let partialonset = [
 
 func swift_zt_ptrack_compute(
     _ p: inout zt_ptrack,
-    _ in: UnsafeMutablePointer<Float>!,
+    _ in: UnsafeMutablePointer<Float>,
     _ freq: inout Double,
     _ amp: inout Double
 ) {

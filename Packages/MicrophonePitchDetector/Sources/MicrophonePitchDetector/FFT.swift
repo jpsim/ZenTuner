@@ -812,7 +812,7 @@ private func swiftfftCosInit(M: Int, Utbl: UnsafeMutablePointer<Float>) {
     let fftN = pow2(M)
     Utbl[0] = 1.0
     for i in 1..<fftN / 4 {
-        Utbl[i] = cos(2.0 * Float.pi * Float(i) / Float(fftN))
+        Utbl[i] = cos(2.0 * .pi * Float(i) / Float(fftN))
     }
     Utbl[fftN / 4] = 0.0
 }

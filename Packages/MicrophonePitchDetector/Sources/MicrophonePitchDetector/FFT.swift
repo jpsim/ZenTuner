@@ -16,7 +16,7 @@ import Darwin
 
 // MARK: - Init
 
-func swift_zt_fft_init(M: Int) -> zt_fft {
+func swift_zt_fft_init(M: Int) -> ZTFFT {
     let utbl = UnsafeMutablePointer<Float>.allocate(capacity: (pow2(M) / 4 + 1))
     swiftfftCosInit(M: M, Utbl: utbl)
 
@@ -25,7 +25,7 @@ func swift_zt_fft_init(M: Int) -> zt_fft {
 
     let BRLow = UnsafeMutablePointer<Int16>.allocate(capacity: pow2((M - 1) / 2 - 1))
     swiftfftBRInit(M: M - 1, BRLow: BRLow)
-    return zt_fft(
+    return ZTFFT(
         utbl: utbl,
         BRLow: BRLow,
         BRLowCpx: BRLowCpx
@@ -34,7 +34,19 @@ func swift_zt_fft_init(M: Int) -> zt_fft {
 
 // MARK: - Compute
 
-func zt_fft_cpx(fft: inout zt_fft, buf: UnsafeMutablePointer<Float>?, FFTsize: Int, sqrttwo: Float) {
+final class ZTFFT {
+    let utbl: UnsafeMutablePointer<Float>!
+    let BRLow: UnsafeMutablePointer<Int16>!
+    let BRLowCpx: UnsafeMutablePointer<Int16>!
+
+    init(utbl: UnsafeMutablePointer<Float>? = nil, BRLow: UnsafeMutablePointer<Int16>? = nil, BRLowCpx: UnsafeMutablePointer<Int16>? = nil) {
+        self.utbl = utbl
+        self.BRLow = BRLow
+        self.BRLowCpx = BRLowCpx
+    }
+}
+
+func zt_fft_cpx(fft: inout ZTFFT, buf: UnsafeMutablePointer<Float>?, FFTsize: Int, sqrttwo: Float) {
     ffts1(buf, Int32(log2(Double(FFTsize))), fft.utbl, fft.BRLowCpx, sqrttwo)
 }
 

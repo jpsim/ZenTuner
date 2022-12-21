@@ -5,12 +5,6 @@
 
 #include <stdint.h>
 
-typedef struct {
-    float *utbl;
-    int16_t *BRLow;
-    int16_t *BRLowCpx;
-} zt_fft;
-
 void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow, float sqrttwo);
 
 #endif

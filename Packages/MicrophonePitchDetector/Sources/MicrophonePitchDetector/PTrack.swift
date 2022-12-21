@@ -55,7 +55,7 @@ struct zt_ptrack {
     fileprivate var cps = 0.0
     fileprivate var dbs = Array(repeating: -144.0, count: 20)
     fileprivate var amplo = 0.0
-    fileprivate var fft = zt_fft()
+    fileprivate var fft = ZTFFT()
 }
 
 private let partialonset = [

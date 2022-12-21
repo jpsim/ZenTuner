@@ -2,7 +2,7 @@
  * PTrack
  *
  * This code has been extracted from the Csound opcode "ptrack".
- * It has been modified to work as a Soundpipe module and rewritten in Swift for use in ZenTuner.
+ * It was rewritten in Swift by JP Simard for use in ZenTuner.
  *
  * Original Author(s): Victor Lazzarini, Miller Puckette (Original Algorithm), Aurelius Prochazka
  * Year: 2007

@@ -45,7 +45,7 @@ struct zt_ptrack {
     var size = 0.0
     var signal = [Float]()
     var prev = [Float]()
-    var sin = zt_auxdata()
+    var sin = [Float]()
     var spec1 = zt_auxdata()
     var spec2 = zt_auxdata()
     fileprivate var peaklist = [PEAK]()
@@ -103,17 +103,16 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
 
     p.hopsize = Int(p.size)
 
-    swift_zt_auxdata_alloc(aux: &p.sin, size: (p.hopsize*2)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec2, size: (winsize*4 + 4*FLTLEN)*MemoryLayout<Float>.size)
     swift_zt_auxdata_alloc(aux: &p.spec1, size: (winsize*4)*MemoryLayout<Float>.size)
 
     p.signal = Array(repeating: 0, count: p.hopsize)
     p.prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
+    p.sin = Array(repeating: 0, count: p.hopsize*2)
 
-    let sinPointer = p.sin.ptr.bindMemory(to: Float.self, capacity: p.hopsize)
     for i in 0..<p.hopsize {
-        sinPointer[2*i] = cos((.pi*Float(i))/(Float(winsize)))
-        sinPointer[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
+        p.sin[2*i] = cos((.pi*Float(i))/(Float(winsize)))
+        p.sin[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
     }
 
     p.dbs = Array(repeating: -144.0, count: 20)
@@ -413,7 +412,7 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
 private func swift_ptrack_set_spec_pt1(p: inout zt_ptrack) {
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
     let sig = p.signal
-    let sinus = p.sin.ptr.assumingMemoryBound(to: Float.self)
+    let sinus = p.sin
     let hop = p.hopsize
 
     for i in 0..<hop {

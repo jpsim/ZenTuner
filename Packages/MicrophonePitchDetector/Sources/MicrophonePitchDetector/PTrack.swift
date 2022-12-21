@@ -397,8 +397,8 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
 
     for i in 0..<hop {
         let k = i * 2
-        p.spec1[Int(k)] = sig[Int(i)] * sinus[Int(k)]
-        p.spec1[Int(k) + 1] = sig[Int(i)] * sinus[Int(k) + 1]
+        p.spec1[k] = sig[i] * sinus[k]
+        p.spec1[k + 1] = sig[i] * sinus[k + 1]
     }
 
     zt_fft_cpx(&p.fft, &p.spec1, Int32(hop))

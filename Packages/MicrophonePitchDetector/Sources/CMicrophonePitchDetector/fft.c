@@ -14,9 +14,6 @@
 
 #define POW2(m) ((uint32_t) 1 << (m))       /* integer power of 2 for m<32 */
 
-/* fft's with M bigger than this bust primary cache */
-#define MCACHE  (11 - (sizeof(float) / 8))
-
 /*****************
 * parts of ffts1 *
 *****************/

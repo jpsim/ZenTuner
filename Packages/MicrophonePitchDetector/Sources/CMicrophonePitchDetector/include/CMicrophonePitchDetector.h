@@ -5,7 +5,6 @@
 
 #include <stdint.h>
 
-void bitrevR2(float *ioptr, int M, int16_t *BRLow);
 void bfR2(float *ioptr, int M, int NDiffU);
 void bfR4(float *ioptr, int M, int NDiffU, float sqrttwo);
 

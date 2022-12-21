@@ -90,20 +90,111 @@ private func swift_fftrecurs(ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl:
 private func swift_bitrevR2(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ BRLow: UnsafeMutablePointer<Int16>) {
     var f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i, f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i, t0r, t0i, t1r, t1i: Float
     var p0r, p1r, IOP, iolimit: UnsafeMutablePointer<Float>
-    var Colstart, iCol: Int
-    var posA, posAi, posB, posBi: UInt
+    var iCol: UInt
+    var posA, posAi, posB, posBi: Int
 
     let Nrems2: UInt = UInt(pow2((Int(M) + 3) / 2))
     let Nroot_1_ColInc: UInt = UInt(pow2(Int(M))) - Nrems2
     let Nroot_1: UInt = UInt(pow2(Int(M) / 2 - 1) - 1)
     let ColstartShift: UInt = UInt((M + 1) / 2 + 1)
 
-    posA = UInt(pow2(Int(M)))               /* 1/2 of POW2(M) complexes */
+    posA = pow2(Int(M))               /* 1/2 of POW2(M) complexes */
     posAi = posA + 1
     posB = posA + 2
     posBi = posB + 1
 
     iolimit = ioptr + UnsafeMutablePointer<Float>.Stride(Nrems2)
+    for ioptr in stride(from: ioptr, to: iolimit, by: pow2(Int(M) / 2 + 1)) {
+        for Colstart in (0...Nroot_1).reversed() {
+            iCol = Nroot_1
+            p0r = ioptr + UnsafeMutablePointer<Float>.Stride(Nroot_1_ColInc) + Int(BRLow[Int(Colstart)]) * 4
+            IOP = ioptr + UnsafeMutablePointer<Float>.Stride((Colstart << ColstartShift))
+            p1r = IOP + Int(BRLow[Int(iCol)]) * 4
+            f0r = p0r[0]
+            f0i = p0r[1]
+            f1r = p0r[posA]
+            f1i = p0r[posAi]
+            while iCol > Colstart {
+                f2r = p0r[2]
+                f2i = p0r[2 + 1]
+                f3r = p0r[posB]
+                f3i = p0r[posBi]
+                f4r = p1r[0]
+                f4i = p1r[1]
+                f5r = p1r[posA]
+                f5i = p1r[posAi]
+                f6r = p1r[2]
+                f6i = p1r[2 + 1]
+                f7r = p1r[posB]
+                f7i = p1r[posBi]
+
+                t0r = f0r + f1r
+                t0i = f0i + f1i
+                f1r = f0r - f1r
+                f1i = f0i - f1i
+                t1r = f2r + f3r
+                t1i = f2i + f3i
+                f3r = f2r - f3r
+                f3i = f2i - f3i
+                f0r = f4r + f5r
+                f0i = f4i + f5i
+                f5r = f4r - f5r
+                f5i = f4i - f5i
+                f2r = f6r + f7r
+                f2i = f6i + f7i
+                f7r = f6r - f7r
+                f7i = f6i - f7i
+
+                p1r.pointee = t0r
+                p1r.advanced(by: 1).pointee = t0i
+                p1r.advanced(by: 2).pointee = f1r
+                p1r.advanced(by: 3).pointee = f1i
+                p1r.advanced(by: posA).pointee = t1r
+                p1r.advanced(by: posAi).pointee = t1i
+                p1r.advanced(by: posB).pointee = f3r
+                p1r.advanced(by: posBi).pointee = f3i
+                p0r.pointee = f0r
+                p0r.advanced(by: 1).pointee = f0i
+                p0r.advanced(by: 2).pointee = f5r
+                p0r.advanced(by: 3).pointee = f5i
+                p0r.advanced(by: posA).pointee = f2r
+                p0r.advanced(by: posAi).pointee = f2i
+                p0r.advanced(by: posB).pointee = f7r
+                p0r.advanced(by: posBi).pointee = f7i
+
+                p0r -= UnsafeMutablePointer<Float>.Stride(Nrems2)
+                f0r = (p0r).pointee
+                f0i = (p0r + 1).pointee
+                f1r = (p0r + posA).pointee
+                f1i = (p0r + posAi).pointee
+                iCol -= 1
+                p1r = IOP + Int(BRLow[Int(iCol)]) * 4
+            }
+
+            f2r = (p0r + 2).pointee
+            f2i = (p0r + (2 + 1)).pointee
+            f3r = (p0r + posB).pointee
+            f3i = (p0r + posBi).pointee
+
+            t0r = f0r + f1r
+            t0i = f0i + f1i
+            f1r = f0r - f1r
+            f1i = f0i - f1i
+            t1r = f2r + f3r
+            t1i = f2i + f3i
+            f3r = f2r - f3r
+            f3i = f2i - f3i
+
+            (p0r).pointee = t0r
+            (p0r + 1).pointee = t0i
+            (p0r + 2).pointee = f1r
+            (p0r + (2 + 1)).pointee = f1i
+            (p0r + posA).pointee = t1r
+            (p0r + posAi).pointee = t1i
+            (p0r + posB).pointee = f3r
+            (p0r + posBi).pointee = f3i
+        }
+    }
 }
 
 func swift_bfstages(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: UnsafeMutablePointer<Float>, _ Ustride: Int32, _ NDiffU: Int32, _ StageCnt: Int32) {

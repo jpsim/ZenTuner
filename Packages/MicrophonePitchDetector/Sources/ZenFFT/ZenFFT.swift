@@ -29,23 +29,23 @@ public final class ZenFFT {
         innerM = Int32(log2(Double(size)))
 
         utbl = .allocate(capacity: (pow2(M) / 4 + 1))
-        fftCosInit(M: M, Utbl: utbl)
+        fftCosInit(M, utbl)
 
         BRLowCpx = .allocate(capacity: pow2(M / 2 - 1))
-        fftBRInit(M: M, BRLow: BRLowCpx)
+        fftBRInit(M, BRLowCpx)
 
         BRLow = .allocate(capacity: pow2((M - 1) / 2 - 1))
-        fftBRInit(M: M - 1, BRLow: BRLow)
+        fftBRInit(M - 1, BRLow)
     }
 
     public func compute(buf: UnsafeMutablePointer<Float>) {
-        ffts1(buf, M: innerM, Utbl: utbl, BRLow: BRLowCpx)
+        ffts1(buf, innerM, utbl, BRLowCpx)
     }
 }
 
 // MARK: - Private Compute
 
-private func ffts1(_ ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl: UnsafeMutablePointer<Float>, BRLow: UnsafeMutablePointer<Int16>) {
+private func ffts1(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: UnsafeMutablePointer<Float>, _ BRLow: UnsafeMutablePointer<Int16>) {
     bitrevR2(ioptr, M, BRLow)
 
     let StageCnt = (M - 1) / 3
@@ -61,19 +61,21 @@ private func ffts1(_ ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl: UnsafeM
     if M <= MCACHE {
         bfstages(ioptr, M, Utbl, 1, NDiffU, StageCnt)
     } else {
-        fftrecurs(ioptr, M: M, Utbl: Utbl, Ustride: 1, NDiffU: NDiffU, StageCnt: StageCnt)
+        fftrecurs(ioptr, M, Utbl, 1, NDiffU, StageCnt)
     }
 }
 
-private func fftrecurs(_ ioptr: UnsafeMutablePointer<Float>, M: Int32, Utbl: UnsafeMutablePointer<Float>, Ustride: Int32, NDiffU: Int32, StageCnt: Int32) {
-    if M <= MCACHE {
+private func fftrecurs(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: UnsafeMutablePointer<Float>, _ Ustride: Int32, _ NDiffU: Int32, _ StageCnt: Int32) {
+    guard M > MCACHE else {
         bfstages(ioptr, M, Utbl, Ustride, NDiffU, StageCnt)
-    } else {
-        for i1 in 0..<8 {
-            fftrecurs(ioptr + i1 * Int(pow(2.0, Double(M - 3))) * 2, M: M - 3, Utbl: Utbl, Ustride: 8 * Ustride, NDiffU: NDiffU, StageCnt: StageCnt - 1)
-        }
-        bfstages(ioptr, M, Utbl, Ustride, Int32(pow(2.0, Double(M - 3))), 1)
+        return
     }
+
+    for i1 in 0..<8 {
+        fftrecurs(ioptr + i1 * Int(pow(2.0, Double(M - 3))) * 2, M - 3, Utbl, 8 * Ustride, NDiffU, StageCnt - 1)
+    }
+
+    bfstages(ioptr, M, Utbl, Ustride, Int32(pow(2.0, Double(M - 3))), 1)
 }
 
 private func bfR2(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ NDiffU: Int32) {
@@ -806,7 +808,7 @@ private func bfstages(_ ioptr: UnsafeMutablePointer<Float>, _ M: Int32, _ Utbl: 
 
 // MARK: - FFT Tables
 
-private func fftCosInit(M: Int, Utbl: UnsafeMutablePointer<Float>) {
+private func fftCosInit(_ M: Int, _ Utbl: UnsafeMutablePointer<Float>) {
     let fftN = pow2(M)
     Utbl[0] = 1.0
     for i in 1..<fftN / 4 {
@@ -815,7 +817,7 @@ private func fftCosInit(M: Int, Utbl: UnsafeMutablePointer<Float>) {
     Utbl[fftN / 4] = 0.0
 }
 
-private func fftBRInit(M: Int, BRLow: UnsafeMutablePointer<Int16>) {
+private func fftBRInit(_ M: Int, _ BRLow: UnsafeMutablePointer<Int16>) {
     let Mroot_1 = M / 2 - 1
     let Nroot_1 = pow2(Mroot_1)
     for i in 0..<Nroot_1 {

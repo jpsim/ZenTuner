@@ -97,7 +97,7 @@ public struct ZenPTrack {
         sin = tmpsin
     }
 
-    public mutating func compute(buffer: UnsafeMutablePointer<Float>, freq: inout Double, amp: inout Double ) {
+    public mutating func compute(buffer: UnsafeMutablePointer<Float>, pitch: inout Double, amplitude: inout Double ) {
         var pos = cnt
         if pos == hopsize {
             ptrackSwift(p: &self)
@@ -107,8 +107,8 @@ public struct ZenPTrack {
         signal[pos] = buffer.pointee * 32768.0
         pos += 1
 
-        freq = cps
-        amp = exp(dbs[histcnt] / 20.0 * log(10.0))
+        pitch = cps
+        amplitude = exp(dbs[histcnt] / 20.0 * log(10.0))
 
         cnt = pos
     }

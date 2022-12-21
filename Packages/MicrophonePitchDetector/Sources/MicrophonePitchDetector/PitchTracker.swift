@@ -18,7 +18,7 @@ public final class PitchTracker {
 
         let frames = (0..<Int(buffer.frameLength)).map { floatData[0].advanced(by: $0) }
         for frame in frames {
-            ptrack.compute(buffer: frame, freq: &pitch, amp: &amplitude)
+            ptrack.compute(buffer: frame, pitch: &pitch, amplitude: &amplitude)
         }
 
         if Double(amplitude) > amplitudeThreshold, pitch > 0 {

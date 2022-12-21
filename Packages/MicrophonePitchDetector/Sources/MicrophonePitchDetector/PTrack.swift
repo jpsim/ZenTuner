@@ -350,18 +350,20 @@ private func swift_ptrack_pt5(histpeak: HISTOPEAK, npeak: Int, peaklist: UnsafeM
         let fipnum = Double(pnum)
         let deviation = 1.0 - fpnum / fipnum
 
-        if deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE {
-            var stdev: Double
-            var weight: Double
-            npartials += 1
-            if pnum < 8 { nbelow8 += 1 }
-            cumpow += peaklist[j].ppow
-            cumstrength += sqrt(sqrt(peaklist[j].ppow))
-            stdev = peaklist[j].pwidth > MINBW ? peaklist[j].pwidth : MINBW
-            weight = 1.0 / (stdev * fipnum) * (stdev * fipnum)
-            freqden += weight
-            freqnum += weight * peaklist[j].pfreq / fipnum
+        guard deviation > -PARTIALDEVIANCE && deviation < PARTIALDEVIANCE else {
+            continue
         }
+
+        var stdev: Double
+        var weight: Double
+        npartials += 1
+        if pnum < 8 { nbelow8 += 1 }
+        cumpow += peaklist[j].ppow
+        cumstrength += sqrt(sqrt(peaklist[j].ppow))
+        stdev = peaklist[j].pwidth > MINBW ? peaklist[j].pwidth : MINBW
+        weight = 1.0 / (stdev * fipnum) * (stdev * fipnum)
+        freqden += weight
+        freqnum += weight * peaklist[j].pfreq / fipnum
     }
 }
 

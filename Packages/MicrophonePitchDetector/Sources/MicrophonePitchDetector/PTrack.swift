@@ -48,7 +48,7 @@ struct zt_ptrack {
     var sin = zt_auxdata()
     var spec1 = zt_auxdata()
     var spec2 = zt_auxdata()
-    var peakarray = zt_auxdata()
+    fileprivate var peaklist = [PEAK]()
     var numpks = 0
     var cnt = 0
     var histcnt = 0
@@ -124,8 +124,6 @@ func swift_zt_ptrack_init(p: inout zt_ptrack) {
         sinPointer[2*i] = cos((.pi*Float(i))/(Float(winsize)))
         sinPointer[2*i+1] = -sin((.pi*Float(i))/(Float(winsize)))
     }
-
-    swift_zt_auxdata_alloc(aux: &p.peakarray, size: (Int(p.numpks)+1)*MemoryLayout<PEAK>.size)
 
     p.dbs = Array(repeating: -144.0, count: 20)
     p.amplo = MINAMPS
@@ -228,7 +226,6 @@ private struct HISTOPEAK {
 
 private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudness: Double, npeak: inout Int, maxbin: Float, numpks: Int, partialonset: inout [Float], partialonset_count: Int32) {
     var histpeak = HISTOPEAK()
-    let peaklist = p.peakarray.ptr.assumingMemoryBound(to: PEAK.self)
     let spectmp = p.spec2.ptr.assumingMemoryBound(to: Float.self)
     let histogram = spectmp.advanced(by: BINGUARD)
     let spec = p.spec1.ptr.assumingMemoryBound(to: Float.self)
@@ -236,7 +233,7 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
     swift_ptrack_pt2(
         npeak: &npeak,
         numpks: Int(numpks),
-        peaklist: peaklist,
+        peaklist: &p.peaklist,
         totalpower: totalpower,
         spec: spec,
         n: Int(n)
@@ -245,7 +242,7 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
     swift_ptrack_pt3(
         npeak: &npeak,
         numpks: numpks,
-        peaklist: peaklist,
+        peaklist: &p.peaklist,
         maxbin: maxbin,
         histogram: histogram,
         totalloudness: totalloudness,
@@ -265,7 +262,7 @@ private func ptrack(p: inout zt_ptrack, n: Int, totalpower: Double, totalloudnes
     swift_ptrack_pt5(
         histpeak: histpeak,
         npeak: Int(npeak),
-        peaklist: peaklist,
+        peaklist: &p.peaklist,
         npartials: &npartials,
         nbelow8: &nbelow8,
         cumpow: &cumpow,

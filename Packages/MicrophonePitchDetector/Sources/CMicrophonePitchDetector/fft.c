@@ -17,9 +17,6 @@
 /* fft's with M bigger than this bust primary cache */
 #define MCACHE  (11 - (sizeof(float) / 8))
 
-/* some math constants to 40 decimal places */
-#define MYROOT2   1.414213562373095048801688724209698078569   /* sqrt(2)    */
-
 /*****************
 * parts of ffts1 *
 *****************/
@@ -268,7 +265,7 @@ static void bfR2(float *ioptr, int M, int NDiffU)
     }
 }
 
-static void bfR4(float *ioptr, int M, int NDiffU)
+static void bfR4(float *ioptr, int M, int NDiffU, float sqrttwo)
 {
     /*** 1 radix 4 stage ***/
     unsigned int pos;
@@ -282,7 +279,7 @@ static void bfR4(float *ioptr, int M, int NDiffU)
     float *pstrt;
     float *p0r, *p1r, *p2r, *p3r;
 
-    float w1r = 1.0 / MYROOT2;    /* cos(pi/4)   */
+    float w1r = 1.0 / sqrttwo;    /* cos(pi/4)   */
     float f0r, f0i, f1r, f1i, f2r, f2i, f3r, f3i;
     float f4r, f4i, f5r, f5i, f6r, f6i, f7r, f7i;
     float t1r, t1i;
@@ -812,7 +809,7 @@ static void fftrecurs(float *ioptr, int M, float *Utbl, int Ustride, int NDiffU,
     }
 }
 
-static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow)
+static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow, float sqrttwo)
 {
     /* Compute in-place complex fft on the rows of the input array  */
     /* INPUTS                                                       */
@@ -834,7 +831,7 @@ static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow)
       NDiffU *= 2;
     }
     if ((M - 1 - (StageCnt * 3)) == 2) {
-      bfR4(ioptr, M, NDiffU); /* 1 radix 4 stage */
+      bfR4(ioptr, M, NDiffU, sqrttwo); /* 1 radix 4 stage */
       NDiffU *= 4;
     }
     if (M <= (int) MCACHE)
@@ -843,7 +840,7 @@ static void ffts1(float *ioptr, int M, float *Utbl, int16_t *BRLow)
       fftrecurs(ioptr, M, Utbl, 1, NDiffU, StageCnt); /* RADIX 8 Stages */
 }
 
-void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize)
+void zt_fft_cpx(zt_fft *fft, float *buf, int FFTsize, float sqrttwo)
 {
-    ffts1(buf, log2(FFTsize), fft->utbl, fft->BRLowCpx);
+    ffts1(buf, log2(FFTsize), fft->utbl, fft->BRLowCpx, sqrttwo);
 }

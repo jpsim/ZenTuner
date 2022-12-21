@@ -36,7 +36,8 @@ private let COEF3: Float = 0.5 * 0.095326
 private let COEF4: Float = 0.5 * -0.022748
 private let COEF5: Float = 0.5 * 0.002533
 private let FLTLEN = 5
-private let MAGIC = sqrtf(2) / 2
+private let SQRT_TWO = sqrtf(2)
+private let HALF_SQRT_TWO = SQRT_TWO / 2
 
 struct zt_ptrack {
     var size = 0.0
@@ -404,7 +405,7 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
         p.spec1[k + 1] = sig[i] * sinus[k + 1]
     }
 
-    zt_fft_cpx(&p.fft, &p.spec1, Int32(hop))
+    zt_fft_cpx(&p.fft, &p.spec1, Int32(hop), SQRT_TWO)
 
     var k = 2 * FLTLEN
     for i in stride(from: 0, to: hop, by: 2) {
@@ -455,8 +456,8 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
              COEF4 * ( prev[k - 8] + prev[k + 7] + p.spec2[k - 8] + p.spec2[k + 7]) +
              COEF5 * ( prev[k - 9] + prev[k + 8] + p.spec2[k - 9] + p.spec2[k + 8])
 
-        p.spec1[j]     = MAGIC * (re + im)
-        p.spec1[j + 1] = MAGIC * (im - re)
+        p.spec1[j]     = HALF_SQRT_TWO * (re + im)
+        p.spec1[j + 1] = HALF_SQRT_TWO * (im - re)
         p.spec1[j + 4] = prev[k] + p.spec2[k + 1]
         p.spec1[j + 5] = prev[k + 1] - p.spec2[k]
 
@@ -475,8 +476,8 @@ private func swift_ptrack_set_spec(p: inout zt_ptrack) {
              COEF4 * ( prev[k - 8] + prev[k + 7] - p.spec2[k - 8] - p.spec2[k + 7]) +
              COEF5 * ( prev[k - 9] + prev[k + 8] - p.spec2[k - 9] - p.spec2[k + 8])
 
-        p.spec1[j]     = MAGIC * (re + im)
-        p.spec1[j + 1] = MAGIC * (im - re)
+        p.spec1[j]     = HALF_SQRT_TWO * (re + im)
+        p.spec1[j + 1] = HALF_SQRT_TWO * (im - re)
         p.spec1[j + 4] = prev[k] - p.spec2[k + 1]
         p.spec1[j + 5] = prev[k + 1] + p.spec2[k]
 

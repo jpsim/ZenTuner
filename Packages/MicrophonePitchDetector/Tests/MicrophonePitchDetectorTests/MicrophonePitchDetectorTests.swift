@@ -21,6 +21,7 @@ final class MicrophonePitchDetectorTests: XCTestCase {
 
         // Running in parallel is ~7x faster on an M1 Max
         await audioFiles.concurrentForEach { audioFile in
+            // swiftlint:disable:next force_try - Can't throw in a `concurrentForEach`
             let pitchRecording = try! PitchRecording.record(file: audioFile)
             let name = String(audioFile.lastPathComponent.prefix(while: { $0 != "." }))
             print("Comparing pitch recording snapshot for \(name)")

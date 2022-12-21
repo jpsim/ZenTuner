@@ -59,7 +59,6 @@ struct zt_ptrack {
     fileprivate var hopsize = 0
     fileprivate var cps = 0.0
     fileprivate var dbs = Array(repeating: -144.0, count: 20)
-    fileprivate var amplo = 0.0
     fileprivate var fft: ZTFFT
 
     init(sampleRate: Double, hopSize: Double, peakCount: Int) throws {
@@ -95,8 +94,6 @@ struct zt_ptrack {
             sin[2 * i] = cos((.pi * Float(i)) / (Float(winsize)))
             sin[2 * i + 1] = -Darwin.sin((.pi * Float(i)) / (Float(winsize)))
         }
-
-        amplo = MINAMPS
     }
 }
 
@@ -150,7 +147,7 @@ private func ptrackSwift(p: inout zt_ptrack) {
     var totaldb = 0.0
     swift_ptrack_set_totals(p: &p, totalpower: &totalpower, totalloudness: &totalloudness, totaldb: &totaldb, n: n)
 
-    guard totaldb >= p.amplo else {
+    guard totaldb >= MINAMPS else {
         return
     }
 

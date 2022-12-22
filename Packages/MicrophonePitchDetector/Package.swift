@@ -16,7 +16,7 @@ let package = Package(
         )
     ],
     targets: [
-        .executableTarget(name: "pitchbench", dependencies: ["PitchRecording"]),
+        .executableTarget(name: "pitchbench", dependencies: ["MicrophonePitchDetector"]),
         .target(name: "PitchRecording", dependencies: ["MicrophonePitchDetector"]),
         .target(name: "MicrophonePitchDetector", dependencies: ["CMicrophonePitchDetector"]),
         .target(name: "CMicrophonePitchDetector"),

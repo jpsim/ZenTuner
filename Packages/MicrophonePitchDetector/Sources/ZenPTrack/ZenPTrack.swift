@@ -50,9 +50,9 @@ public struct ZenPTrack {
     fileprivate let sr: Double
     fileprivate let sin: [Float]
     fileprivate let hopsize: Int
-    fileprivate var signal: [Float]
+    fileprivate var signal: UnsafeMutablePointer<Float>
     fileprivate var prev: [Float]
-    fileprivate var spec1: [Float]
+    fileprivate var spec1: UnsafeMutablePointer<Float>
     fileprivate var spec2: [Float]
     fileprivate var peaklist = [Peak]()
     fileprivate var cnt = 0
@@ -82,9 +82,9 @@ public struct ZenPTrack {
             throw PTrackError.invalidWindowSize
         }
 
-        signal = Array(repeating: 0, count: hopsize)
+        signal = .allocate(capacity: hopsize)
         prev = Array(repeating: 0, count: winsize + 4 * FLTLEN)
-        spec1 = Array(repeating: 0, count: winsize * 4)
+        spec1 = .allocate(capacity: winsize * 4)
         spec2 = Array(repeating: 0, count: winsize * 4 + 4 * FLTLEN)
         peaklist = Array(repeating: Peak(), count: numpks + 1)
 
@@ -214,7 +214,7 @@ private func ptrack(p: inout ZenPTrack, n: Int, totalpower: Double, totalloudnes
         numpks: Int(numpks),
         peaklist: &p.peaklist,
         totalpower: totalpower,
-        spec: &p.spec1,
+        spec: p.spec1,
         n: n
     )
 
@@ -415,7 +415,7 @@ private func swift_ptrack_set_spec_pt1(p: inout ZenPTrack) {
         p.spec1[k + 1] = sig[i] * sinus[k + 1]
     }
 
-    p.fft.compute(buf: &p.spec1)
+    p.fft.compute(buf: p.spec1)
 }
 
 private func swift_ptrack_set_spec_pt2(p: inout ZenPTrack) {

@@ -50,10 +50,10 @@ public struct ZenPTrack {
     fileprivate let sr: Double
     fileprivate let sin: [Float]
     fileprivate let hopsize: Int
-    fileprivate var signal: UnsafeMutablePointer<Float>
-    fileprivate var prev: [Float]
-    fileprivate var spec1: UnsafeMutablePointer<Float>
+    fileprivate let signal: UnsafeMutablePointer<Float>
+    fileprivate let spec1: UnsafeMutablePointer<Float>
     fileprivate var spec2: [Float]
+    fileprivate var prev: [Float]
     fileprivate var peaklist = [Peak]()
     fileprivate var cnt = 0
     fileprivate var histcnt = 0

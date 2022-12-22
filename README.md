@@ -24,6 +24,9 @@ instrument, whether it’s woodwinds, brass, strings or voice.
 
 * [AudioKit][audiokit] powers the audio analysis for this tuner
 * Design inspired by the [Stuner App][stuner] mockups by [Célio Silva][celio]
+* The audio files used for tests were generated from the [FatBoy][fatboy]
+  sound font and released under the
+  [Creative Commons Attribution Share-Alike 3.0][cc] license
 
 ## License
 
@@ -32,3 +35,5 @@ MIT.
 [audiokit]: https://audiokit.io
 [stuner]: https://www.behance.net/gallery/77749403/Stuner-App
 [celio]: https://www.behance.net/celiosilva
+[fatboy]: https://fatboy.site
+[cc]: https://creativecommons.org/licenses/by-sa/3.0/

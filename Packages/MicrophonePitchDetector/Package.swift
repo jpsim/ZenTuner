@@ -9,8 +9,25 @@ let package = Package(
     products: [
         .library(name: "MicrophonePitchDetector", targets: ["MicrophonePitchDetector"])
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/pointfreeco/swift-snapshot-testing",
+            from: "1.10.0"
+        )
+    ],
     targets: [
         .target(name: "MicrophonePitchDetector", dependencies: ["CMicrophonePitchDetector"]),
-        .target(name: "CMicrophonePitchDetector")
+        .target(name: "CMicrophonePitchDetector"),
+        .testTarget(
+            name: "MicrophonePitchDetectorTests",
+            dependencies: [
+                "MicrophonePitchDetector",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            ],
+            exclude: [
+                "Resources",
+                "__Snapshots__"
+            ]
+        )
     ]
 )

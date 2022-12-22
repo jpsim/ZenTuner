@@ -398,10 +398,16 @@ private func swift_ptrack_pt6(p: inout ZenPTrack, nbelow8: Int, npartials: Int, 
 }
 
 private func swift_ptrack_set_spec(p: inout ZenPTrack) {
+    swift_ptrack_set_spec_pt1(p: &p)
+    swift_ptrack_set_spec_pt2(p: &p)
+    swift_ptrack_set_spec_pt3(p: &p)
+    swift_ptrack_set_spec_pt4(p: &p)
+}
+
+private func swift_ptrack_set_spec_pt1(p: inout ZenPTrack) {
     let sig = p.signal
     let sinus = p.sin
     let hop = p.hopsize
-    let n = 2 * hop
 
     for i in 0..<hop {
         let k = i * 2
@@ -410,6 +416,11 @@ private func swift_ptrack_set_spec(p: inout ZenPTrack) {
     }
 
     p.fft.compute(buf: &p.spec1)
+}
+
+private func swift_ptrack_set_spec_pt2(p: inout ZenPTrack) {
+    let hop = p.hopsize
+    let n = 2 * hop
 
     var k = 2 * FLTLEN
     for i in stride(from: 0, to: hop, by: 2) {
@@ -438,11 +449,14 @@ private func swift_ptrack_set_spec(p: inout ZenPTrack) {
         p.spec2[k + 1] = -p.spec2[k + 1]
         k += 2
     }
+}
 
+private func swift_ptrack_set_spec_pt3(p: inout ZenPTrack) {
     let prev = p.prev
+    let hop = p.hopsize
     let halfhop = hop >> 1
     var j = 0
-    k = 2 * FLTLEN
+    var k = 2 * FLTLEN
 
     for _ in 0..<halfhop {
         var re: Float
@@ -488,6 +502,11 @@ private func swift_ptrack_set_spec(p: inout ZenPTrack) {
         j += 8
         k += 2
     }
+}
+
+private func swift_ptrack_set_spec_pt4(p: inout ZenPTrack) {
+    let hop = p.hopsize
+    let n = Int(2 * hop)
 
     for i in 0..<n + 4 * FLTLEN {
         p.prev[i] = p.spec2[i]

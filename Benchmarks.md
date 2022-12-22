@@ -1,5 +1,20 @@
 # Benchmarks
 
+```console
+$ hyperfine -w 2 "./pitchbench-c" "./pitchbench-swift"                                 
+Benchmark 1: ./pitchbench-c
+  Time (mean ± σ):     440.9 ms ±   4.1 ms    [User: 400.9 ms, System: 14.5 ms]
+  Range (min … max):   436.0 ms … 449.2 ms    10 runs
+ 
+Benchmark 2: ./pitchbench-swift
+  Time (mean ± σ):     685.1 ms ±   4.0 ms    [User: 645.0 ms, System: 15.0 ms]
+  Range (min … max):   680.5 ms … 692.5 ms    10 runs
+ 
+Summary
+  './pitchbench-c' ran
+    1.55 ± 0.02 times faster than './pitchbench-swift'
+```
+
 `main`
 
 hyperfine -w 2 "swift test --package-path Packages/MicrophonePitchDetector"

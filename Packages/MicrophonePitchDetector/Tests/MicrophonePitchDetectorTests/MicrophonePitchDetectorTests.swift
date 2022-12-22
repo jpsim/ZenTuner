@@ -17,7 +17,7 @@ final class MicrophonePitchDetectorTests: XCTestCase {
         let audioFiles = try FileManager.default.contentsOfDirectory(
             at: kPianoAudioFilesDirectory,
             includingPropertiesForKeys: nil
-        )
+        ).filter { $0.pathExtension == "mp3" }
 
         // Running in parallel is ~7x faster on an M1 Max
         await audioFiles.concurrentForEach { audioFile in

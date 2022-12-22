@@ -4,104 +4,103 @@
       "iteration" : 0
     },
     {
-      "iteration" : 1,
-      "pitch" : "92.136"
+      "iteration" : 1
     },
     {
       "iteration" : 2,
-      "pitch" : "46.089"
+      "pitch" : "46.210"
     },
     {
       "iteration" : 3,
-      "pitch" : "46.061"
+      "pitch" : "46.204"
     },
     {
       "iteration" : 4,
-      "pitch" : "46.153"
+      "pitch" : "46.207"
     },
     {
       "iteration" : 5,
-      "pitch" : "46.154"
+      "pitch" : "46.220"
     },
     {
       "iteration" : 6,
-      "pitch" : "46.125"
+      "pitch" : "46.176"
     },
     {
       "iteration" : 7,
-      "pitch" : "46.178"
+      "pitch" : "46.248"
     },
     {
       "iteration" : 8,
-      "pitch" : "46.187"
+      "pitch" : "46.241"
     },
     {
       "iteration" : 9,
-      "pitch" : "46.192"
+      "pitch" : "46.259"
     },
     {
       "iteration" : 10,
-      "pitch" : "46.104"
+      "pitch" : "46.232"
     },
     {
       "iteration" : 11,
-      "pitch" : "46.115"
+      "pitch" : "46.219"
     },
     {
       "iteration" : 12,
-      "pitch" : "46.172"
+      "pitch" : "46.192"
     },
     {
       "iteration" : 13,
-      "pitch" : "46.148"
-    },
-    {
-      "iteration" : 14,
-      "pitch" : "46.136"
-    },
-    {
-      "iteration" : 15,
-      "pitch" : "46.141"
-    },
-    {
-      "iteration" : 16,
-      "pitch" : "46.133"
-    },
-    {
-      "iteration" : 17,
-      "pitch" : "46.166"
-    },
-    {
-      "iteration" : 18,
       "pitch" : "46.163"
     },
     {
+      "iteration" : 14,
+      "pitch" : "46.201"
+    },
+    {
+      "iteration" : 15,
+      "pitch" : "46.243"
+    },
+    {
+      "iteration" : 16,
+      "pitch" : "46.231"
+    },
+    {
+      "iteration" : 17,
+      "pitch" : "46.243"
+    },
+    {
+      "iteration" : 18,
+      "pitch" : "46.214"
+    },
+    {
       "iteration" : 19,
-      "pitch" : "46.072"
+      "pitch" : "46.216"
     },
     {
       "iteration" : 20,
-      "pitch" : "46.130"
+      "pitch" : "46.210"
     },
     {
       "iteration" : 21,
-      "pitch" : "46.114"
+      "pitch" : "46.209"
     },
     {
       "iteration" : 22,
-      "pitch" : "46.094"
+      "pitch" : "46.172"
     },
     {
       "iteration" : 23,
-      "pitch" : "46.052"
+      "pitch" : "46.202"
     },
     {
       "iteration" : 24,
-      "pitch" : "91.997"
+      "pitch" : "46.188"
     },
     {
       "iteration" : 25,
-      "pitch" : "46.070"
+      "pitch" : "46.178"
     }
   ]
 }

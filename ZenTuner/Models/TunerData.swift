@@ -4,8 +4,8 @@ struct TunerData {
 }
 
 extension TunerData {
-    init(pitch: Float = 440) {
-        self.pitch = Frequency(floatLiteral: Double(pitch))
+    init(pitch: Double = 440) {
+        self.pitch = Frequency(floatLiteral: pitch)
         self.closestNote = ScaleNote.closestNote(to: self.pitch)
     }
 }

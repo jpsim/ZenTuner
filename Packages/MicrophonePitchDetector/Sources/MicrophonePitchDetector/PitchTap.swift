@@ -9,7 +9,7 @@ final class PitchTap {
     private var bufferSize: UInt32 { PitchTracker.defaultBufferSize }
     private let input: Node
     private var tracker: PitchTracker?
-    private let handler: (Float) -> Void
+    private let handler: (Double) -> Void
     private let didReceiveAudio: () -> Void
 
     // MARK: - Starting
@@ -31,7 +31,7 @@ final class PitchTap {
     ///   - input: Node to analyze
     ///   - handler: Callback to call when a pitch is detected
     ///   - didReceiveAudio: Callback to call when any audio is detected
-    init(_ input: Node, handler: @escaping (Float) -> Void, didReceiveAudio: @escaping () -> Void) {
+    init(_ input: Node, handler: @escaping (Double) -> Void, didReceiveAudio: @escaping () -> Void) {
         self.input = input
         self.handler = handler
         self.didReceiveAudio = didReceiveAudio

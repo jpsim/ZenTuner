@@ -9,7 +9,7 @@ public final class MicrophonePitchDetector: ObservableObject {
     private var hasMicrophoneAccess = false
     private var tracker: PitchTap!
 
-    @Published public var pitch: Float = 440
+    @Published public var pitch: Double = 440
     @Published public var didReceiveAudio = false
     @Published public var showMicrophoneAccessAlert = false
 

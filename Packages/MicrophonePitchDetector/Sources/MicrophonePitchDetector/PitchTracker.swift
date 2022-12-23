@@ -1,13 +1,13 @@
 import AVFoundation
 import CMicrophonePitchDetector
 
-final class PitchTracker {
+public final class PitchTracker {
     private var data: UnsafeMutablePointer<zt_data>?
     private var ptrack: UnsafeMutablePointer<zt_ptrack>?
 
-    static var defaultBufferSize: UInt32 { 4_096 }
+    public static var defaultBufferSize: UInt32 { 4_096 }
 
-    init(sampleRate: Int32, hopSize: Int32 = Int32(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
+    public init(sampleRate: Int32, hopSize: Int32 = Int32(PitchTracker.defaultBufferSize), peakCount: Int32 = 20) {
         withUnsafeMutablePointer(to: &data, zt_create)
         data!.pointee.sr = sampleRate
         withUnsafeMutablePointer(to: &ptrack, zt_ptrack_create)
@@ -19,7 +19,7 @@ final class PitchTracker {
         withUnsafeMutablePointer(to: &data, zt_destroy)
     }
 
-    func getPitch(from buffer: AVAudioPCMBuffer, amplitudeThreshold: Float = 0.1) -> Float? {
+    public func getPitch(from buffer: AVAudioPCMBuffer, amplitudeThreshold: Float = 0.1) -> Float? {
         guard let floatData = buffer.floatChannelData else { return nil }
 
         var pitch: Float = 0

@@ -1,4 +1,5 @@
 import Foundation
+import PitchRecording
 import SnapshotTesting
 import XCTest
 

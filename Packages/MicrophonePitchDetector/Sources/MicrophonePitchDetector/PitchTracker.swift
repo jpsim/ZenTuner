@@ -19,16 +19,19 @@ public final class PitchTracker {
         withUnsafeMutablePointer(to: &data, zt_destroy)
     }
 
-    public func getPitch(from buffer: AVAudioPCMBuffer, amplitudeThreshold: Float = 0.1) -> Float? {
+    public func getPitch(from buffer: AVAudioPCMBuffer, amplitudeThreshold: Double = 0.1) -> Double? {
         guard let floatData = buffer.floatChannelData else { return nil }
 
-        var pitch: Float = 0
-        var amplitude: Float = 0
+        var fpitch: Float = 0
+        var famplitude: Float = 0
 
         let frames = (0..<Int(buffer.frameLength)).map { floatData[0].advanced(by: $0) }
         for frame in frames {
-            zt_ptrack_compute(data, ptrack, frame, &pitch, &amplitude)
+            zt_ptrack_compute(data, ptrack, frame, &fpitch, &famplitude)
         }
+
+        let pitch = Double(fpitch)
+        let amplitude = Double(famplitude)
 
         if amplitude > amplitudeThreshold, pitch > 0 {
             return pitch

@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -16,12 +16,14 @@ let package = Package(
         )
     ],
     targets: [
+        .executableTarget(name: "pitchbench", dependencies: ["PitchRecording"]),
+        .target(name: "PitchRecording", dependencies: ["MicrophonePitchDetector"]),
         .target(name: "MicrophonePitchDetector", dependencies: ["CMicrophonePitchDetector"]),
         .target(name: "CMicrophonePitchDetector"),
         .testTarget(
             name: "MicrophonePitchDetectorTests",
             dependencies: [
-                "MicrophonePitchDetector",
+                "PitchRecording",
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
             ],
             exclude: [

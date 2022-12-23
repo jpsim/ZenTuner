@@ -1,8 +1,11 @@
 import AVFoundation
-@testable import MicrophonePitchDetector
-import XCTest
+import MicrophonePitchDetector
 
-struct PitchRecording: Codable, Equatable {
+enum PitchRecordingError: Error {
+    case couldNotCreateAudioPCMBuffer
+}
+
+public struct PitchRecording: Codable, Equatable {
     private struct Entry: Codable, Equatable {
         let iteration: Int
         // Stored as a String to compare to some fixed precision
@@ -11,15 +14,15 @@ struct PitchRecording: Codable, Equatable {
 
     private var entries: [Entry] = []
 
-    static func record(file fileURL: URL) throws -> PitchRecording {
+    public static func record(file fileURL: URL) throws -> PitchRecording {
         let bufferSize = PitchTracker.defaultBufferSize
         let file = try AVAudioFile(forReading: fileURL)
-        let buffer = try XCTUnwrap(
-            AVAudioPCMBuffer(
-                pcmFormat: file.processingFormat,
-                frameCapacity: bufferSize
-            )
-        )
+        guard let buffer = AVAudioPCMBuffer(
+            pcmFormat: file.processingFormat,
+            frameCapacity: bufferSize
+        ) else {
+            throw PitchRecordingError.couldNotCreateAudioPCMBuffer
+        }
 
         let tracker = PitchTracker(sampleRate: Int32(buffer.format.sampleRate))
 

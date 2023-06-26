@@ -12,10 +12,6 @@
 #include <math.h>
 #include "CMicrophonePitchDetector.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 #define POW2(m) ((uint32_t) 1 << (m))       /* integer power of 2 for m<32 */
 
 /* fft's with M bigger than this bust primary cache */

@@ -40,10 +40,6 @@
 
 #define NPARTIALONSET ((int)(sizeof(partialonset)/sizeof(ZTFLOAT)))
 
-#ifndef M_PI
-#define M_PI		3.14159265358979323846
-#endif
-
 static const ZTFLOAT partialonset[] =
 {
     0.0,
@@ -70,7 +66,6 @@ typedef struct histopeak
   ZTFLOAT hvalue;
   ZTFLOAT hloud;
   int hindex;
-  int hused;
 } HISTOPEAK;
 
 typedef struct peak

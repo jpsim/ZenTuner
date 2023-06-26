@@ -1,7 +1,6 @@
 // Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/AudioKit/
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include "CMicrophonePitchDetector.h"
 

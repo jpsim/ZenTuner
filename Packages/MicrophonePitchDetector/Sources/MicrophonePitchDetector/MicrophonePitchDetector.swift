@@ -6,7 +6,7 @@ import WatchKit
 
 public final class MicrophonePitchDetector: ObservableObject {
     private let engine = AudioEngine()
-    private var hasMicrophoneAccess = false
+    private var isRunning = false
     private var tracker: PitchTap!
 
     @Published public var pitch: Double = 440
@@ -16,30 +16,8 @@ public final class MicrophonePitchDetector: ObservableObject {
     public init() {}
 
     @MainActor
-    public func activate(debug: Bool = false) async throws {
-        let startDate = Date()
-        var intervalMS: UInt64 = 30
-
-        while !didReceiveAudio {
-            if debug {
-                print("Waiting \(intervalMS * 2)ms")
-            }
-            try? await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
-            try await checkMicrophoneAuthorizationStatus()
-            intervalMS = min(intervalMS * 2, 180)
-        }
-
-        if debug {
-            let duration = String(format: "%.2fs", -startDate.timeIntervalSinceNow)
-            print("Took \(duration) to start")
-        }
-    }
-
-    // MARK: - Private
-
-    @MainActor
-    private func checkMicrophoneAuthorizationStatus() async throws {
-        guard !hasMicrophoneAccess else { return }
+    public func activate() async throws {
+        guard !isRunning else { return }
 
         switch await MicrophoneAccess.getOrRequestPermission() {
         case .granted:
@@ -63,7 +41,7 @@ public final class MicrophonePitchDetector: ObservableObject {
             }
         })
 
-        hasMicrophoneAccess = true
+        isRunning = true
         try engine.start()
         tracker.start()
     }

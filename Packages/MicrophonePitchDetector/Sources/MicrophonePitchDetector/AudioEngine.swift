@@ -22,9 +22,6 @@ final class AudioEngine {
     /// Internal AVAudioEngine
     private let avEngine = AVAudioEngine()
 
-    /// Main mixer at the end of the signal chain
-    private var mainMixerNode: Mixer?
-
     /// Input node mixer
     private final class Input: Mixer {
         var isNotConnected = true
@@ -75,19 +72,16 @@ final class AudioEngine {
         avEngine.attach(output.auMixer)
 
         // create the on demand mixer if needed
-        createEngineMixer()
-        mainMixerNode?.addInput(output)
+        createEngineMixer(input: output)
     }
 
     // simulate the AVAudioEngine.mainMixerNode, but create it ourselves to ensure the
     // correct sample rate is used from .stereo
-    private func createEngineMixer() {
-        guard mainMixerNode == nil else { return }
-
+    private func createEngineMixer(input: Mixer) {
         let mixer = Mixer()
         avEngine.attach(mixer.auMixer)
         avEngine.connect(mixer.auMixer, to: avEngine.outputNode, format: .stereo)
-        mainMixerNode = mixer
+        mixer.addInput(input)
     }
 }
 

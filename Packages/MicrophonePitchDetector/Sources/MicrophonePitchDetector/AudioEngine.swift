@@ -36,9 +36,6 @@ extension AVAudioMixerNode {
 final class AudioEngine {
     /// Internal AVAudioEngine
     private let avEngine = AVAudioEngine()
-#if os(iOS)
-    private let session = AVAudioSession.sharedInstance()
-#endif
 
     /// Main mixer at the end of the signal chain
     private var mainMixerNode: Mixer?
@@ -71,11 +68,20 @@ final class AudioEngine {
     /// Start the engine
     func start() throws {
         try avEngine.start()
-#if os(iOS)
-        try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers])
-        try session.setActive(true)
-#endif
     }
+
+#if !os(macOS)
+    /// Configures the audio session
+    func configureSession() throws {
+        let session = AVAudioSession.sharedInstance()
+        let bufferDuration = 7 / AVAudioFormat.stereo.sampleRate
+#if !os(watchOS)
+        try session.setPreferredIOBufferDuration(bufferDuration)
+        try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers])
+#endif
+        try session.setActive(true)
+    }
+#endif
 
     // MARK: - Private
 

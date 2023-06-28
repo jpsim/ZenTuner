@@ -53,38 +53,30 @@ public final class MicrophonePitchDetector: ObservableObject {
     private func checkMicrophoneAuthorizationStatus() async {
         guard !hasMicrophoneAccess else { return }
 
-        return await withUnsafeContinuation { continuation in
 #if os(watchOS)
-            AVAudioSession.sharedInstance().requestRecordPermission { granted in
-                if granted {
-                    self.setUpPitchTracking()
-                } else {
-                    self.showMicrophoneAccessAlert = true
-                }
-                continuation.resume()
-            }
-#else
-            switch AVCaptureDevice.authorizationStatus(for: .audio) {
-            case .authorized: // The user has previously granted access to the microphone.
-                self.setUpPitchTracking()
-            case .notDetermined: // The user has not yet been asked for microphone access.
-                AVCaptureDevice.requestAccess(for: .audio) { granted in
-                    if granted {
-                        self.setUpPitchTracking()
-                    } else {
-                        self.showMicrophoneAccessAlert = true
-                    }
-                }
-            case .denied: // The user has previously denied access.
-                self.showMicrophoneAccessAlert = true
-            case .restricted: // The user can't grant access due to restrictions.
-                self.showMicrophoneAccessAlert = true
-            @unknown default:
-                self.showMicrophoneAccessAlert = true
-            }
-            continuation.resume()
-#endif
+        if await AVAudioSession.sharedInstance().requestRecordPermission() {
+            self.setUpPitchTracking()
+        } else {
+            self.showMicrophoneAccessAlert = true
         }
+#else
+        switch AVCaptureDevice.authorizationStatus(for: .audio) {
+        case .authorized: // The user has previously granted access to the microphone.
+            self.setUpPitchTracking()
+        case .notDetermined: // The user has not yet been asked for microphone access.
+            if await AVCaptureDevice.requestAccess(for: .audio) {
+                self.setUpPitchTracking()
+            } else {
+                self.showMicrophoneAccessAlert = true
+            }
+        case .denied: // The user has previously denied access.
+            self.showMicrophoneAccessAlert = true
+        case .restricted: // The user can't grant access due to restrictions.
+            self.showMicrophoneAccessAlert = true
+        @unknown default:
+            self.showMicrophoneAccessAlert = true
+        }
+#endif
     }
 
     private func setUpPitchTracking() {
@@ -104,3 +96,15 @@ public final class MicrophonePitchDetector: ObservableObject {
         }
     }
 }
+
+#if os(watchOS)
+private extension AVAudioSession {
+    func requestRecordPermission() async -> Bool {
+        await withCheckedContinuation { continuation in
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                continuation.resume(with: .success(granted))
+            }
+        }
+    }
+}
+#endif

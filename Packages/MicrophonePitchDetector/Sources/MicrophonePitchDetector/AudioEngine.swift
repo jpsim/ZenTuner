@@ -103,7 +103,6 @@ final class AudioEngine {
         avEngine.attach(mixer.auMixer)
         avEngine.connect(mixer.auMixer, to: avEngine.outputNode, format: .stereo)
         mainMixerNode = mixer
-        mixer.silenceOutput()
     }
 }
 

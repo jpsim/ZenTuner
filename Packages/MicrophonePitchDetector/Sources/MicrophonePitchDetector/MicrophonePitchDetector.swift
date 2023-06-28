@@ -31,7 +31,7 @@ public final class MicrophonePitchDetector: ObservableObject {
 #if !os(macOS)
         try engine.configureSession()
 #endif
-        tracker = PitchTap(engine.input, handler: { pitch in
+        tracker = PitchTap(engine.input.auMixer, handler: { pitch in
             Task { @MainActor in
                 self.pitch = pitch
             }

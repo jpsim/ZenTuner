@@ -9,7 +9,7 @@ class Mixer: Node {
     /// Connected nodes
     var connections: [Node] { inputs }
 
-    private let auMixer = AVAudioMixerNode()
+    let auMixer = AVAudioMixerNode()
 
     /// Underlying AVAudioNode
     var avAudioNode: AVAudioNode { auMixer }

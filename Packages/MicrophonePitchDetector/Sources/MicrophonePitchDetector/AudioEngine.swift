@@ -113,14 +113,3 @@ private extension AVAudioFormat {
             AVAudioFormat()
     }
 }
-
-private extension Node {
-    func detach() {
-        if let engine = avAudioNode.engine {
-            engine.detach(avAudioNode)
-        }
-        for connection in connections {
-            connection.detach()
-        }
-    }
-}

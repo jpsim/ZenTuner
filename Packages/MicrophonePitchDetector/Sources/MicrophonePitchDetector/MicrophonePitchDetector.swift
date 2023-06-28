@@ -26,8 +26,6 @@ public final class MicrophonePitchDetector: ObservableObject {
             }
             try? await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
             try await checkMicrophoneAuthorizationStatus()
-            try? await Task.sleep(nanoseconds: intervalMS * NSEC_PER_MSEC)
-            try start()
             intervalMS = min(intervalMS * 2, 180)
         }
 
@@ -38,12 +36,6 @@ public final class MicrophonePitchDetector: ObservableObject {
     }
 
     // MARK: - Private
-
-    private func start() throws {
-        guard hasMicrophoneAccess else { return }
-        try engine.start()
-        tracker.start()
-    }
 
     @MainActor
     private func checkMicrophoneAuthorizationStatus() async throws {
@@ -58,6 +50,9 @@ public final class MicrophonePitchDetector: ObservableObject {
     }
 
     private func setUpPitchTracking() async throws {
+#if !os(macOS)
+        try engine.configureSession()
+#endif
         tracker = PitchTap(engine.input, handler: { pitch in
             Task { @MainActor in
                 self.pitch = pitch
@@ -69,6 +64,7 @@ public final class MicrophonePitchDetector: ObservableObject {
         })
 
         hasMicrophoneAccess = true
-        try start()
+        try engine.start()
+        tracker.start()
     }
 }

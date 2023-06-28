@@ -3,23 +3,20 @@
 import AVFoundation
 
 /// AudioKit version of Apple's Mixer Node. Mixes a variadic list of Nodes.
-class Mixer: Node {
-    private var inputs: [Node] = []
+class Mixer {
+    private var inputs: [Mixer] = []
 
     /// Connected nodes
-    var connections: [Node] { inputs }
+    var connections: [Mixer] { inputs }
 
     let auMixer = AVAudioMixerNode()
-
-    /// Underlying AVAudioNode
-    var avAudioNode: AVAudioNode { auMixer }
 
     /// Initialize the mixer node with no inputs, to be connected later
     init() {}
 
     /// Add input to the mixer
     /// - Parameter node: Node to add
-    func addInput(_ node: Node) {
+    func addInput(_ node: Mixer) {
         assert(!hasInput(node), "Node is already connected to Mixer.")
         inputs.append(node)
         makeAVConnections()
@@ -27,7 +24,7 @@ class Mixer: Node {
 
     /// Is this node already connected?
     /// - Parameter node: Node to check
-    private func hasInput(_ node: Node) -> Bool {
+    private func hasInput(_ node: Mixer) -> Bool {
         connections.contains(where: { $0 === node })
     }
 
@@ -36,28 +33,21 @@ class Mixer: Node {
     }
 }
 
-private extension Node {
+private extension Mixer {
     func makeAVConnections() {
         // Are we attached?
-        guard let engine = avAudioNode.engine else {
+        guard let engine = auMixer.engine else {
             return
         }
 
-        for (bus, connection) in connections.enumerated() {
-            if let sourceEngine = connection.avAudioNode.engine, sourceEngine != avAudioNode.engine {
+        for connection in connections {
+            if let sourceEngine = connection.auMixer.engine, sourceEngine != auMixer.engine {
                 assertionFailure("Attempt to connect nodes from different engines.")
                 return
             }
 
-            engine.attach(connection.avAudioNode)
-
-            // Mixers will decide which input bus to use.
-            if let mixer = avAudioNode as? AVAudioMixerNode {
-                mixer.connectMixer(input: connection.avAudioNode)
-            } else {
-                avAudioNode.connect(input: connection.avAudioNode, bus: bus)
-            }
-
+            engine.attach(connection.auMixer)
+            auMixer.connectMixer(input: connection.auMixer)
             connection.makeAVConnections()
         }
     }

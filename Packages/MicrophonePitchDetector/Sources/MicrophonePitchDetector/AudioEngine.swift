@@ -45,8 +45,8 @@ final class AudioEngine {
         var isNotConnected = true
 
         func connect(to engine: AudioEngine) {
-            engine.avEngine.attach(avAudioNode)
-            engine.avEngine.connect(engine.avEngine.inputNode, to: avAudioNode, format: nil)
+            engine.avEngine.attach(auMixer)
+            engine.avEngine.connect(engine.avEngine.inputNode, to: auMixer, format: nil)
         }
     }
 
@@ -87,7 +87,7 @@ final class AudioEngine {
 
     private func createSilentOutput() {
         let output = _input
-        avEngine.attach(output.avAudioNode)
+        avEngine.attach(output.auMixer)
 
         // create the on demand mixer if needed
         createEngineMixer()
@@ -100,8 +100,8 @@ final class AudioEngine {
         guard mainMixerNode == nil else { return }
 
         let mixer = Mixer()
-        avEngine.attach(mixer.avAudioNode)
-        avEngine.connect(mixer.avAudioNode, to: avEngine.outputNode, format: .stereo)
+        avEngine.attach(mixer.auMixer)
+        avEngine.connect(mixer.auMixer, to: avEngine.outputNode, format: .stereo)
         mainMixerNode = mixer
         mixer.silenceOutput()
     }

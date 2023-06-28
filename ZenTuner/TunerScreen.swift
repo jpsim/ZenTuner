@@ -15,7 +15,12 @@ struct TunerScreen: View {
         .opacity(pitchDetector.didReceiveAudio ? 1 : 0.5)
         .animation(.easeInOut, value: pitchDetector.didReceiveAudio)
         .task {
-            await pitchDetector.activate()
+            do {
+                try await pitchDetector.activate()
+            } catch {
+                // TODO: Handle error
+                print(error)
+            }
         }
         .alert(isPresented: $pitchDetector.showMicrophoneAccessAlert) {
             MicrophoneAccessAlert()

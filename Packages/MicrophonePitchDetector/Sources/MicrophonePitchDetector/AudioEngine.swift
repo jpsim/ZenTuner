@@ -36,9 +36,6 @@ extension AVAudioMixerNode {
 final class AudioEngine {
     /// Internal AVAudioEngine
     private let avEngine = AVAudioEngine()
-#if os(iOS)
-    private let session = AVAudioSession.sharedInstance()
-#endif
 
     /// Main mixer at the end of the signal chain
     private var mainMixerNode: Mixer?

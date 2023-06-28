@@ -2,21 +2,6 @@
 
 import AVFoundation
 
-extension AVAudioNode {
-    /// Make a connection without breaking other connections.
-    func connect(input: AVAudioNode, bus: Int) {
-        guard let engine = engine else { return }
-
-        var points = engine.outputConnectionPoints(for: input, outputBus: 0)
-        if points.contains(where: { $0.node === self && $0.bus == bus }) {
-            return
-        }
-
-        points.append(AVAudioConnectionPoint(node: self, bus: bus))
-        engine.connect(input, to: points, fromBus: 0, format: .stereo)
-    }
-}
-
 extension AVAudioMixerNode {
     /// Make a connection without breaking other connections.
     func connectMixer(input: AVAudioNode) {

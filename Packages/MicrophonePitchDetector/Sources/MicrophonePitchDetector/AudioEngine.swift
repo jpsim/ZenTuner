@@ -41,7 +41,7 @@ final class AudioEngine {
     private var mainMixerNode: Mixer?
 
     /// Input node mixer
-    class InputNode: Mixer {
+    private final class Input: Mixer {
         var isNotConnected = true
 
         func connect(to engine: AudioEngine) {
@@ -50,16 +50,16 @@ final class AudioEngine {
         }
     }
 
-    private let _input = InputNode()
+    private let _input = Input()
 
     /// Input for microphone is created when this is accessed
-    var input: InputNode {
+    var inputMixer: AVAudioMixerNode {
         if _input.isNotConnected {
             _input.connect(to: self)
             _input.isNotConnected = false
             self.createSilentOutput()
         }
-        return _input
+        return _input.auMixer
     }
 
     /// Empty initializer

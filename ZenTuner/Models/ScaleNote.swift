@@ -105,60 +105,36 @@ enum ScaleNote: Int, CaseIterable, Identifiable {
     /// The names for this note.
     var names: [String] {
         switch self {
-        case .C:
-            return ["C"]
-        case .CSharp_DFlat:
-            return ["C♯", "D♭"]
-        case .D:
-            return ["D"]
-        case .DSharp_EFlat:
-            return ["D♯", "E♭"]
-        case .E:
-            return ["E"]
-        case .F:
-            return ["F"]
-        case .FSharp_GFlat:
-            return ["F♯", "G♭"]
-        case .G:
-            return ["G"]
-        case .GSharp_AFlat:
-            return ["G♯", "A♭"]
-        case .A:
-            return ["A"]
-        case .ASharp_BFlat:
-            return ["A♯", "B♭"]
-        case .B:
-            return ["B"]
+        case .C:             ["C"]
+        case .CSharp_DFlat:  ["C♯", "D♭"]
+        case .D:             ["D"]
+        case .DSharp_EFlat:  ["D♯", "E♭"]
+        case .E:             ["E"]
+        case .F:             ["F"]
+        case .FSharp_GFlat:  ["F♯", "G♭"]
+        case .G:             ["G"]
+        case .GSharp_AFlat:  ["G♯", "A♭"]
+        case .A:             ["A"]
+        case .ASharp_BFlat:  ["A♯", "B♭"]
+        case .B:             ["B"]
         }
     }
 
     /// The frequency for this note at the 0th octave in standard pitch: https://en.wikipedia.org/wiki/Standard_pitch
     var frequency: Frequency {
         switch self {
-        case .C:
-            return 16.35160
-        case .CSharp_DFlat:
-            return 17.32391
-        case .D:
-            return 18.35405
-        case .DSharp_EFlat:
-            return 19.44544
-        case .E:
-            return 20.60172
-        case .F:
-            return 21.82676
-        case .FSharp_GFlat:
-            return 23.12465
-        case .G:
-            return 24.49971
-        case .GSharp_AFlat:
-            return 25.95654
-        case .A:
-            return 27.5
-        case .ASharp_BFlat:
-            return 29.13524
-        case .B:
-            return 30.86771
+        case .C:            16.35160
+        case .CSharp_DFlat: 17.32391
+        case .D:            18.35405
+        case .DSharp_EFlat: 19.44544
+        case .E:            20.60172
+        case .F:            21.82676
+        case .FSharp_GFlat: 23.12465
+        case .G:            24.49971
+        case .GSharp_AFlat: 25.95654
+        case .A:            27.5
+        case .ASharp_BFlat: 29.13524
+        case .B:            30.86771
         }
     }
 }

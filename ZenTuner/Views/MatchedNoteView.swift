@@ -39,18 +39,18 @@ struct MatchedNoteView: View {
     private var preferredName: String {
         switch modifierPreference {
         case .preferSharps:
-            return match.note.names.first!
+            match.note.names.first!
         case .preferFlats:
-            return match.note.names.last!
+            match.note.names.last!
         }
     }
 
     private var note: String {
-        return String(preferredName.prefix(1))
+        String(preferredName.prefix(1))
     }
 
     private var modifier: String? {
-        return preferredName.count > 1 ?
+        preferredName.count > 1 ?
             String(preferredName.suffix(1)) :
             nil
     }
@@ -59,14 +59,8 @@ struct MatchedNoteView: View {
 private extension View {
     @ViewBuilder
     func animatingPerceptibleForegroundColor(isPerceptible: Bool) -> some View {
-        if #available(iOS 16, macOS 13, watchOS 9, *) {
-            self
-                .foregroundColor(isPerceptible ? .perceptibleMusicalDistance : .imperceptibleMusicalDistance)
-        } else {
-            self
-                .animatingForegroundColor(from: .imperceptibleMusicalDistance, to: .perceptibleMusicalDistance,
-                                          percentToColor: isPerceptible ? 1 : 0)
-        }
+        self
+            .foregroundColor(isPerceptible ? .perceptibleMusicalDistance : .imperceptibleMusicalDistance)
     }
 }
 

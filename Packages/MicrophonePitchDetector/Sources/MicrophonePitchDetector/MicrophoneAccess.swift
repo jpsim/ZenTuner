@@ -7,28 +7,29 @@ enum MicrophoneAccess {
     }
 
     static func getOrRequestPermission() async -> Status {
+        if #available(iOS 17.0, macOS 14.0, watchOS 10.0, xrOS 1.0, *) {
+            let recordPermission = AVAudioApplication.shared.recordPermission
+            return switch recordPermission {
+            case .undetermined: await AVAudioApplication.requestRecordPermission() ? .granted : .denied
+            case .granted: .granted
+            case .denied: .denied
+            @unknown default: .denied
+            }
+        }
+
 #if os(watchOS)
         return await withCheckedContinuation { continuation in
             AVAudioSession.sharedInstance().requestRecordPermission { granted in
                 continuation.resume(with: .success(granted ? .granted : .denied))
             }
         }
-#else
-        switch AVCaptureDevice.authorizationStatus(for: .audio) {
-        case .authorized: // The user has previously granted access to the microphone.
-            return .granted
-        case .notDetermined: // The user has not yet been asked for microphone access.
-            if await AVCaptureDevice.requestAccess(for: .audio) {
-                return .granted
-            } else {
-                return .denied
-            }
-        case .denied: // The user has previously denied access.
-            return .denied
-        case .restricted: // The user can't grant access due to restrictions.
-            return .denied
-        @unknown default:
-            return .denied
+#elseif !os(xrOS)
+        let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+        return switch authorizationStatus {
+        case .notDetermined: await AVCaptureDevice.requestAccess(for: .audio) ? .granted : .denied
+        case .authorized: .granted
+        case .denied, .restricted: .denied
+        @unknown default: .denied
         }
 #endif
     }

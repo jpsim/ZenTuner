@@ -1,18 +1,18 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "MicrophonePitchDetector",
-    platforms: [.macOS(.v11), .iOS(.v14), .watchOS(.v7)],
+    platforms: [.macOS(.v13), .iOS(.v16), .watchOS(.v9)],
     products: [
         .library(name: "MicrophonePitchDetector", targets: ["MicrophonePitchDetector"])
     ],
     dependencies: [
         .package(
             url: "https://github.com/pointfreeco/swift-snapshot-testing",
-            from: "1.10.0"
+            from: "1.14.2"
         )
     ],
     targets: [

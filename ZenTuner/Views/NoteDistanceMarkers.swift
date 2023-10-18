@@ -18,12 +18,10 @@ struct NoteDistanceMarkers: View {
     }
 
     private func tickSize(forIndex index: Int) -> NoteTickSize {
-        if index == 12 {
-            return .large
-        } else if [2, 7, 17, 22].contains(index) {
-            return .medium
-        } else {
-            return .small
+        switch index {
+        case 12:           .large
+        case 2, 7, 17, 22: .medium
+        default:           .small
         }
     }
 }
@@ -33,12 +31,9 @@ enum NoteTickSize {
 
     var height: CGFloat {
         switch self {
-        case .small:
-            return 60
-        case .medium:
-            return 100
-        case .large:
-            return 180
+        case .small:  60
+        case .medium: 100
+        case .large:  180
         }
     }
 }

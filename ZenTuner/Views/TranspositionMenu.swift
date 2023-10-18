@@ -36,10 +36,8 @@ struct TranspositionMenu: View {
 private extension ScaleNote {
     var transpositionName: String {
         switch self {
-        case .C:
-            return "Concert Pitch"
-        default:
-            return names.joined(separator: " / ")
+        case .C: "Concert Pitch"
+        default: names.joined(separator: " / ")
         }
     }
 }

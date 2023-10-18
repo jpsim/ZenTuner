@@ -7,19 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8F13E1B625ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
-		8F13E1B725ED345700C3F23D /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F13E1C225ED533800C3F23D /* ClosestNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */; };
 		8F2D975126938AF900B512D0 /* TunerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D975026938AF900B512D0 /* TunerScreen.swift */; };
-		8F2D975226938AF900B512D0 /* TunerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D975026938AF900B512D0 /* TunerScreen.swift */; };
 		8F2D975326938B0500B512D0 /* TunerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D975026938AF900B512D0 /* TunerScreen.swift */; };
 		8F2D9755269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */; };
-		8F2D9756269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */; };
 		8F2D9757269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */; };
 		8F2D97592693930000B512D0 /* NoteTicks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D97582693930000B512D0 /* NoteTicks.swift */; };
-		8F2D975A2693930000B512D0 /* NoteTicks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D97582693930000B512D0 /* NoteTicks.swift */; };
 		8F2D975B2693930000B512D0 /* NoteTicks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D97582693930000B512D0 /* NoteTicks.swift */; };
-		8F3ECD042682821E00415B9F /* Zen Tuner WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8F3ECD042682821E00415B9F /* Zen Tuner WatchKit Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8F3ECD1F2682834700415B9F /* ModifierPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D825B73E9A007C28BC /* ModifierPreference.swift */; };
 		8F3ECD202682834700415B9F /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DB25B73E9A007C28BC /* TunerData.swift */; };
 		8F3ECD212682834700415B9F /* Frequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D925B73E9A007C28BC /* Frequency.swift */; };
@@ -31,46 +26,29 @@
 		8F3ECD282682838D00415B9F /* MainNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F025B73ECE007C28BC /* MainNoteView.swift */; };
 		8F3ECD292682838D00415B9F /* MatchedNoteFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F225B73ECF007C28BC /* MatchedNoteFrequency.swift */; };
 		8F3ECD2A2682838D00415B9F /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
-		8F3ECD2B2682843400415B9F /* ColorAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1B525ED345700C3F23D /* ColorAnimation.swift */; };
 		8F3ECD2C268284AC00415B9F /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8F3ECD2E268287AA00415B9F /* MicrophonePitchDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 8F3ECD2D268287AA00415B9F /* MicrophonePitchDetector */; };
 		8F44F7FF26939F13007DBE1E /* Color+MusicalDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */; };
-		8F44F80026939F13007DBE1E /* Color+MusicalDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */; };
 		8F44F80126939F13007DBE1E /* Color+MusicalDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */; };
 		8F693E3925B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
-		8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F693E3825B87DB20054DB16 /* TranspositionMenu.swift */; };
 		8F848C87269365D30037EF97 /* MatchedNoteViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F848C86269365D30037EF97 /* MatchedNoteViewSnapshotTests.swift */; };
 		8F8F67C525C093640024B4CB /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 8F8F67C425C093640024B4CB /* SnapshotTesting */; };
 		8F8F67CD25C0938F0024B4CB /* TunerViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8F67CC25C0938F0024B4CB /* TunerViewSnapshotTests.swift */; };
 		8FABB9102683AAD000A7D824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FB571AC25B72147007C28BC /* Assets.xcassets */; };
 		8FB571BD25B72147007C28BC /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
-		8FB571BE25B72147007C28BC /* ZenTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571AA25B72146007C28BC /* ZenTunerApp.swift */; };
 		8FB571C125B72147007C28BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FB571AC25B72147007C28BC /* Assets.xcassets */; };
-		8FB571C225B72147007C28BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FB571AC25B72147007C28BC /* Assets.xcassets */; };
 		8FB571DF25B73E9A007C28BC /* ModifierPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D825B73E9A007C28BC /* ModifierPreference.swift */; };
-		8FB571E025B73E9A007C28BC /* ModifierPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D825B73E9A007C28BC /* ModifierPreference.swift */; };
 		8FB571E125B73E9A007C28BC /* Frequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D925B73E9A007C28BC /* Frequency.swift */; };
-		8FB571E225B73E9A007C28BC /* Frequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571D925B73E9A007C28BC /* Frequency.swift */; };
 		8FB571E325B73E9A007C28BC /* ScaleNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DA25B73E9A007C28BC /* ScaleNote.swift */; };
-		8FB571E425B73E9A007C28BC /* ScaleNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DA25B73E9A007C28BC /* ScaleNote.swift */; };
 		8FB571E525B73E9A007C28BC /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DB25B73E9A007C28BC /* TunerData.swift */; };
-		8FB571E625B73E9A007C28BC /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DB25B73E9A007C28BC /* TunerData.swift */; };
 		8FB571E925B73E9A007C28BC /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DE25B73E9A007C28BC /* Alignment.swift */; };
-		8FB571EA25B73E9A007C28BC /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571DE25B73E9A007C28BC /* Alignment.swift */; };
 		8FB571F525B73ECF007C28BC /* CurrentNoteMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571EF25B73ECE007C28BC /* CurrentNoteMarker.swift */; };
-		8FB571F625B73ECF007C28BC /* CurrentNoteMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571EF25B73ECE007C28BC /* CurrentNoteMarker.swift */; };
 		8FB571F725B73ECF007C28BC /* MainNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F025B73ECE007C28BC /* MainNoteView.swift */; };
-		8FB571F825B73ECF007C28BC /* MainNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F025B73ECE007C28BC /* MainNoteView.swift */; };
 		8FB571F925B73ECF007C28BC /* MatchedNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F125B73ECE007C28BC /* MatchedNoteView.swift */; };
-		8FB571FA25B73ECF007C28BC /* MatchedNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F125B73ECE007C28BC /* MatchedNoteView.swift */; };
 		8FB571FB25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F225B73ECF007C28BC /* MatchedNoteFrequency.swift */; };
-		8FB571FC25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F225B73ECF007C28BC /* MatchedNoteFrequency.swift */; };
 		8FB571FD25B73ECF007C28BC /* NoteDistanceMarkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F325B73ECF007C28BC /* NoteDistanceMarkers.swift */; };
-		8FB571FE25B73ECF007C28BC /* NoteDistanceMarkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F325B73ECF007C28BC /* NoteDistanceMarkers.swift */; };
 		8FB571FF25B73ECF007C28BC /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
-		8FB5720025B73ECF007C28BC /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB571F425B73ECF007C28BC /* TunerView.swift */; };
 		8FD5D594267849EF00E5577D /* MicrophonePitchDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 8FD5D593267849EF00E5577D /* MicrophonePitchDetector */; };
-		8FD5D596267849F500E5577D /* MicrophonePitchDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 8FD5D595267849F500E5577D /* MicrophonePitchDetector */; };
 		8FE56CDD25BE05D20038664C /* TranspositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE56CDC25BE05D20038664C /* TranspositionTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,21 +70,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8F3ECD192682822100415B9F /* Embed App Extensions */ = {
+		8F3ECD192682822100415B9F /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				8F3ECD042682821E00415B9F /* Zen Tuner WatchKit Extension.appex in Embed App Extensions */,
+				8F3ECD042682821E00415B9F /* Zen Tuner WatchKit Extension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8F13E1B525ED345700C3F23D /* ColorAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimation.swift; sourceTree = "<group>"; };
 		8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestNoteTests.swift; sourceTree = "<group>"; };
 		8F2D975026938AF900B512D0 /* TunerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerScreen.swift; sourceTree = "<group>"; };
 		8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneAccessAlert.swift; sourceTree = "<group>"; };
@@ -125,7 +102,6 @@
 		8FB571AC25B72147007C28BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8FB571B125B72147007C28BC /* ZenTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZenTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB571B425B72147007C28BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8FB571B925B72147007C28BC /* ZenTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZenTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB571D825B73E9A007C28BC /* ModifierPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModifierPreference.swift; sourceTree = "<group>"; };
 		8FB571D925B73E9A007C28BC /* Frequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Frequency.swift; sourceTree = "<group>"; };
 		8FB571DA25B73E9A007C28BC /* ScaleNote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScaleNote.swift; sourceTree = "<group>"; };
@@ -157,14 +133,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FD5D594267849EF00E5577D /* MicrophonePitchDetector in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8FB571B625B72147007C28BC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8FD5D596267849F500E5577D /* MicrophonePitchDetector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +220,6 @@
 			isa = PBXGroup;
 			children = (
 				8FB571B125B72147007C28BC /* ZenTuner.app */,
-				8FB571B925B72147007C28BC /* ZenTuner.app */,
 				8FE56CDA25BE05D20038664C /* ZenTunerTests.xctest */,
 				8F3ECCF82682821900415B9F /* Zen Tuner watchOS.app */,
 				8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */,
@@ -299,7 +266,6 @@
 			isa = PBXGroup;
 			children = (
 				8FB571DE25B73E9A007C28BC /* Alignment.swift */,
-				8F13E1B525ED345700C3F23D /* ColorAnimation.swift */,
 				8F44F7FE26939F13007DBE1E /* Color+MusicalDistance.swift */,
 			);
 			path = Helpers;
@@ -332,7 +298,7 @@
 			buildConfigurationList = 8F3ECD1D2682822100415B9F /* Build configuration list for PBXNativeTarget "Zen Tuner watchOS" */;
 			buildPhases = (
 				8F3ECCF62682821900415B9F /* Resources */,
-				8F3ECD192682822100415B9F /* Embed App Extensions */,
+				8F3ECD192682822100415B9F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -364,9 +330,9 @@
 			productReference = 8F3ECD032682821E00415B9F /* Zen Tuner WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
-		8FB571B025B72147007C28BC /* Zen Tuner iOS */ = {
+		8FB571B025B72147007C28BC /* Zen Tuner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner iOS" */;
+			buildConfigurationList = 8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner" */;
 			buildPhases = (
 				8FB571AD25B72147007C28BC /* Sources */,
 				8FB571AE25B72147007C28BC /* Frameworks */,
@@ -376,32 +342,12 @@
 			);
 			dependencies = (
 			);
-			name = "Zen Tuner iOS";
+			name = "Zen Tuner";
 			packageProductDependencies = (
 				8FD5D593267849EF00E5577D /* MicrophonePitchDetector */,
 			);
 			productName = "ZenTuner (iOS)";
 			productReference = 8FB571B125B72147007C28BC /* ZenTuner.app */;
-			productType = "com.apple.product-type.application";
-		};
-		8FB571B825B72147007C28BC /* Zen Tuner macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8FB571C825B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner macOS" */;
-			buildPhases = (
-				8FB571B525B72147007C28BC /* Sources */,
-				8FB571B625B72147007C28BC /* Frameworks */,
-				8FB571B725B72147007C28BC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Zen Tuner macOS";
-			packageProductDependencies = (
-				8FD5D595267849F500E5577D /* MicrophonePitchDetector */,
-			);
-			productName = "ZenTuner (macOS)";
-			productReference = 8FB571B925B72147007C28BC /* ZenTuner.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8FE56CD925BE05D20038664C /* ZenTunerTests */ = {
@@ -431,8 +377,9 @@
 		8FB571A525B72146007C28BC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					8F3ECCF72682821900415B9F = {
 						CreatedOnToolsVersion = 13.0;
@@ -442,9 +389,6 @@
 						CreatedOnToolsVersion = 13.0;
 					};
 					8FB571B025B72147007C28BC = {
-						CreatedOnToolsVersion = 12.2;
-					};
-					8FB571B825B72147007C28BC = {
 						CreatedOnToolsVersion = 12.2;
 					};
 					8FE56CD925BE05D20038664C = {
@@ -469,8 +413,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8FB571B025B72147007C28BC /* Zen Tuner iOS */,
-				8FB571B825B72147007C28BC /* Zen Tuner macOS */,
+				8FB571B025B72147007C28BC /* Zen Tuner */,
 				8F3ECCF72682821900415B9F /* Zen Tuner watchOS */,
 				8F3ECD022682821E00415B9F /* Zen Tuner WatchKit Extension */,
 				8FE56CD925BE05D20038664C /* ZenTunerTests */,
@@ -502,14 +445,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8FB571B725B72147007C28BC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8FB571C225B72147007C28BC /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8FE56CD825BE05D20038664C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -536,7 +471,6 @@
 				8F3ECD262682838D00415B9F /* MatchedNoteView.swift in Sources */,
 				8F3ECD282682838D00415B9F /* MainNoteView.swift in Sources */,
 				8F3ECD202682834700415B9F /* TunerData.swift in Sources */,
-				8F3ECD2B2682843400415B9F /* ColorAnimation.swift in Sources */,
 				8F2D975326938B0500B512D0 /* TunerScreen.swift in Sources */,
 				8F2D9757269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */,
 				8F2D975B2693930000B512D0 /* NoteTicks.swift in Sources */,
@@ -549,7 +483,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FB571E525B73E9A007C28BC /* TunerData.swift in Sources */,
-				8F13E1B625ED345700C3F23D /* ColorAnimation.swift in Sources */,
 				8FB571F525B73ECF007C28BC /* CurrentNoteMarker.swift in Sources */,
 				8FB571F925B73ECF007C28BC /* MatchedNoteView.swift in Sources */,
 				8F2D9755269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */,
@@ -566,31 +499,6 @@
 				8FB571FB25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */,
 				8F2D97592693930000B512D0 /* NoteTicks.swift in Sources */,
 				8F44F7FF26939F13007DBE1E /* Color+MusicalDistance.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8FB571B525B72147007C28BC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8FB571E625B73E9A007C28BC /* TunerData.swift in Sources */,
-				8F13E1B725ED345700C3F23D /* ColorAnimation.swift in Sources */,
-				8FB571F625B73ECF007C28BC /* CurrentNoteMarker.swift in Sources */,
-				8FB571FA25B73ECF007C28BC /* MatchedNoteView.swift in Sources */,
-				8F2D9756269390D800B512D0 /* MicrophoneAccessAlert.swift in Sources */,
-				8FB571EA25B73E9A007C28BC /* Alignment.swift in Sources */,
-				8FB571E425B73E9A007C28BC /* ScaleNote.swift in Sources */,
-				8FB571E225B73E9A007C28BC /* Frequency.swift in Sources */,
-				8FB571FE25B73ECF007C28BC /* NoteDistanceMarkers.swift in Sources */,
-				8FB5720025B73ECF007C28BC /* TunerView.swift in Sources */,
-				8F2D975226938AF900B512D0 /* TunerScreen.swift in Sources */,
-				8FB571BE25B72147007C28BC /* ZenTunerApp.swift in Sources */,
-				8FB571E025B73E9A007C28BC /* ModifierPreference.swift in Sources */,
-				8FB571F825B73ECF007C28BC /* MainNoteView.swift in Sources */,
-				8F693E3A25B87DB20054DB16 /* TranspositionMenu.swift in Sources */,
-				8FB571FC25B73ECF007C28BC /* MatchedNoteFrequency.swift in Sources */,
-				8F2D975A2693930000B512D0 /* NoteTicks.swift in Sources */,
-				8F44F80026939F13007DBE1E /* Color+MusicalDistance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,7 +523,7 @@
 		};
 		8FE56CE025BE05D20038664C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8FB571B025B72147007C28BC /* Zen Tuner iOS */;
+			target = 8FB571B025B72147007C28BC /* Zen Tuner */;
 			targetProxy = 8FE56CDF25BE05D20038664C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -646,7 +554,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
 		};
@@ -676,7 +584,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
 		};
@@ -710,7 +618,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
 		};
@@ -745,7 +653,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
 		};
@@ -753,6 +661,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -784,9 +693,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 15;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -814,6 +725,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -845,9 +757,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 15;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -874,15 +788,20 @@
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = BuildSupport/iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -899,72 +818,23 @@
 				DEVELOPMENT_TEAM = X4ST43AL9W;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = BuildSupport/iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
 				PRODUCT_NAME = ZenTuner;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Release;
-		};
-		8FB571C925B72147007C28BC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = BuildSupport/macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 15;
-				DEVELOPMENT_TEAM = X4ST43AL9W;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = BuildSupport/macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.3.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
-				PRODUCT_NAME = ZenTuner;
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Debug;
-		};
-		8FB571CA25B72147007C28BC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = BuildSupport/macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 15;
-				DEVELOPMENT_TEAM = X4ST43AL9W;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = BuildSupport/macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.3.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tuner;
-				PRODUCT_NAME = ZenTuner;
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -977,15 +847,19 @@
 				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 865LEQR26C;
 				INFOPLIST_FILE = ZenTunerTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tunerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZenTuner.app/ZenTuner";
@@ -1001,15 +875,19 @@
 				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 865LEQR26C;
 				INFOPLIST_FILE = ZenTunerTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jpsim.zen.tunerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZenTuner.app/ZenTuner";
@@ -1048,20 +926,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner iOS" */ = {
+		8FB571C525B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FB571C625B72147007C28BC /* Debug */,
 				8FB571C725B72147007C28BC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8FB571C825B72147007C28BC /* Build configuration list for PBXNativeTarget "Zen Tuner macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8FB571C925B72147007C28BC /* Debug */,
-				8FB571CA25B72147007C28BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1099,10 +968,6 @@
 			productName = SnapshotTesting;
 		};
 		8FD5D593267849EF00E5577D /* MicrophonePitchDetector */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MicrophonePitchDetector;
-		};
-		8FD5D595267849F500E5577D /* MicrophonePitchDetector */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MicrophonePitchDetector;
 		};

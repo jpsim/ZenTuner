@@ -10,32 +10,41 @@ on:
 
 jobs:
   test:
-    runs-on: macos-12
+    runs-on: macos-13
     env:
-      DEVELOPER_DIR: /Applications/Xcode_14.1.app
+      DEVELOPER_DIR: /Applications/Xcode_15.0.app
     steps:
       - uses: actions/checkout@v3
       - name: Test
-        run: xcodebuild test -scheme "ZenTuner_iOS" -destination platform="iOS Simulator,name=iPhone 14 Pro Max,OS=16.1"
-  # TODO: Try enabling this once GitHub Actions has macos-13 runners
-  # test_packages:
-  #   runs-on: macos-13
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Test
-  #       run: swift test --package-path Packages/MicrophonePitchDetector
-  macos:
-    runs-on: macos-12
+        run: xcodebuild test -scheme "Zen Tuner" -destination platform="iOS Simulator,name=iPhone 15 Pro Max,OS=17.0"
+  test_packages:
+    runs-on: macos-13
     env:
-      DEVELOPER_DIR: /Applications/Xcode_14.1.app
+      DEVELOPER_DIR: /Applications/Xcode_15.0.app
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test
+        run: swift test --package-path Packages/MicrophonePitchDetector
+  macos:
+    runs-on: macos-13
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.0.app
     steps:
       - uses: actions/checkout@v3
       - name: Build macOS
-        run: xcodebuild build -scheme "ZenTuner_macOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+        run: xcodebuild build -scheme "Zen Tuner" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+  watchos:
+    runs-on: macos-13
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.0.app
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build watchOS
+        run: xcodebuild build -scheme "ZenTuner_watchOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
   lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/realm/swiftlint:0.50.3
+      image: ghcr.io/realm/swiftlint:0.53.0
     steps:
       - uses: actions/checkout@v3
       - name: Run SwiftLint

@@ -43,7 +43,7 @@ struct Frequency: Equatable {
     ///
     /// - returns: The distance in cents.
     func distance(to frequency: Frequency) -> MusicalDistance {
-        return MusicalDistance(
+        MusicalDistance(
             cents: MusicalDistance.octave.cents * log2f(Float(frequency.measurement.value / measurement.value))
         )
     }
@@ -74,7 +74,7 @@ private let kFrequencyFormatter: MeasurementFormatter = {
 
 extension Frequency {
     func localizedString() -> String {
-        return kFrequencyFormatter.string(from: measurement)
+        kFrequencyFormatter.string(from: measurement)
     }
 }
 
@@ -82,7 +82,7 @@ extension Frequency {
 
 extension Frequency: Comparable {
     static func < (lhs: Frequency, rhs: Frequency) -> Bool {
-        return lhs.measurement < rhs.measurement
+        lhs.measurement < rhs.measurement
     }
 }
 
@@ -104,9 +104,7 @@ extension Frequency {
     ///
     /// - parameter octaves: The number of octaves to transpose this frequency. Can be positive or negative.
     mutating func shift(byOctaves octaves: Int) {
-        if octaves == 0 {
-            return
-        } else {
+        if octaves != 0 {
             measurement.value *= pow(2.0, Double(octaves))
         }
     }
@@ -118,7 +116,7 @@ extension Frequency {
     ///
     /// - returns: Distance in octaves to specified frequency.
     func distanceInOctaves(to frequency: Frequency) -> Int {
-        return Int(distance(to: frequency).cents / MusicalDistance.octave.cents)
+        Int(distance(to: frequency).cents / MusicalDistance.octave.cents)
     }
 
     /// Creates a new frequency that's offset by the musical distance specified.

@@ -1,6 +1,7 @@
 disabled_rules:
   - multiple_closures_with_trailing_closure
   - opening_brace
+  - switch_case_alignment
   - todo
   - weak_delegate
 
@@ -84,11 +85,12 @@ identifier_name:
     # Other
     - id
     - to
-    - MicrophoneAccessAlert()
+    - MicrophoneAccessAlert\(\)
 
 file_name:
   excluded:
     - Alignment.swift
+    - Snapshotting+PitchRecording.swift
 
 large_tuple:
   warning: 3

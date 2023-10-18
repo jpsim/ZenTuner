@@ -28,7 +28,7 @@ private extension Diffing where Value == PitchRecording {
         guard old.entries.count == new.entries.count else { return nil }
 
         let mismatchedEntries = zip(old.entries, new.entries).filter { old, new in
-            !old.isApproximatelyEqual(to: new, pitchThreshold: 0.001)
+            !old.isApproximatelyEqual(to: new, pitchThreshold: 0.1)
         }
 
         if mismatchedEntries.isEmpty {

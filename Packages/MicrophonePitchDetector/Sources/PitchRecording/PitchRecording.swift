@@ -35,21 +35,17 @@ public struct PitchRecording: Codable, Equatable {
 
         let tracker = PitchTracker(sampleRate: Int32(buffer.format.sampleRate))
 
-        var iteration = 0
         var pitchRecording = PitchRecording()
-        while true {
+        for iteration in 0... {
             do {
                 try file.read(into: buffer)
+                let pitch = tracker.getPitch(from: buffer, amplitudeThreshold: 0.05)
+                let entry = PitchRecording.Entry(iteration: iteration, pitch: pitch)
+                pitchRecording.entries.append(entry)
             } catch {
                 break
             }
-
-            let pitch = tracker.getPitch(from: buffer, amplitudeThreshold: 0.05)
-            let entry = PitchRecording.Entry(iteration: iteration, pitch: pitch)
-            pitchRecording.entries.append(entry)
-            iteration += 1
         }
-
         return pitchRecording
     }
 }

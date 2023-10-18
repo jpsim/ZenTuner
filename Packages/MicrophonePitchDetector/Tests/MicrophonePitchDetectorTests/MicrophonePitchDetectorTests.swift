@@ -21,11 +21,9 @@ final class MicrophonePitchDetectorTests: XCTestCase {
         ).filter { $0.pathExtension == "mp3" }
 
         // Running in parallel is ~7x faster on an M1 Max
-        await audioFiles.concurrentForEach { audioFile in
-            // swiftlint:disable:next force_try - Can't throw in a `concurrentForEach`
-            let pitchRecording = try! PitchRecording.record(file: audioFile)
+        try await audioFiles.concurrentForEach { audioFile in
+            let pitchRecording = try PitchRecording.record(file: audioFile)
             let name = String(audioFile.lastPathComponent.prefix(while: { $0 != "." }))
-            print("Comparing pitch recording snapshot for \(name)")
             await assertAudioFileSnapshot(matching: pitchRecording, named: name)
         }
     }
@@ -41,7 +39,7 @@ private func assertAudioFileSnapshot(
 {
     assertSnapshot(
         matching: recording,
-        as: .json,
+        as: .pitchRecording,
         named: name,
         file: file,
         testName: testName,
@@ -50,13 +48,14 @@ private func assertAudioFileSnapshot(
 }
 
 private extension Sequence {
-    func concurrentForEach(_ operation: @escaping (Element) async -> Void) async {
-        await withTaskGroup(of: Void.self) { group in
+    func concurrentForEach(_ operation: @escaping (Element) async throws -> Void) async throws {
+        try await withThrowingTaskGroup(of: Void.self) { group in
             for element in self {
                 group.addTask {
-                    await operation(element)
+                    try await operation(element)
                 }
             }
+            for try await _ in group {}
         }
     }
 }

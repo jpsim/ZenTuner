@@ -90,6 +90,7 @@ identifier_name:
 file_name:
   excluded:
     - Alignment.swift
+    - Snapshotting+PitchRecording.swift
 
 large_tuple:
   warning: 3

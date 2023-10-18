@@ -48,6 +48,6 @@ public struct PitchRecording: Codable, Equatable {
 
 private extension FloatingPoint where Self: CVarArg {
     func descriptionForSnapshot() -> String {
-        String(format: "%.3f", self)
+        String(format: "%.2f", self)
     }
 }

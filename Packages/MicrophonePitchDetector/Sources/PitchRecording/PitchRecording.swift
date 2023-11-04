@@ -33,7 +33,7 @@ public struct PitchRecording: Codable, Equatable {
             throw PitchRecordingError.couldNotCreateAudioPCMBuffer
         }
 
-        let tracker = PitchTracker(sampleRate: Int32(buffer.format.sampleRate))
+        let tracker = PitchTracker(sampleRate: buffer.format.sampleRate)
 
         var pitchRecording = PitchRecording()
         for iteration in 0... {

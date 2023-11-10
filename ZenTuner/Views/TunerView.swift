@@ -33,13 +33,13 @@ struct TunerView: View {
         }
 #else
         VStack(alignment: .noteCenter) {
-            HStack {
-                if !hidesTranspositionMenu {
+            if !hidesTranspositionMenu {
+                HStack {
                     TranspositionMenu(selectedTransposition: $selectedTransposition)
                         .padding()
+                    
+                    Spacer()
                 }
-
-                Spacer()
             }
 
             Spacer()

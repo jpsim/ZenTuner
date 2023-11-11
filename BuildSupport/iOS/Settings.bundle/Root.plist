@@ -10,7 +10,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Hide Concert Pitch</string>
+			<string>Hide Transposition Menu</string>
 			<key>Key</key>
 			<string>HidesTranspositionMenu</string>
 			<key>DefaultValue</key>

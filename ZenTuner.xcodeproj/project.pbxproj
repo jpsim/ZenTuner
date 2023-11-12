@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21E9A5582AFDC0CE00673532 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 21E9A5572AFDC0CE00673532 /* Settings.bundle */; };
 		8F13E1C225ED533800C3F23D /* ClosestNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */; };
 		8F2D975126938AF900B512D0 /* TunerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D975026938AF900B512D0 /* TunerScreen.swift */; };
 		8F2D975326938B0500B512D0 /* TunerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2D975026938AF900B512D0 /* TunerScreen.swift */; };
@@ -84,6 +85,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		21E9A5572AFDC0CE00673532 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8F13E1C125ED533800C3F23D /* ClosestNoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestNoteTests.swift; sourceTree = "<group>"; };
 		8F2D975026938AF900B512D0 /* TunerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerScreen.swift; sourceTree = "<group>"; };
 		8F2D9754269390D800B512D0 /* MicrophoneAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneAccessAlert.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				8FB571B425B72147007C28BC /* Info.plist */,
+				21E9A5572AFDC0CE00673532 /* Settings.bundle */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21E9A5582AFDC0CE00673532 /* Settings.bundle in Resources */,
 				8FB571C125B72147007C28BC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

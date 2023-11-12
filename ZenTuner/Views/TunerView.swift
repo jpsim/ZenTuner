@@ -9,6 +9,9 @@ struct TunerView: View {
         tunerData.closestNote.inTransposition(ScaleNote.allCases[selectedTransposition])
     }
 
+    @AppStorage("HidesTranspositionMenu")
+    private var hidesTranspositionMenu = false
+
     var body: some View {
 #if os(watchOS)
         ZStack(alignment: Alignment(horizontal: .noteCenter, vertical: .noteTickCenter)) {
@@ -31,11 +34,13 @@ struct TunerView: View {
         }
 #else
         VStack(alignment: .noteCenter) {
-            HStack {
-                TranspositionMenu(selectedTransposition: $selectedTransposition)
-                    .padding()
+            if !hidesTranspositionMenu {
+                HStack {
+                    TranspositionMenu(selectedTransposition: $selectedTransposition)
+                        .padding()
 
-                Spacer()
+                    Spacer()
+                }
             }
 
             Spacer()

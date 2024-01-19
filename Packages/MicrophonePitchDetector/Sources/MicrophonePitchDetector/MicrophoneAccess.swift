@@ -7,7 +7,7 @@ enum MicrophoneAccess {
     }
 
     static func getOrRequestPermission() async -> Status {
-        if #available(iOS 17.0, macOS 14.0, watchOS 10.0, xrOS 1.0, *) {
+        if #available(iOS 17.0, macOS 14.0, watchOS 10.0, visionOS 1.0, *) {
             let recordPermission = AVAudioApplication.shared.recordPermission
             return switch recordPermission {
             case .undetermined: await AVAudioApplication.requestRecordPermission() ? .granted : .denied
@@ -23,7 +23,7 @@ enum MicrophoneAccess {
                 continuation.resume(with: .success(granted ? .granted : .denied))
             }
         }
-#elseif !os(xrOS)
+#elseif !os(visionOS)
         let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
         return switch authorizationStatus {
         case .notDetermined: await AVCaptureDevice.requestAccess(for: .audio) ? .granted : .denied

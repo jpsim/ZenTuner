@@ -12,15 +12,15 @@ jobs:
   test:
     runs-on: macos-13
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.0.1.app
+      DEVELOPER_DIR: /Applications/Xcode_15.2.app
     steps:
       - uses: actions/checkout@v4
       - name: Test
-        run: xcodebuild test -scheme "Zen Tuner" -destination platform="iOS Simulator,name=iPhone 15 Pro Max,OS=17.0.1"
+        run: xcodebuild test -scheme "Zen Tuner" -destination platform="iOS Simulator,name=iPhone 15 Pro Max,OS=17.2"
   test_packages:
     runs-on: macos-13
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.0.1.app
+      DEVELOPER_DIR: /Applications/Xcode_15.2.app
     steps:
       - uses: actions/checkout@v4
       - name: Test
@@ -28,7 +28,7 @@ jobs:
   macos:
     runs-on: macos-13
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.0.1.app
+      DEVELOPER_DIR: /Applications/Xcode_15.2.app
     steps:
       - uses: actions/checkout@v4
       - name: Build macOS
@@ -36,7 +36,7 @@ jobs:
   watchos:
     runs-on: macos-13
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.0.1.app
+      DEVELOPER_DIR: /Applications/Xcode_15.2.app
     steps:
       - uses: actions/checkout@v4
       - name: Build watchOS
@@ -44,7 +44,7 @@ jobs:
   lint:
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/realm/swiftlint:0.53.0
+      image: ghcr.io/realm/swiftlint:0.54.0
     steps:
       - uses: actions/checkout@v4
       - name: Run SwiftLint
